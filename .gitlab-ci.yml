@@ -24,9 +24,11 @@ stages:
 test:
   stage: test
   script: 
+    - cd server/
     - echo "Running tests"
     - npm install
-    - node scripts/index.js
+    - npm run test
+#    - node scripts/index.js
 
 build:
   stage: build
