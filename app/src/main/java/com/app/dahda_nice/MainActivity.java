@@ -5,10 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -17,13 +18,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,8 +47,13 @@ public class MainActivity extends AppCompatActivity {
 
     private SignInButton buttonGoogle;
 
-    private Button  button;
+    String google_id;
 
+    private WifiInfo wifiInfo;
+
+    private String my_mac;
+
+    private LoginData loginData;
 
 
     @Override
@@ -44,25 +61,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, LoadingActivity.class);
-        startActivity(intent);
 
-        button = findViewById(R.id.button);
+        buttonGoogle = findViewById(R.id.googlelogin);
 
 
-
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        wifiInfo = wifiManager.getConnectionInfo();
+        my_mac = getMACAddress("wlan0");
 
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        buttonGoogle = findViewById(R.id.googlelogin);
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
-        googleSignInClient = GoogleSignIn.getClient(this,googleSignInOptions);
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
         buttonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,10 +86,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent signInIntent = googleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
 
+
             }
         });
 
+
+
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -83,18 +103,22 @@ public class MainActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
+
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                button.setText(account.getEmail());
+                google_id = account.getEmail();
                 firebaseAuthWithGoogle(account);
 
             } catch (ApiException e) {
-
+                e.printStackTrace();
             }
+
         }
+
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -108,5 +132,60 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://52.79.227.254:3000")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        Api api = retrofit.create(Api.class);
+
+        LoginData loginData = new LoginData(google_id, my_mac);
+
+        api.postData(loginData).enqueue(new Callback<LoginDao>() {
+            @Override
+            public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
+                LoginDao data = response.body();
+                if (response.isSuccessful()) {
+                    Log.d("data 성공!!!!!!!!!", data.getRes() + " //// " + data.getState());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<LoginDao> call, Throwable t) {
+                Log.d("TEST 실패 ? : ", " 실패 실패");
+                Log.d("why? ", t.toString());
+            }
+        });
+
+
     }
+
+
+    private String getMACAddress(String interfaceName) {
+        try {
+            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface intf : interfaces) {
+                if (interfaceName != null) {
+                    if (!intf.getName().equalsIgnoreCase(interfaceName)) continue;
+                }
+                byte[] mac = intf.getHardwareAddress();
+                if (mac == null) return "";
+                StringBuilder buf = new StringBuilder();
+                for (int idx = 0; idx < mac.length; idx++)
+                    buf.append(String.format("%02X:", mac[idx]));
+                if (buf.length() > 0) buf.deleteCharAt(buf.length() - 1);
+                return buf.toString();
+            }
+        } catch (Exception ex) {
+        }
+
+        return "";
+    }
+
 }
