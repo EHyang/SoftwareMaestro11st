@@ -9,6 +9,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var scanRouter = require('./routes/scan');
 
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/config/config.json')[env];
+
 var app = express();
 
 // view engine setup
@@ -31,6 +34,19 @@ app.use('/scan', scanRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+// connect To DB
+const models = require('./models');
+models.sequelize.sync({force: config.forceSync})
+  .then(() => {
+    console.log('✓ DB connection success.');
+    console.log('  Press CTRL-C to stop\n');
+  })
+  .catch(err => {
+    console.error(err);
+    console.log('✗ DB connection error. Please make sure DB is running.');
+    process.exit();
+  });
 
 // error handler
 app.use(function(err, req, res, next) {
