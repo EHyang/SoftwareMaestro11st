@@ -1,3 +1,4 @@
 epikem
 node_modules
 etc
+server/config/config.json
