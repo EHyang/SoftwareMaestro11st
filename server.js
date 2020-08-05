@@ -230,5 +230,5 @@ app.post('/input_my_table',function(req,res){
 
 
 app.listen(3000, function () {
-  console.log('Expresss server listening on port ' + app.get('port'));
+  console.log('Express server listening on port ' + app.get('port'));
 });
