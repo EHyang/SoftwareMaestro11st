@@ -1,7 +1,11 @@
+const { Sequelize } = require(".");
+
 module.exports = function (sequelize, DataTypes) {
   const user = sequelize.define('User', {
-    userID: { field: 'user_id', type: DataTypes.STRING(50), unique: true, allowNull: false },
-    password: { field: 'password', type: DataTypes.STRING(30), allowNull: false },
+    googleID: { field: 'google_id', type: DataTypes.STRING(50), unique: true, allowNull: false },
+    mac: { field: 'mac', type: DataTypes.STRING(50), allowNull: false },
+    lastest_use: { field: 'lastest_use', type: DataTypes.DATE , allowNull:false, defaultValue: Sequelize.NOW },
+    state: { field: 'state', type: DataTypes.INTEGER, allowNull: false, defaultValue:0 }
   }, {
     // don't use camelcase for automatically added attributes but underscore style
     // so updatedAt will be updated_at
