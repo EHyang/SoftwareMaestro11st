@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const models = require('../models');
+const {User} = require('../models');
 
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -8,16 +8,28 @@ router.get('/', function(req, res, next) {
 
 router.post('/login', function(req, res, next) {
   console.debug('login');
-  console.log(req.body.username);
-  models.user
-  .findOrCreate({where: {username: req.username}, defaults: {job: 'Technical Lead JavaScript'}})
+
+  console.log(User);
+
+  User
+  .findOrCreate({where: {googleID: req.body.googleID,
+  mac: req.body.mac}})
   .then(([user, created]) => {
     console.log(user.get({
       plain: true
     }))
+    if(created==false){
+      // user already exists. doesn't matter.
+    }
+    req.session.user=user;
     console.log(created);
+    res.send(200); 
+  }).catch(function(error){
+    
+    console.error(error);
+    res.sendStatus(400);
   })
-  res.json({'what':'what'})
+    
 })
 
 
