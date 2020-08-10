@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 
 module.exports = function (sequelize, DataTypes) {
   const user = sequelize.define('User', {
-    googleID: { field: 'google_id', type: DataTypes.STRING(50), unique: true, allowNull: false },
+    google_id: { field: 'google_id', type: DataTypes.STRING(50), unique: true, allowNull: true },
     mac: { field: 'mac', type: DataTypes.STRING(50), allowNull: false },
     lastest_use: { field: 'lastest_use', type: DataTypes.DATE , allowNull:false, defaultValue: Sequelize.NOW },
     state: { field: 'state', type: DataTypes.INTEGER, allowNull: false, defaultValue:0 }
