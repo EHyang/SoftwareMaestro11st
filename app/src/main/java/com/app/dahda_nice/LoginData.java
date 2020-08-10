@@ -3,6 +3,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class LoginData {
+
     @Expose
     @SerializedName("google_id")
     private String google_id;

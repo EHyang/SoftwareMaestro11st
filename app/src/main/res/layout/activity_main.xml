@@ -4,17 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_purple"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
 
+    <TextView
+        android:gravity="center"
+        android:background="@drawable/textedge"
+        android:layout_marginTop="30dp"
+        android:id="@+id/ServiceIntroduce"
+        android:layout_width="380dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:scrollbars="vertical"
+        android:text="서비스 소개"
+        android:textSize="50dp" />
+
+
+    <TextView
+        android:id="@+id/ServiceUse"
+        android:layout_width="380dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/textedge"
+        android:scrollbars="vertical"
+        android:text="이용 약관"
+        android:textSize="50dp" />
+
+    <TextView
+        android:id="@+id/ServiceLocation"
+        android:layout_width="380dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/textedge"
+        android:scrollbars="vertical"
+        android:text="위치 권한 "
+        android:textSize="50dp" />
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googlelogin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
-
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp" />
 
 
 </LinearLayout>

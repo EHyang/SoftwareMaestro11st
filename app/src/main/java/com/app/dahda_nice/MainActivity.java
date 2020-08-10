@@ -8,8 +8,12 @@ import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -53,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     private String my_mac;
 
-    private LoginData loginData;
 
 
     @Override
@@ -61,8 +64,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        touchTextview();
         buttonGoogle = findViewById(R.id.googlelogin);
+
 
 
         WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
@@ -80,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
+
         buttonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +95,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+    }
+
+    private void touchTextview() {
+        TextView ServiceIntroduce = findViewById(R.id.ServiceIntroduce);
+        TextView ServiceUse = findViewById(R.id.ServiceUse);
+        TextView ServiceLocation = findViewById(R.id.ServiceLocation);
+
+        ServiceIntroduce.setMovementMethod(new ScrollingMovementMethod());
+        ServiceUse.setMovementMethod(new ScrollingMovementMethod());
+        ServiceLocation.setMovementMethod(new ScrollingMovementMethod());
+
+        ServiceIntroduce.setText("안녕하세요! 소프트마에스트로 첫 작품인 코로나 추적 어플입니다! 팀 나이스의 작품입니다. 잘 부탁드립니다.");
 
 
     }
@@ -118,27 +138,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
-
-                        }
-                    }
-                });
-
-
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://52.79.227.254:3000")
+                .baseUrl("http://3.34.117.4:3000")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -162,6 +167,28 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("why? ", t.toString());
             }
         });
+
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("????????? 왜안넘어가","!?!?!?@?");
+                            Intent intent = new Intent(getApplicationContext(), GeneralUser.class);
+                            startActivity(intent);
+                        } else {
+                            Log.d("실패에에에에????????? 왜안넘어가","!?!?!?@?");
+
+                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                });
+
+
+
 
 
     }
