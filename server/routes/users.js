@@ -59,8 +59,32 @@ router.post('/login', async function(req, res, next) {
   })
 })
 
-    
-})
+router.post('/state', async function(req, res, next){
+  console.debug('marking you as infected');
+  
+  if(!req.body.key=='secretPassKey'){
+    console.error('not allowed');
+    res.sendStatus(404);
+  }
 
+  const targetUser = await models.User
+    .findOne({ where: {
+      // mac: req.body.mac
+      mac: req.session.user.mac
+    }})
+
+    console.debug('found target user:');
+    console.debug(targetUser);
+    
+    if(targetUser){
+      const updatedUser = await targetUser.update({
+        state: req.body.target_state
+})
+      req.session.user=updatedUser;
+      console.debug('update success');
+
+      res.sendStatus(204)
+    }
+})
 
 module.exports = router;
