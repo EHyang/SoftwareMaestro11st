@@ -11,6 +11,10 @@ module.exports = function (sequelize, DataTypes) {
     // so updatedAt will be updated_at
     underscored: true,
 
+    indexes: [
+      {unique:true,
+      fields:['mac']}
+    ],
     // disable the modification of tablenames; By default, sequelize will automatically
     // transform all passed model names (first parameter of define) into plural.
     // if you don't want that, set the following
