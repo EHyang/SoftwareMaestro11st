@@ -9,6 +9,7 @@ var loginRouter = require('./routes/login');
 var indexRouter = require('./routes/index');
 var scanRounter = require('./routes/scan');
 var testRouter  = require('./routes/test');
+var hospRouter  = require('./routes/hosp');
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -21,10 +22,12 @@ app.use(session({
 }));
 
 app.set('port', 3000);
+
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/scan', scanRounter);
 app.use('/test', testRouter);
+app.use('/hosp', hospRouter);
 
 app.listen(3000, function () {
   console.log('Express server listening on port ' + app.get('port'));
