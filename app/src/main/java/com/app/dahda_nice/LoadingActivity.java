@@ -5,17 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 public class LoadingActivity extends AppCompatActivity {
 
 
-    private final int DISPLAY_TIME = 2500;
+    private final int DISPLAY_TIME = 5000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+
+        startanim();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -26,6 +31,16 @@ public class LoadingActivity extends AppCompatActivity {
 
             }
         },DISPLAY_TIME);
+    }
+
+    private void startanim() {
+
+        Animation animation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.alpha);
+        ImageView imageView = findViewById(R.id.hwang3);
+        imageView.setAnimation(animation);
+
+
+
     }
 
     @Override

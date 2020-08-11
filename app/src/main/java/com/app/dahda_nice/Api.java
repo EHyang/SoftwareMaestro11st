@@ -1,8 +1,6 @@
 package com.app.dahda_nice;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

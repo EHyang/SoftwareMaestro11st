@@ -5,22 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/holo_purple"
+    android:background="#92D1CB"
     tools:context=".LoadingActivity">
 
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_marginTop="180dp"
+        android:id="@+id/hwang3"
+        android:layout_marginTop="150dp"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_gravity="center"
+        android:scaleType="centerCrop"
         android:src="@drawable/goodman" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Loding...3"
-        android:textSize="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center"/>
+
 </LinearLayout>

@@ -3,6 +3,9 @@ package com.app.dahda_nice;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
@@ -35,6 +38,7 @@ import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
 
+import me.relex.circleindicator.CircleIndicator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,19 +47,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 900;
+//    private static final int RC_SIGN_IN = 900;
+//
+//    private GoogleSignInClient googleSignInClient;
+//
+//    private FirebaseAuth firebaseAuth;
+//
+//    private SignInButton buttonGoogle;
+//
+//    String google_id;
+//
+//    private WifiInfo wifiInfo;
+//
+//    private String my_mac;
 
-    private GoogleSignInClient googleSignInClient;
-
-    private FirebaseAuth firebaseAuth;
-
-    private SignInButton buttonGoogle;
-
-    String google_id;
-
-    private WifiInfo wifiInfo;
-
-    private String my_mac;
+    FragmentPagerAdapter fragmentPagerAdapter;
 
 
 
@@ -64,129 +70,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        touchTextview();
-        buttonGoogle = findViewById(R.id.googlelogin);
+
+        ViewPager viewPager = findViewById(R.id.viewpager);
+
+        fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(fragmentPagerAdapter);
+
+        CircleIndicator circleIndicator = findViewById(R.id.indicator);
+        circleIndicator.setViewPager(viewPager);
 
 
-
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        wifiInfo = wifiManager.getConnectionInfo();
-        my_mac = getMACAddress("wlan0");
-
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-
-
-        buttonGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent signInIntent = googleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-
-
-            }
-        });
-
-
-
-
-    }
-
-    private void touchTextview() {
-        TextView ServiceIntroduce = findViewById(R.id.ServiceIntroduce);
-        TextView ServiceUse = findViewById(R.id.ServiceUse);
-        TextView ServiceLocation = findViewById(R.id.ServiceLocation);
-
-        ServiceIntroduce.setMovementMethod(new ScrollingMovementMethod());
-        ServiceUse.setMovementMethod(new ScrollingMovementMethod());
-        ServiceLocation.setMovementMethod(new ScrollingMovementMethod());
-
-        ServiceIntroduce.setText("안녕하세요! 소프트마에스트로 첫 작품인 코로나 추적 어플입니다! 팀 나이스의 작품입니다. 잘 부탁드립니다.");
-
-
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
-            try {
-
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                google_id = account.getEmail();
-                firebaseAuthWithGoogle(account);
-
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://3.34.117.4:3000")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        Api api = retrofit.create(Api.class);
-
-        LoginData loginData = new LoginData(google_id, my_mac);
-
-        api.postData(loginData).enqueue(new Callback<LoginDao>() {
-            @Override
-            public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
-                LoginDao data = response.body();
-                if (response.isSuccessful()) {
-                    Log.d("data 성공!!!!!!!!!", data.getRes() + " //// " + data.getState());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<LoginDao> call, Throwable t) {
-                Log.d("TEST 실패 ? : ", " 실패 실패");
-                Log.d("why? ", t.toString());
-            }
-        });
-
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("????????? 왜안넘어가","!?!?!?@?");
-                            Intent intent = new Intent(getApplicationContext(), GeneralUser.class);
-                            startActivity(intent);
-                        } else {
-                            Log.d("실패에에에에????????? 왜안넘어가","!?!?!?@?");
-
-                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
-
-                        }
-                    }
-                });
-
+//        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+//        wifiInfo = wifiManager.getConnectionInfo();
+//        my_mac = getMACAddress("wlan0");
+//
+//
+//        firebaseAuth = FirebaseAuth.getInstance();
+//
+//
+//        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//
+//        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+//
+//
+//        buttonGoogle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent signInIntent = googleSignInClient.getSignInIntent();
+//                startActivityForResult(signInIntent, RC_SIGN_IN);
+//
+//
+//            }
+//        });
 
 
 
@@ -194,25 +112,106 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private String getMACAddress(String interfaceName) {
-        try {
-            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-            for (NetworkInterface intf : interfaces) {
-                if (interfaceName != null) {
-                    if (!intf.getName().equalsIgnoreCase(interfaceName)) continue;
-                }
-                byte[] mac = intf.getHardwareAddress();
-                if (mac == null) return "";
-                StringBuilder buf = new StringBuilder();
-                for (int idx = 0; idx < mac.length; idx++)
-                    buf.append(String.format("%02X:", mac[idx]));
-                if (buf.length() > 0) buf.deleteCharAt(buf.length() - 1);
-                return buf.toString();
-            }
-        } catch (Exception ex) {
-        }
 
-        return "";
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == RC_SIGN_IN) {
+//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+//
+//            try {
+//
+//                GoogleSignInAccount account = task.getResult(ApiException.class);
+//                google_id = account.getEmail();
+//                firebaseAuthWithGoogle(account);
+//
+//            } catch (ApiException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//
+//    }
+//
+//    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+//
+//        Gson gson = new GsonBuilder()
+//                .setLenient()
+//                .create();
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("http://3.34.117.4:3000")
+//                .addConverterFactory(GsonConverterFactory.create(gson))
+//                .build();
+//
+//        Api api = retrofit.create(Api.class);
+//
+//        LoginData loginData = new LoginData(google_id, my_mac);
+//
+//        api.postData(loginData).enqueue(new Callback<LoginDao>() {
+//            @Override
+//            public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
+//                LoginDao data = response.body();
+//                if (response.isSuccessful()) {
+//                    Log.d("data 성공!!!!!!!!!", data.getRes() + " //// " + data.getState());
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<LoginDao> call, Throwable t) {
+//                Log.d("TEST 실패 ? : ", " 실패 실패");
+//                Log.d("why? ", t.toString());
+//            }
+//        });
+//
+//
+//        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+//        firebaseAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            Log.d("????????? 왜안넘어가","!?!?!?@?");
+//                            Intent intent = new Intent(getApplicationContext(), GeneralUser.class);
+//                            startActivity(intent);
+//                        } else {
+//                            Log.d("실패에에에에????????? 왜안넘어가","!?!?!?@?");
+//                            Intent intent = new Intent(getApplicationContext(), GeneralUser.class);
+//                            startActivity(intent);
+//                            Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
+//
+//                        }
+//                    }
+//                });
+//
+//
+//
+//
+//
+//    }
+//
+//
+//    private String getMACAddress(String interfaceName) {
+//        try {
+//            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+//            for (NetworkInterface intf : interfaces) {
+//                if (interfaceName != null) {
+//                    if (!intf.getName().equalsIgnoreCase(interfaceName)) continue;
+//                }
+//                byte[] mac = intf.getHardwareAddress();
+//                if (mac == null) return "";
+//                StringBuilder buf = new StringBuilder();
+//                for (int idx = 0; idx < mac.length; idx++)
+//                    buf.append(String.format("%02X:", mac[idx]));
+//                if (buf.length() > 0) buf.deleteCharAt(buf.length() - 1);
+//                return buf.toString();
+//            }
+//        } catch (Exception ex) {
+//        }
+//
+//        return "";
+//    }
 
 }

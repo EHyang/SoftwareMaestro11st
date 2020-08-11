@@ -61,17 +61,6 @@ public class GeneralUser extends AppCompatActivity {
         bluetoothAdapter = bluetoothManager.getAdapter();
 
 
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://3.34.117.4:3000")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        Api api = retrofit.create(Api.class);
-
 
 
 
@@ -111,7 +100,6 @@ public class GeneralUser extends AppCompatActivity {
 
 
     private void scanLeDevice(boolean b) {
-        Log.d(" M yServi ce "," !!!!!!!!!!!!333333 ");
         Intent intent = new Intent(getApplicationContext(), MyService.class);
         if (Build.VERSION.SDK_INT >= 26) {
             Log.d("26262626y2626 3333","dkjfslkdjf!!");
