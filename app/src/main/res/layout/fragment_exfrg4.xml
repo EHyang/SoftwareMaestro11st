@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context=".exfrg2">
+    tools:context=".exfrg4">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -18,7 +17,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
             android:fontFamily="@font/nanumsquareeb"
-            android:text="구글 연동을 통한"
+            android:text="정보 노출X"
             android:textColor="#000000"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -29,7 +28,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/nanumsquareeb"
-            android:text="간편 가입!"
+            android:text="개인정보 보호!"
             android:textColor="#000000"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -42,6 +41,5 @@
             android:scaleType="centerCrop"
             android:src="@drawable/virus2" />
     </LinearLayout>
-
 
 </FrameLayout>

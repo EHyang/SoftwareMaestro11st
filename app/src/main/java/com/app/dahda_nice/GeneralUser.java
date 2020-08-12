@@ -105,6 +105,7 @@ public class GeneralUser extends AppCompatActivity {
             Log.d("26262626y2626 3333","dkjfslkdjf!!");
             getApplicationContext().startForegroundService(intent);
         } else {
+            Log.d("26262626y2626 3333","dkjfslkdjf!!");
             startService(intent);
         }
     }

@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
-    private static int NUM_ITEMS = 3;
+    private static int NUM_ITEMS = 4;
 
 
 
@@ -17,12 +17,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-
                 return exfrg1.newInstance();
             case 1:
                 return exfrg2.newInstance();
             case 2:
                 return exfrg3.newInstance();
+            case 3:
+                return exfrg4.newInstance();
             default:
                 return null;
         }

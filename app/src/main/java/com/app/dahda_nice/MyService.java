@@ -116,7 +116,7 @@ public class MyService extends Service {
                         public void run() {
                             scanLeDevice(true);
                         }
-                    }, 60000);
+                    }, 5000);
                 }
             }, 10000);
 
