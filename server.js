@@ -7,7 +7,7 @@ var app = express();
 
 var loginRouter = require('./routes/login');
 var indexRouter = require('./routes/index');
-var scanRounter = require('./routes/scan');
+var scanRouter = require('./routes/scan');
 var testRouter  = require('./routes/test');
 var hospRouter  = require('./routes/hosp');
 
@@ -25,7 +25,7 @@ app.set('port', 3000);
 
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
-app.use('/scan', scanRounter);
+app.use('/scan', scanRouter);
 app.use('/test', testRouter);
 app.use('/hosp', hospRouter);
 

@@ -3,36 +3,47 @@ var db         = require('../dbconfig');
 var router = express.Router();
 
 router.post('/',function(req,res){
-  console.log(req.body);
-//  var id = req.params;
-  // console.log("session id is = " + req.session.displayname);
-  // var my_mac = req.body.my_mac;
-  // var scan_mac = req.body.scan_mac;
-  // var scan_time = req.body.scan_time;
-  // var insert_sql = 'insert into `'+ my_mac +'` (scan_mac,scan_time) values(?,?)';
-  // var param = [scan_mac,scan_time];
-  //
-  // db.mysql.query(insert_sql,param,function(err,result){
-  //   if(err){
-  //     console.log(err);
-  //     res.json({'msg' : 'Failed input data'});
-  //   }
-  //   console.log('input success!');
-  // });
-  //
-  // var update_sql = 'update members set lastest_use = (?) where my_mac = (?)';
-  // var now_time = getCurrentTime();
-  //
-  // var param = [now_time,my_mac];
-  //
-  // db.mysql.query(update_sql,param,function(err,result){
-  //   if(err){
-  //     console.log('178 err : ' + err);
-  //     res.json({'msg' : 'Failed update lastest time'});
-  //   }else{
-  //     console.log('update lastest use time!');
-  //   }
-  // });
+  var id = req.query.id;
+  var length = req.body.length;
+  var data = req.body;
+
+  var insert_sql = "insert into `" + id + "` (scan_mac, scan_time) values ";
+
+  console.log(length);
+
+  var scan_mac, scan_time;
+
+  for(var i = 0; i < length; ++i)
+  {
+    scan_mac = data[i].scan_mac;
+    scan_time = data[i].scan_time;
+
+    insert_sql += "('" + scan_mac + "', '" + scan_time + "'),";
+  }
+
+  insert_sql = insert_sql.slice(0,-1);
+  console.log(insert_sql);
+
+  db.mysql.query(insert_sql,param,function(err,result){
+    if(err){
+      console.log(err);
+      res.json({'msg' : 'Failed input data'});
+    }
+    console.log('input success!');
+  });
+
+  var update_sql = 'update members set lastest_use = (?) where my_mac = (?)';
+  var now_time = new Date();
+  var param = [now_time, id];
+
+  db.mysql.query(update_sql,param,function(err,result){
+    if(err){
+      console.log('178 err : ' + err);
+      res.json({'msg' : 'Failed update lastest time'});
+    }else{
+      console.log('update lastest use time!');
+    }
+  });
   res.json({'res':'0'});
 });
 
