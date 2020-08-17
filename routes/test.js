@@ -1,13 +1,16 @@
 var express    = require('express');
 var db         = require('../dbconfig');
+var path       = require('path');
 var router = express.Router();
 
 router.get('/',function(req,res){
   console.log("test DB");
-  db.mysql.query('SELECT * from members', function(err, rows) {
+  var num = req.body.num;
+  var select_query = "SELECT * from members where num = ?";
+  db.mysql.query(select_query, num, function(err, rows) {
     if(err) throw err;
     //console.log('The solution is: ', rows);
-    res.send(rows);
+    res.json(rows);
   });
 });
 

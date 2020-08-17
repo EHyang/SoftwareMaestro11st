@@ -2,6 +2,7 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var session    = require('express-session');
 var db         = require('./dbconfig');
+var path       = require('path');
 
 var app = express();
 
@@ -20,6 +21,8 @@ app.use(session({
   resave:false,
   saveUninitalized:true
 }));
+
+app.use('/node_modules', express.static(path.join(__dirname+'/node_modules')));
 
 app.set('port', 3000);
 
