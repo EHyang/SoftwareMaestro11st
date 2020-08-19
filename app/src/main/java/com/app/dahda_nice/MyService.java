@@ -116,9 +116,9 @@ public class MyService extends Service {
                         public void run() {
                             scanLeDevice(true);
                         }
-                    }, 5000);
+                    }, 60000);
                 }
-            }, 10000);
+            }, 1000);
 
             hwang = true;
 

@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Intent intent = new Intent(getApplicationContext(),JoinSuc.class);
+                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(intent);
 
                 return false;
