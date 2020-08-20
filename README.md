@@ -26,4 +26,4 @@
 ------
 ### AWS Architecture
 #### System Structure
-<center><img src="./img/system.png" width=200></center>
+<center><img src="./img/system.png" width=400></center>
