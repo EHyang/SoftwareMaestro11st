@@ -59,7 +59,7 @@ router.post('/login', async function(req, res, next) {
   })
 })
 
-router.post('/state', async function(req, res, next){
+router.post('/state', async function(req, res, next){ // 확진자 신고
   console.debug('marking you as infected');
   
   if(!req.body.key=='secretPassKey'){
@@ -67,18 +67,44 @@ router.post('/state', async function(req, res, next){
     res.sendStatus(404);
   }
 
-  const targetUser = await models.User
+  let t = await sequelize.transaction();
+  let targetUser;
+  try {
+    targetUser = await models.User
     .findOne({ where: {
       // mac: req.body.mac
-      mac: req.session.user.mac
-    }})
-
-    console.debug('found target user:');
-    console.debug(targetUser);
-    
+        mac: req.body.target_mac
+      }, transaction:t})
+    console.debug(`targetUser: ${targetUser}`);
     if(targetUser){
+      console.debug('found target infected user:');
+      // console.debug(targetUser);
+    
       const updatedUser = await targetUser.update({
         state: req.body.target_state
+      }, {transaction:t})
+      // req.session.user=updatedUser;
+      console.debug('state update success');
+      
+      visited={};
+      if(req.body.target_state==2){
+        await propagateContact(req.body.target_mac, req.body.target_state, 1, t);
+      }
+
+      t.commit();
+      res.sendStatus(204);
+
+    } else throw Error('user not found');
+
+  } catch (error) {
+    console.error('state marking failed. reverting');
+    console.error(error);
+    t.rollback();
+  }
+  
+
+})
+
 })
       req.session.user=updatedUser;
       console.debug('update success');
