@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var fs = require('fs');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sessionParser = require('express-session');
@@ -20,7 +21,10 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })  // access.log 파일에 누적 모드로 로그 생성
+
+app.use(logger('combined', {stream: accessLogStream})); // express 서버에 로거 연결
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
