@@ -16,13 +16,21 @@
 
 package com.example.android.bluetoothadvertisements;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +39,34 @@ import android.widget.Toast;
  */
 public class MainActivity extends FragmentActivity {
 
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 243;
+
+    public static void checkPermissions(Activity activity, Context context){
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.BLUETOOTH_PRIVILEGED,
+        };
+
+        if(!hasPermissions(context, PERMISSIONS)){
+            ActivityCompat.requestPermissions( activity, PERMISSIONS, PERMISSION_ALL);
+        }
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        Log.d("you have permission", "yo");
+        return true;
+    }
+
     private BluetoothAdapter mBluetoothAdapter;
 
     @Override
@@ -38,7 +74,10 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(R.string.activity_main_title);
-
+        checkPermissions(this, null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+        }
         if (savedInstanceState == null) {
 
             mBluetoothAdapter = ((BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE))
@@ -52,7 +91,7 @@ public class MainActivity extends FragmentActivity {
 
                     // Are Bluetooth Advertisements supported on this device?
                     if (mBluetoothAdapter.isMultipleAdvertisementSupported()) {
-
+                        Log.d("loading fragments", "yoyoyo");
                         // Everything is supported and enabled, load the fragments.
                         setupFragments();
 

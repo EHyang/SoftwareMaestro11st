@@ -1,6 +1,8 @@
 package com.example.android.bluetoothadvertisements;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -11,11 +13,13 @@ import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -155,13 +159,49 @@ public class AdvertiserService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
             notificationIntent, 0);
-        Notification n = new Notification.Builder(this)
-            .setContentTitle("Advertising device via Bluetooth")
-            .setContentText("This device is discoverable to others nearby.")
-            .setSmallIcon(R.drawable.ic_launcher)
-            .setContentIntent(pendingIntent)
-            .build();
+
+        String channelId = "com.codechacha.sample1";
+        String channelName = "My service channel";
+
+        Notification n;
+        if (Build.VERSION.SDK_INT >= 26) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId, channelName,
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(channel);
+
+            n = new Notification.Builder(this, channelId)
+                    .setContentTitle("Advertising device via Bluetooth")
+                    .setContentText("This device is discoverable to others nearby.")
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentIntent(pendingIntent)
+                    .build();
+        }
+        else{
+            n = new Notification.Builder(this)
+                    .setContentTitle("Advertising device via Bluetooth")
+                    .setContentText("This device is discoverable to others nearby.")
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentIntent(pendingIntent)
+                    .build();
+        }
+
+        Log.d("여기까지는 들어오나?", " 사실이야? ");
         startForeground(FOREGROUND_NOTIFICATION_ID, n);
+
+
+        /**2020-08-21 13:19:42.911 26784-26784/com.example.android.bluetoothadvertisements E/AndroidRuntime: FATAL EXCEPTION: main
+        Process: com.example.android.bluetoothadvertisements, PID: 26784
+        android.app.RemoteServiceException: Bad notification for startForeground: java.lang.RuntimeException: invalid channel for service notification: Notification(channel=null pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x40 color=0x00000000 vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2096)
+        at android.os.Handler.dispatchMessage(Handler.java:107)
+        at android.os.Looper.loop(Looper.java:237)
+        at android.app.ActivityThread.main(ActivityThread.java:7860)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1068) */
     }
 
     /**
@@ -190,12 +230,10 @@ public class AdvertiserService extends Service {
          */
 
         AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
-        dataBuilder.addServiceUuid(Constants.Service_UUID);
         dataBuilder.setIncludeDeviceName(true);
+        String data="data123";
+        dataBuilder.addServiceData(Constants.Service_UUID, data.getBytes(StandardCharsets.UTF_8));
 
-        /* For example - this will cause advertising to fail (exceeds size limit) */
-        //String failureData = "asdghkajsghalkxcjhfa;sghtalksjcfhalskfjhasldkjfhdskf";
-        //dataBuilder.addServiceData(Constants.Service_UUID, failureData.getBytes());
 
         return dataBuilder.build();
     }
@@ -207,6 +245,7 @@ public class AdvertiserService extends Service {
     private AdvertiseSettings buildAdvertiseSettings() {
         AdvertiseSettings.Builder settingsBuilder = new AdvertiseSettings.Builder();
         settingsBuilder.setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER);
+
         settingsBuilder.setTimeout(0);
         return settingsBuilder.build();
     }

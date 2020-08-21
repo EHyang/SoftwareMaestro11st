@@ -22,8 +22,10 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,8 +36,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -49,7 +53,7 @@ public class ScannerFragment extends ListFragment {
     /**
      * Stops scanning after 5 seconds.
      */
-    private static final long SCAN_PERIOD = 5000;
+    private static final long SCAN_PERIOD = 10000;
 
     private BluetoothAdapter mBluetoothAdapter;
 
@@ -88,6 +92,7 @@ public class ScannerFragment extends ListFragment {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -124,6 +129,7 @@ public class ScannerFragment extends ListFragment {
 
         switch (item.getItemId()) {
             case R.id.refresh:
+                Log.d("version::", " " + Build.VERSION.SDK_INT);
                 startScanning();
                 return true;
             default:
@@ -143,12 +149,22 @@ public class ScannerFragment extends ListFragment {
                 @Override
                 public void run() {
                     stopScanning();
+
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startScanning();
+                        }
+                    },5000);
                 }
             }, SCAN_PERIOD);
 
             // Kick off a new scan.
             mScanCallback = new SampleScanCallback();
+            //mBluetoothLeScanner.startScan(mScanCallback);
+            //mBluetoothLeScanner.startScan(null, buildScanSettings(), mScanCallback);
             mBluetoothLeScanner.startScan(buildScanFilters(), buildScanSettings(), mScanCallback);
+            Log.d(TAG, "started scan");
 
             String toastText = getString(R.string.scan_start_toast) + " "
                     + TimeUnit.SECONDS.convert(SCAN_PERIOD, TimeUnit.MILLISECONDS) + " "
@@ -181,7 +197,8 @@ public class ScannerFragment extends ListFragment {
 
         ScanFilter.Builder builder = new ScanFilter.Builder();
         // Comment out the below line to see all BLE devices around you
-        builder.setServiceUuid(Constants.Service_UUID);
+
+        //builder.setServiceUuid(Constants.Service_UUID);
         scanFilters.add(builder.build());
 
         return scanFilters;
@@ -205,6 +222,8 @@ public class ScannerFragment extends ListFragment {
         public void onBatchScanResults(List<ScanResult> results) {
             super.onBatchScanResults(results);
 
+            Log.d(TAG,"onbatch");
+
             for (ScanResult result : results) {
                 mAdapter.add(result);
             }
@@ -214,6 +233,14 @@ public class ScannerFragment extends ListFragment {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
+            try{
+                Map<ParcelUuid, byte[]> data = result.getScanRecord().getServiceData();
+
+                String str= new String(data.get(Constants.Service_UUID), StandardCharsets.UTF_8);
+                Log.d(TAG,str);
+            }catch (Exception e){
+
+            }
 
             mAdapter.add(result);
             mAdapter.notifyDataSetChanged();

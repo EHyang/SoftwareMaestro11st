@@ -19,6 +19,7 @@ package com.example.android.bluetoothadvertisements;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +107,7 @@ public class ScanResultAdapter extends BaseAdapter {
      * Otherwise updates the existing position with the new ScanResult.
      */
     public void add(ScanResult scanResult) {
-
+        Log.d("asd","asd");
         int existingPosition = getPosition(scanResult.getDevice().getAddress());
 
         if (existingPosition >= 0) {
