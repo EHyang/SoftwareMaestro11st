@@ -2,10 +2,16 @@
 <img src="./img/loding.png" width = 300>
 
 
-<br><br>
+<br>
 * BLE를 활용하여 정확한 접촉여부를 알 수 있는 **핵심적인 알림**
 * 민감 정보를 사용하지 않아 **개인정보 유출에 대한 우려 감소**
 
+
+### Main feature
+| 기능 | 설명 |
+| |------| | ------ |
+| BLE Scan | 저전력 블루투스 스캔을 통해 15분간 접촉자의 정보를 스캔하여 서버에 전송 |
+| 접촉 알림 | 확진자 발생시 추적 알고리즘을 통해 접촉자 전원에게 즉시 접촉 알림 | 
 
 
 
@@ -27,3 +33,10 @@
 ### AWS Architecture
 #### System Structure
 <center><img src="./img/system.png" width=400></center>
+
+#### Network Structure
+<img src="./img/network.png" width=400>
+
+#### Database ER-diagram
+##### 이미지 등록 해야함
+
