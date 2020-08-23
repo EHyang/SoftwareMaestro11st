@@ -7,15 +7,21 @@ import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.ParcelUuid;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 
 
 public class MyService extends Service {
@@ -25,6 +31,9 @@ public class MyService extends Service {
 
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothAdapter.LeScanCallback leScanCallback;
+
+    private BluetoothLeScanner bluetoothLeScanner;
+    private ScanCallback scanCallback;
 
     private Handler handler;
 
@@ -39,6 +48,7 @@ public class MyService extends Service {
 
         bluetoothAdapter = bluetoothManager.getAdapter();
 
+        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
 
 
 //        leScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -55,8 +65,6 @@ public class MyService extends Service {
 //
 //
 //
-//                intent.putExtra("device",device.getAddress());
-//                startActivity(intent);
 //
 //
 //            }
@@ -64,8 +72,6 @@ public class MyService extends Service {
 
 
     }
-
-
 
 
     @Override
@@ -80,10 +86,8 @@ public class MyService extends Service {
         return null;
     }
 
-}
 
-
-//    void startForegroundService() {
+    //    void startForegroundService() {
 //        Intent notificationIntent = new Intent(this, GeneralUser.class);
 //        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 //
@@ -110,50 +114,59 @@ public class MyService extends Service {
 //    }
 //
 //
-//    @Nullable
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        return null;
-//    }
-//
-//    @Override
-//    public int onStartCommand(Intent intent, int flags, int startId) {
-//        Log.d("StartCommand", "StartCommand!!!!!!!!!!");
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("StartCommand", "StartCommand!!!!!!!!!!");
 //        startForegroundService();
-//
-//        scanLeDevice(true);
-//
-//        return START_REDELIVER_INTENT;
-//    }
-//
-//    private void scanLeDevice(final boolean enable) {
-//        if (enable) {
-//            // Stops scanning after a pre-defined scan period.
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    hwang = false;
-//                    bluetoothAdapter.stopLeScan(leScanCallback);
-//                    handler.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            scanLeDevice(true);
-//                        }
-//                    }, 60000);
-//                }
-//            }, 1000);
-//
-//            hwang = true;
-//
-//            bluetoothAdapter.startLeScan(leScanCallback);
-//
-//
-//        } else {
-//            hwang = false;
-//            bluetoothAdapter.stopLeScan(leScanCallback);
-//        }
-//    }
 
+        scanLeDevice(true);
+
+        return START_REDELIVER_INTENT;
+    }
+
+    private void scanLeDevice(final boolean enable) {
+        if (enable) {
+            // Stops scanning after a pre-defined scan period.
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hwang = false;
+//                    stopScanning();
+                    bluetoothAdapter.stopLeScan(leScanCallback);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scanLeDevice(true);
+                        }
+                    }, 10000);
+                }
+            }, 1000);
+
+            hwang = true;
+
+            scanCallback = new SampleScanCallback();
+            bluetoothLeScanner.startScan(scanCallback);
+
+//            bluetoothAdapter.startLeScan(leScanCallback);
+
+
+        } else {
+            hwang = false;
+            bluetoothAdapter.stopLeScan(leScanCallback);
+        }
+    }
+
+    public void stopScanning() {
+        Log.d("stopstop scan", "Stopping Scanning");
+
+        // Stop the scan, wipe the callback.
+        bluetoothLeScanner.stopScan(scanCallback);
+        scanCallback = null;
+
+        // Even if no new results, update 'last seen' times.
+    }
+
+}
 
 
 
