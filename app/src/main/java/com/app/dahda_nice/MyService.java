@@ -30,7 +30,6 @@ public class MyService extends Service {
 
 
     private BluetoothAdapter bluetoothAdapter;
-    private BluetoothAdapter.LeScanCallback leScanCallback;
 
     private BluetoothLeScanner bluetoothLeScanner;
     private ScanCallback scanCallback;
@@ -49,26 +48,6 @@ public class MyService extends Service {
         bluetoothAdapter = bluetoothManager.getAdapter();
 
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
-
-
-//        leScanCallback = new BluetoothAdapter.LeScanCallback() {
-//            @Override
-//            public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-//                Intent intent = new Intent(getApplicationContext(),GeneralUser.class);
-//
-//
-//                Log.d("!!!!!!!!!flkwejfklw!","device name: ----> "+ scanRecord.toString());
-//
-//                if (scanRecord.toString().equals("data123")) {
-//                    Log.d("안되겠지만 한번 해본다" , " " + scanRecord.toString());
-//                }
-//
-//
-//
-//
-//
-//            }
-//        };
 
 
     }
@@ -131,8 +110,7 @@ public class MyService extends Service {
                 @Override
                 public void run() {
                     hwang = false;
-//                    stopScanning();
-                    bluetoothAdapter.stopLeScan(leScanCallback);
+                    bluetoothLeScanner.stopScan(scanCallback);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -147,24 +125,13 @@ public class MyService extends Service {
             scanCallback = new SampleScanCallback();
             bluetoothLeScanner.startScan(scanCallback);
 
-//            bluetoothAdapter.startLeScan(leScanCallback);
-
 
         } else {
             hwang = false;
-            bluetoothAdapter.stopLeScan(leScanCallback);
+            bluetoothLeScanner.stopScan(scanCallback);
         }
     }
 
-    public void stopScanning() {
-        Log.d("stopstop scan", "Stopping Scanning");
-
-        // Stop the scan, wipe the callback.
-        bluetoothLeScanner.stopScan(scanCallback);
-        scanCallback = null;
-
-        // Even if no new results, update 'last seen' times.
-    }
 
 }
 
