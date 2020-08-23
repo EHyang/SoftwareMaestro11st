@@ -10,8 +10,10 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,7 +42,7 @@ public class GeneralUser extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private static final int REQUEST_ENABLE_BT = 101;
     private static final int REQUEST_PERMISSION = 102;
-
+    private BroadcastReceiver advertisingFailureReceiver;
 
 
     @Override
@@ -50,8 +52,8 @@ public class GeneralUser extends AppCompatActivity {
 
 
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH) ||
-        !getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(this,"Bluetooth is not supported", Toast.LENGTH_LONG).show();
+                !getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            Toast.makeText(this, "Bluetooth is not supported", Toast.LENGTH_LONG).show();
             finish();
         }
 
@@ -61,11 +63,8 @@ public class GeneralUser extends AppCompatActivity {
         bluetoothAdapter = bluetoothManager.getAdapter();
 
 
-
-
-
-
     }
+
 
 
     @Override
@@ -81,11 +80,15 @@ public class GeneralUser extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        getApplication().unregisterReceiver(advertisingFailureReceiver);
+    }
 
 
     private void requestPermission() {
-        Log.d("2222222","2");
+        Log.d("2222222", "2");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -97,18 +100,20 @@ public class GeneralUser extends AppCompatActivity {
     }
 
 
-
-
     private void scanLeDevice(boolean b) {
+        Intent advertise = new Intent(getApplicationContext(), AdvertiserService.class);
+        startService(advertise);
+
         Intent intent = new Intent(getApplicationContext(), MyService.class);
         if (Build.VERSION.SDK_INT >= 26) {
-            Log.d("26262626y2626 3333","dkjfslkdjf!!");
-            getApplicationContext().startForegroundService(intent);
+            Log.d("26262626y2626 3333", "dkjfslkdjf!!");
+            startForegroundService(intent);
         } else {
-            Log.d("26262626y2626 3333","dkjfslkdjf!!");
+            Log.d("26262626y2626 3333", "dkjfslkdjf!!");
             startService(intent);
         }
     }
+
 
 
     @Override

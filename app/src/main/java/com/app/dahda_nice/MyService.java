@@ -39,97 +39,34 @@ public class MyService extends Service {
 
         bluetoothAdapter = bluetoothManager.getAdapter();
 
-        leScanCallback = new BluetoothAdapter.LeScanCallback() {
-            @Override
-            public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-                Intent intent = new Intent(getApplicationContext(),GeneralUser.class);
-
-                Log.d("!!!!!!!!!flkwejfklw!","device name: ----> "+ device.getAddress());
 
 
-                intent.putExtra("device",device.getAddress());
-                startActivity(intent);
-
-
-            }
-        };
-
-
+//        leScanCallback = new BluetoothAdapter.LeScanCallback() {
+//            @Override
+//            public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+//                Intent intent = new Intent(getApplicationContext(),GeneralUser.class);
+//
+//
+//                Log.d("!!!!!!!!!flkwejfklw!","device name: ----> "+ scanRecord.toString());
+//
+//                if (scanRecord.toString().equals("data123")) {
+//                    Log.d("안되겠지만 한번 해본다" , " " + scanRecord.toString());
+//                }
+//
+//
+//
+//                intent.putExtra("device",device.getAddress());
+//                startActivity(intent);
+//
+//
+//            }
+//        };
 
 
     }
 
 
-    void startForegroundService() {
-        Intent notificationIntent = new Intent(this, GeneralUser.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-
-        NotificationCompat.Builder builder;
-        if (Build.VERSION.SDK_INT >= 26) {
-            String CHANNEL_ID = "hwang service channel";
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    "hwang service channel",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-
-            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-                    .createNotificationChannel(channel);
-
-            builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-        } else {
-            builder = new NotificationCompat.Builder(this);
-        }
-        builder.setSmallIcon(R.mipmap.ic_launcher)
-                .setContent(null)
-                .setContentIntent(pendingIntent);
-
-        startForeground(1, builder.build());
-    }
-
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("StartCommand", "StartCommand!!!!!!!!!!");
-        startForegroundService();
-
-        scanLeDevice(true);
-
-        return START_REDELIVER_INTENT;
-    }
-
-    private void scanLeDevice(final boolean enable) {
-        if (enable) {
-            // Stops scanning after a pre-defined scan period.
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    hwang = false;
-                    bluetoothAdapter.stopLeScan(leScanCallback);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            scanLeDevice(true);
-                        }
-                    }, 60000);
-                }
-            }, 1000);
-
-            hwang = true;
-
-            bluetoothAdapter.startLeScan(leScanCallback);
-
-
-        } else {
-            hwang = false;
-            bluetoothAdapter.stopLeScan(leScanCallback);
-        }
-    }
 
     @Override
     public void onDestroy() {
@@ -137,6 +74,86 @@ public class MyService extends Service {
 
     }
 
-
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
 }
+
+
+//    void startForegroundService() {
+//        Intent notificationIntent = new Intent(this, GeneralUser.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+//
+//
+//        NotificationCompat.Builder builder;
+//        if (Build.VERSION.SDK_INT >= 26) {
+//            String CHANNEL_ID = "hwang service channel";
+//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+//                    "hwang service channel",
+//                    NotificationManager.IMPORTANCE_DEFAULT);
+//
+//            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+//                    .createNotificationChannel(channel);
+//
+//            builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+//        } else {
+//            builder = new NotificationCompat.Builder(this);
+//        }
+//        builder.setSmallIcon(R.mipmap.ic_launcher)
+//                .setContent(null)
+//                .setContentIntent(pendingIntent);
+//
+//        startForeground(1, builder.build());
+//    }
+//
+//
+//    @Nullable
+//    @Override
+//    public IBinder onBind(Intent intent) {
+//        return null;
+//    }
+//
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
+//        Log.d("StartCommand", "StartCommand!!!!!!!!!!");
+//        startForegroundService();
+//
+//        scanLeDevice(true);
+//
+//        return START_REDELIVER_INTENT;
+//    }
+//
+//    private void scanLeDevice(final boolean enable) {
+//        if (enable) {
+//            // Stops scanning after a pre-defined scan period.
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    hwang = false;
+//                    bluetoothAdapter.stopLeScan(leScanCallback);
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            scanLeDevice(true);
+//                        }
+//                    }, 60000);
+//                }
+//            }, 1000);
+//
+//            hwang = true;
+//
+//            bluetoothAdapter.startLeScan(leScanCallback);
+//
+//
+//        } else {
+//            hwang = false;
+//            bluetoothAdapter.stopLeScan(leScanCallback);
+//        }
+//    }
+
+
+
+
