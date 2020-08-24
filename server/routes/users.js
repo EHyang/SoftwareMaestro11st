@@ -15,7 +15,11 @@ const models = require('../models');
 const Sequelize = require('sequelize');
 const { sequelize } = require('../models');
 
+var visited={};
+
 router.get('/', function(req, res, next) {
+  console.log('refreshing user session');
+  console.debug(req.session);
   res.send('respond with a resource');
 });
 
@@ -68,6 +72,27 @@ router.get('/test-send', function(req, res, next){ // 유저 기기 토큰으로
         console.log(error);
     });
   }, 3000);
+})
+
+router.get('/my', async function(req, res, next){ // 자신의 정보 확인
+  console.debug('refreshing user session');
+
+  const t = await sequelize.transaction();
+  
+  try {
+    const user = await models.User.findOne({where:{
+      mac: req.session.mac
+    }, transaction:t});
+    
+    t.commit();
+    if(user){
+      req.session.user=user;
+      res.json(user);
+    }
+  } catch (error) {
+    console.error(error);
+    t.rollback();
+  }
 })
 
 router.post('/login', async function(req, res, next) {  // 로그인 
@@ -251,11 +276,59 @@ router.post('/state', async function(req, res, next){ // 확진자 신고
 
 })
 
+router.post('/drop', async function(req, res, next){
+  console.debug('dropping everything');
+  
+  if(!req.body.key=='secretPassKey'){
+    console.error('not allowed');
+    res.sendStatus(404);
+  }
+  
+  sequelize.drop();
+  res.sendStatus(200);
 })
-      req.session.user=updatedUser;
-      console.debug('update success');
 
-      res.sendStatus(204)
+router.get('/sync', async function(req, res, next){
+  console.info('syncing scan data with server...');
+  res.sendStatus(404);
+})
+
+router.get('/test', async (req,res,next)=>{
+  console.log('testing');
+
+  let users;
+  let vals2='mac2';
+
+  const t = await sequelize.transaction();
+  
+  try {
+
+    users = await models.User.findAll({where:{
+      mac:vals2
+    }}, {transaction: t});
+    
+    console.log(users);
+
+    t.commit();
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    t.rollback();
+  }
+})
+
+router.get('/test2', async(req,res,next)=>{
+  console.debug('TEST2');
+  const t = await sequelize.transaction();
+  try {
+    const user=await models.User.findOne({where:{
+      mac: 'mac2'
+    }}, {transaction:t});
+    // console.debug(user);
+    t.commit();
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
     }
 })
 
