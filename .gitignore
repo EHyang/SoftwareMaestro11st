@@ -3,3 +3,6 @@ node_modules
 etc
 server/config/config.json
 config
+drop_all.sql
+ngrok
+access.log
