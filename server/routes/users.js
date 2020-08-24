@@ -1,16 +1,75 @@
 var express = require('express');
 var router = express.Router();
+var admin = require('firebase-admin');
 // var serviceAccount = require("../../config/nice-dotda-firebase-adminsdk-36j2q-87fd7c2ee6.json");
 var config = require('config');
 var serviceAccount = config.get('firebaseSDK')
 
+console.debug('users router init');
+admin.initializeApp({ // FCM 연동 (테스트)
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://nice-dotda.firebaseio.com"
+});
+
 const models = require('../models');
+const Sequelize = require('sequelize');
+const { sequelize } = require('../models');
 
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.post('/login', async function(req, res, next) {
+router.post('/token', function(req, res, next){ // 유저 기기 토큰 받기
+  if(!req.body.token){
+    console.debug('token not received');
+    res.sendStatus(400);
+    return;
+  }
+  console.debug('received token');
+  console.debug(req.body);
+  req.session.token=req.body.token; // 토큰 세션에 저장
+  res.sendStatus(200);
+})
+
+router.get('/test-send', function(req, res, next){ // 유저 기기 토큰으로 알림 보내기(테스트)
+  console.debug('testing-send');
+  if(!req.session.token) {
+    console.debug('no token.');
+    res.sendStatus(400);
+    return;
+  }
+  const registrationToken = req.session.token;  // 세션에서 토큰 가져오기
+  console.debug(registrationToken);
+
+  const message_notification = {  // 알림 데이터 생성
+    notification: {
+       title: '확진자 접촉 알림',
+       body: '당신은 3차 확진자와 접촉하셨습니다'
+           }
+    };
+    
+  setTimeout(()=>{
+    const notification_options = {
+      priority: "high",
+      timeToLive: 60 * 60 * 24
+    };
+  
+    const options =  notification_options
+    console.debug('send message!');
+    admin.messaging().sendToDevice(registrationToken
+      , message_notification
+      , options)  // FCM으로 알림 보내기
+    .then(response => {
+
+      res.status(200).send("Notification sent successfully")
+     
+    })
+    .catch( error => {
+        console.log(error);
+    });
+  }, 3000);
+})
+
   console.debug('login');
   if(!req.body.google_id){
     console.error('google id is null');
