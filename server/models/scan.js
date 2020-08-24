@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
     underscored: true,
     indexes: [
       {unique:false,
-      fields:['my_mac']}
+      fields:['my_mac', 'scan_mac']}
     ],
 
     tableName: 'scan'
