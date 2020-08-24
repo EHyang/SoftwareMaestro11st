@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,18 +52,16 @@ public class LoginActivity extends AppCompatActivity {
 
     String google_id;
 
-    private WifiInfo wifiInfo;
 
-    private String my_mac;
+    private String token;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Log.d("LoginActivityonCreate!!", " 뭘까아아아아?");
 
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        wifiInfo = wifiManager.getConnectionInfo();
-        my_mac = getMACAddress("wlan0");
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -71,15 +72,16 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
+
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
         buttonGoogle = findViewById(R.id.buttonGoogle);
-
         buttonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent signInIntent = googleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
+                Log.d("googlebuttonClick!!", "" + " 뭘까아아아아?");
 
 
             }
@@ -90,12 +92,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (requestCode == RC_SIGN_IN) {
+
+
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            Log.d("requestCode", task.toString());
 
             try {
-
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+
+                Log.d("emailID!!", account.getEmail());
                 google_id = account.getEmail();
                 firebaseAuthWithGoogle(account);
 
@@ -103,41 +110,29 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+
         }
 
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("isSuccessful!!", "gogogo!!" + task.getException());
+                            return;
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://3.34.117.4:3000")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
+                        }
+                        token = task.getResult().getToken();
 
-        Api api = retrofit.create(Api.class);
+                        RetrofitLogin(token);
 
-        LoginData loginData = new LoginData(google_id, my_mac);
 
-        api.postData(loginData).enqueue(new Callback<LoginDao>() {
-            @Override
-            public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
-                LoginDao data = response.body();
-                if (response.isSuccessful()) {
-                    Log.d("data 성공!!!!!!!!!", data.getRes() + " //// " + data.getState());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<LoginDao> call, Throwable t) {
-                Log.d("TEST 실패 ? : ", " 실패 실패");
-                Log.d("why? ", t.toString());
-            }
-        });
+                    }
+                });
 
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
@@ -146,6 +141,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+
                             Intent intent = new Intent(getApplicationContext(), JoinSuc.class);
                             startActivity(intent);
                         } else {
@@ -159,25 +156,40 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void RetrofitLogin(String t) {
 
-    private String getMACAddress(String interfaceName) {
-        try {
-            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-            for (NetworkInterface intf : interfaces) {
-                if (interfaceName != null) {
-                    if (!intf.getName().equalsIgnoreCase(interfaceName)) continue;
+        Log.d("token!!!!!!", t);
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://3.34.117.4:3000")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        Api api = retrofit.create(Api.class);
+
+
+        LoginData loginData = new LoginData(google_id, t);
+
+        api.postData(loginData).enqueue(new Callback<LoginDao>() {
+            @Override
+            public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
+                LoginDao data = response.body();
+
+                if (response.isSuccessful()) {
+                    Log.d("data 성공!!!!!!!!!", data.getRes() + " //// ");
                 }
-                byte[] mac = intf.getHardwareAddress();
-                if (mac == null) return "";
-                StringBuilder buf = new StringBuilder();
-                for (int idx = 0; idx < mac.length; idx++)
-                    buf.append(String.format("%02X:", mac[idx]));
-                if (buf.length() > 0) buf.deleteCharAt(buf.length() - 1);
-                return buf.toString();
-            }
-        } catch (Exception ex) {
-        }
 
-        return "";
+            }
+
+            @Override
+            public void onFailure(Call<LoginDao> call, Throwable t) {
+                Log.d("TEST 실패 ? : ", " 실패 실패");
+                Log.d("why? ", t.toString());
+            }
+        });
     }
+
 }

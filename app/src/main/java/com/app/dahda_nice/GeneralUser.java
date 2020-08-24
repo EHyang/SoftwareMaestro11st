@@ -5,11 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +26,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -45,6 +55,9 @@ public class GeneralUser extends AppCompatActivity {
     private BroadcastReceiver advertisingFailureReceiver;
 
 
+
+
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +75,10 @@ public class GeneralUser extends AppCompatActivity {
 
         bluetoothAdapter = bluetoothManager.getAdapter();
 
-
+        
+        
+        
+        
     }
 
 
@@ -101,13 +117,16 @@ public class GeneralUser extends AppCompatActivity {
 
 
     private void scanLeDevice(boolean b) {
+
+
         Intent advertise = new Intent(getApplicationContext(), AdvertiserService.class);
         startService(advertise);
 
         Intent intent = new Intent(getApplicationContext(), MyService.class);
+
         if (Build.VERSION.SDK_INT >= 26) {
             Log.d("26262626y2626 3333", "dkjfslkdjf!!");
-            startForegroundService(intent);
+            getApplicationContext().startForegroundService(intent);
         } else {
             Log.d("26262626y2626 3333", "dkjfslkdjf!!");
             startService(intent);
@@ -133,4 +152,13 @@ public class GeneralUser extends AppCompatActivity {
             scanLeDevice(true);
         }
     }
+
+
+
+
+
+
+
+
+
 }

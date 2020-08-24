@@ -22,6 +22,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
+import java.util.ArrayList;
 
 
 public class MyService extends Service {
@@ -66,37 +69,37 @@ public class MyService extends Service {
     }
 
 
-    //    void startForegroundService() {
-//        Intent notificationIntent = new Intent(this, GeneralUser.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-//
-//
-//        NotificationCompat.Builder builder;
-//        if (Build.VERSION.SDK_INT >= 26) {
-//            String CHANNEL_ID = "hwang service channel";
-//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-//                    "hwang service channel",
-//                    NotificationManager.IMPORTANCE_DEFAULT);
-//
-//            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
-//                    .createNotificationChannel(channel);
-//
-//            builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-//        } else {
-//            builder = new NotificationCompat.Builder(this);
-//        }
-//        builder.setSmallIcon(R.mipmap.ic_launcher)
-//                .setContent(null)
-//                .setContentIntent(pendingIntent);
-//
-//        startForeground(1, builder.build());
-//    }
-//
-//
+    void startForegroundService() {
+        Intent notificationIntent = new Intent(this, GeneralUser.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+
+        NotificationCompat.Builder builder;
+        if (Build.VERSION.SDK_INT >= 26) {
+            String CHANNEL_ID = "hwang service channel";
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                    "hwang service channel",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
+                    .createNotificationChannel(channel);
+
+            builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        } else {
+            builder = new NotificationCompat.Builder(this);
+        }
+        builder.setSmallIcon(R.mipmap.ic_launcher)
+                .setContent(null)
+                .setContentIntent(pendingIntent);
+
+        startForeground(1, builder.build());
+    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("StartCommand", "StartCommand!!!!!!!!!!");
-//        startForegroundService();
+        startForegroundService();
 
         scanLeDevice(true);
 
@@ -104,6 +107,7 @@ public class MyService extends Service {
     }
 
     private void scanLeDevice(final boolean enable) {
+        Log.d("스캔하고 있니 진짜로??!!!?","엄 화나네");
         if (enable) {
             // Stops scanning after a pre-defined scan period.
             handler.postDelayed(new Runnable() {
@@ -118,13 +122,18 @@ public class MyService extends Service {
                         }
                     }, 10000);
                 }
-            }, 1000);
+            }, 3000);
 
             hwang = true;
 
-            scanCallback = new SampleScanCallback();
-            bluetoothLeScanner.startScan(scanCallback);
+            ScanSettings.Builder settingsBuilder = new ScanSettings.Builder();
+            settingsBuilder.setScanMode(ScanSettings.SCAN_MODE_LOW_POWER);
+            ScanSettings scanSettings = settingsBuilder.build();
 
+
+            scanCallback = new SampleScanCallback();
+            bluetoothLeScanner.startScan(new ArrayList<ScanFilter>(), scanSettings, scanCallback);
+            Log.d("hwanghwang!!","fjfj");
 
         } else {
             hwang = false;

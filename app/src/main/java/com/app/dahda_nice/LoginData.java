@@ -9,13 +9,12 @@ public class LoginData {
     private String google_id;
 
     @Expose
-    @SerializedName("my_mac")
-    private String my_mac;
+    @SerializedName("token")
+    private String token;
 
-
-    public LoginData(String google_id, String my_mac) {
+    public LoginData(String google_id, String token) {
         this.google_id = google_id;
-        this.my_mac = my_mac;
+        this.token = token;
     }
 
     public String getGoogle_id() {
@@ -26,11 +25,11 @@ public class LoginData {
         this.google_id = google_id;
     }
 
-    public String getMy_mac() {
-        return my_mac;
+    public String getToken() {
+        return token;
     }
 
-    public void setMy_mac(String my_mac) {
-        this.my_mac = my_mac;
+    public void setToken(String token) {
+        this.token = token;
     }
 }
