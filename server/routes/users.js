@@ -81,7 +81,7 @@ router.get('/my', async function(req, res, next){ // 자신의 정보 확인
   
   try {
     const user = await models.User.findOne({where:{
-      mac: req.session.mac
+      token: req.session.token
     }, transaction:t});
     
     t.commit();
@@ -106,12 +106,12 @@ router.post('/login', async function(req, res, next) {  // 로그인
   try {
     const preUser = await models.User.findOne({
       where:{
-        mac: req.body.mac
+        token: req.body.token
       }, transaction:t
     })
   
     if(preUser){  // 이미 유저 모델이 있는 경우
-      console.info('mac already exists. checking whether this is a new user');
+      console.info('token already exists. checking whether this is a new user');
       if(!preUser.google_id){
         console.info('this is a new user');
         await preUser.update({
@@ -121,7 +121,7 @@ router.post('/login', async function(req, res, next) {  // 로그인
         // TODO: refactor
         // warning: functional duplicate with below!
         req.session.user=preUser;
-        req.session.mac=preUser.mac;
+        req.session.token=preUser.token;
 
         console.log(`user login success!`);
 
@@ -141,7 +141,7 @@ router.post('/login', async function(req, res, next) {  // 로그인
    
     models.User
     .findOrCreate({where: {google_id: req.body.google_id, //유저 검색 또는 생성
-    mac: req.body.mac}, transaction:t})
+    token: req.body.token}, transaction:t})
     .then(([user, created]) => {
       console.log(user.get({
         plain: true
@@ -152,7 +152,7 @@ router.post('/login', async function(req, res, next) {  // 로그인
   
       // warning: functional duplicate with above!
       req.session.user=user;
-      req.session.mac=user.mac;
+      req.session.token=user.token;
   
       console.log(`user login success!`);
       t.commit();
@@ -169,19 +169,19 @@ router.post('/login', async function(req, res, next) {  // 로그인
   }
 })
 
-async function propagateContact(sourceMac, state, level=0, transaction){  // 접촉 전파
-  if(visited[sourceMac]){
+async function propagateContact(sourcetoken, state, level=0, transaction){  // 접촉 전파
+  if(visited[sourcetoken]){
     console.info('already visited: ');
     return;
   }
-  console.debug(`propagating contacts from ${sourceMac}`);
-  visited[sourceMac]=1;
+  console.debug(`propagating contacts from ${sourcetoken}`);
+  visited[sourcetoken]=1;
   let contacts;
 
   try {
-    // console.debug(`source mac:::: ${sourceMac}`);
+    // console.debug(`source token:::: ${sourcetoken}`);
     contacts = await models.Scan.findAll({where:{
-      my_mac:sourceMac
+      my_token:sourcetoken
     }, transaction:transaction});
     
     if(!contacts){
@@ -190,23 +190,23 @@ async function propagateContact(sourceMac, state, level=0, transaction){  // 접
 
     for (var i=0;i<contacts.length;i++) {
       const contact=contacts[i];
-      console.debug('scan mac::::');
+      console.debug('scan token::::');
       
       const user=await models.User.findOne({where:{
-        mac: contact.scan_mac
+        token: contact.scan_token
       }, transaction:transaction});
 
       if(user){
         console.debug('user found : ', user);
 
-        console.debug('CONTACTUSER of scan_mac: ' + contact.scan_mac);
+        console.debug('CONTACTUSER of scan_token: ' + contact.scan_token);
         const updatedUser = await user.update({
           state:1
         }, {transaction:transaction});
   
         if(updatedUser){
           console.debug('User updated!!!');
-          propagateContact(updatedUser.mac, state, level+1);
+          propagateContact(updatedUser.token, state, level+1);
         }
 
       } else {
@@ -233,7 +233,7 @@ async function propagateContact(sourceMac, state, level=0, transaction){  // 접
 router.post('/state', async function(req, res, next){ // 확진자 신고
   console.debug('marking you as infected');
   
-  if(!req.body.key=='secretPassKey'){
+  if(!req.body.token=='secretPasstoken'){
     console.error('not allowed');
     res.sendStatus(404);
   }
@@ -243,8 +243,8 @@ router.post('/state', async function(req, res, next){ // 확진자 신고
   try {
     targetUser = await models.User
       .findOne({ where: {
-        // mac: req.body.mac
-        mac: req.body.target_mac
+        // token: req.body.token
+        token: req.body.target_token
       }, transaction:t})
     console.debug(`targetUser: ${targetUser}`);
     if(targetUser){
@@ -259,7 +259,7 @@ router.post('/state', async function(req, res, next){ // 확진자 신고
       
       visited={};
       if(req.body.target_state==2){
-        await propagateContact(req.body.target_mac, req.body.target_state, 1, t);
+        await propagateContact(req.body.target_token, req.body.target_state, 1, t);
       }
 
       t.commit();
@@ -279,7 +279,7 @@ router.post('/state', async function(req, res, next){ // 확진자 신고
 router.post('/drop', async function(req, res, next){
   console.debug('dropping everything');
   
-  if(!req.body.key=='secretPassKey'){
+  if(!req.body.token=='secretPasstoken'){
     console.error('not allowed');
     res.sendStatus(404);
   }
@@ -297,16 +297,16 @@ router.get('/test', async (req,res,next)=>{
   console.log('testing');
 
   let users;
-  let vals2='mac2';
+  let vals2='token2';
 
   const t = await sequelize.transaction();
   
   try {
 
     users = await models.User.findAll({where:{
-      mac:vals2
+      token:vals2
     }}, {transaction: t});
-    
+
     console.log(users);
 
     t.commit();
@@ -322,7 +322,7 @@ router.get('/test2', async(req,res,next)=>{
   const t = await sequelize.transaction();
   try {
     const user=await models.User.findOne({where:{
-      mac: 'mac2'
+      token: 'token2'
     }}, {transaction:t});
     // console.debug(user);
     t.commit();

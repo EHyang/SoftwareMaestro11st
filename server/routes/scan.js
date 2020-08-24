@@ -12,8 +12,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/', async function(req, res, next) {
   console.log(req.session);
-  console.log(req.session.user.mac);
-  if(!req.session.user.mac){
+  console.log(req.session.user.token);
+  if(!req.session.user.token){
     console.debug('please login first');
     res.redirect('/users/login');
     return;
@@ -22,8 +22,8 @@ router.post('/', async function(req, res, next) {
   const created = await models.Scan
     .findOrCreate({
       where: {
-        my_mac:req.session.user.mac,
-        scan_mac:req.body.scan_mac,
+        my_token:req.session.user.token,
+        scan_token:req.body.scan_token,
       }
     })
 
@@ -32,7 +32,7 @@ router.post('/', async function(req, res, next) {
 
 router.post('/bulk', async function(req, res, next){  // 스캔 정보 전송
   console.debug('bulk creation started');
-  if(!req.session.user.mac){
+  if(!req.session.user.token){
     console.error('creation fail. please login first');
     res.sendStatus('400');
     return;
@@ -42,7 +42,7 @@ router.post('/bulk', async function(req, res, next){  // 스캔 정보 전송
   console.debug(req.body);
 
   req.body.scans.forEach(scan => {
-    scan.my_mac=req.session.user.mac
+    scan.my_token=req.session.user.token
   });
   
   console.debug('request scan data:');
@@ -61,7 +61,7 @@ router.post('/bulk', async function(req, res, next){  // 스캔 정보 전송
       await Promise.all(createdScans.map(async (scan) => {  // 스캔 접촉 비동기 동시 실행
         console.debug(`scan: ${scan}`)
         const user = await models.User.findOrCreate({where: {
-          mac: scan.scan_mac
+          token: scan.scan_token
         }, transaction:t});
         console.debug(`user: ${user}`);
       }))

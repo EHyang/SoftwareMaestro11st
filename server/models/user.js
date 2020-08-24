@@ -3,7 +3,7 @@ const { Sequelize } = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
   const user = sequelize.define('User', {
     google_id: { field: 'google_id', type: DataTypes.STRING(50), unique: true, allowNull: true },
-    mac: { field: 'mac', type: DataTypes.STRING(50), allowNull: false },
+    token: { field: 'token', type: DataTypes.STRING(50), allowNull: false },
     lastest_use: { field: 'lastest_use', type: DataTypes.DATE , allowNull:false, defaultValue: Sequelize.NOW },
     state: { field: 'state', type: DataTypes.INTEGER, allowNull: false, defaultValue:0 }
   }, {
@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
 
     indexes: [
       {unique:true,
-      fields:['mac']}
+      fields:['token']}
     ],
     // disable the modification of tablenames; By default, sequelize will automatically
     // transform all passed model names (first parameter of define) into plural.
