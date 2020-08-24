@@ -101,21 +101,21 @@ router.post('/login', async function(req, res, next) {  // 로그인
     console.error('google id is null');
     res.sendStatus(400);
   }
-
+  
   const t = await sequelize.transaction();
   try {
-  const preUser = await models.User.findOne({
-    where:{
-      mac: req.body.mac
+    const preUser = await models.User.findOne({
+      where:{
+        mac: req.body.mac
       }, transaction:t
-  })
-
+    })
+  
     if(preUser){  // 이미 유저 모델이 있는 경우
-    console.info('mac already exists. checking whether this is a new user');
-    if(!preUser.google_id){
-      console.info('this is a new user');
-      await preUser.update({
-        google_id: req.body.google_id
+      console.info('mac already exists. checking whether this is a new user');
+      if(!preUser.google_id){
+        console.info('this is a new user');
+        await preUser.update({
+          google_id: req.body.google_id
         }, {transaction:t})
 
         // TODO: refactor
@@ -127,39 +127,39 @@ router.post('/login', async function(req, res, next) {  // 로그인
 
         console.debug('we now need to check if this new user has already contact');
         
-      if(!preUser.google_id){
-        console.error('what?? this is no way.')
-      }
+        if(!preUser.google_id){
+          console.error('what?? this is no way.')
+        }
         t.commit();
-      res.sendStatus(200);
-      // TODO: check that user model is fully configured 
+        res.sendStatus(200);
+        // TODO: check that user model is fully configured 
         return;
-    } else {
+      } else {
         console.debug('google id is also exists. inserting as a new record');
+      }
     }
-  }
- 
-  models.User
+   
+    models.User
     .findOrCreate({where: {google_id: req.body.google_id, //유저 검색 또는 생성
     mac: req.body.mac}, transaction:t})
-  .then(([user, created]) => {
-    console.log(user.get({
-      plain: true
-    }))
-    if(created==false){
-      // user already exists. doesn't matter.
-    }
-
+    .then(([user, created]) => {
+      console.log(user.get({
+        plain: true
+      }))
+      if(created==false){
+        // user already exists. doesn't matter.
+      }
+  
       // warning: functional duplicate with above!
-    req.session.user=user;
+      req.session.user=user;
       req.session.mac=user.mac;
-
+  
       console.log(`user login success!`);
       t.commit();
-    res.sendStatus(200);
-  }).catch(function(error){
-    
-    console.error(error);
+      res.sendStatus(200);
+    }).catch(function(error){
+      
+      console.error(error);
       throw Error(error);
     })
   } catch (error) {
@@ -167,7 +167,7 @@ router.post('/login', async function(req, res, next) {  // 로그인
     t.rollback();
     res.sendStatus(400);
   }
-  })
+})
 
 async function propagateContact(sourceMac, state, level=0, transaction){  // 접촉 전파
   if(visited[sourceMac]){
@@ -242,15 +242,15 @@ router.post('/state', async function(req, res, next){ // 확진자 신고
   let targetUser;
   try {
     targetUser = await models.User
-    .findOne({ where: {
-      // mac: req.body.mac
+      .findOne({ where: {
+        // mac: req.body.mac
         mac: req.body.target_mac
       }, transaction:t})
     console.debug(`targetUser: ${targetUser}`);
     if(targetUser){
       console.debug('found target infected user:');
       // console.debug(targetUser);
-    
+
       const updatedUser = await targetUser.update({
         state: req.body.target_state
       }, {transaction:t})
@@ -329,7 +329,7 @@ router.get('/test2', async(req,res,next)=>{
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
-    }
+  }
 })
 
 module.exports = router;
