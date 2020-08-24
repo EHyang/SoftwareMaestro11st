@@ -70,39 +70,53 @@ router.get('/test-send', function(req, res, next){ // 유저 기기 토큰으로
   }, 3000);
 })
 
+router.post('/login', async function(req, res, next) {  // 로그인 
   console.debug('login');
   if(!req.body.google_id){
     console.error('google id is null');
     res.sendStatus(400);
   }
 
+  const t = await sequelize.transaction();
+  try {
   const preUser = await models.User.findOne({
     where:{
       mac: req.body.mac
-    }
+      }, transaction:t
   })
 
-  if(preUser){
+    if(preUser){  // 이미 유저 모델이 있는 경우
     console.info('mac already exists. checking whether this is a new user');
     if(!preUser.google_id){
       console.info('this is a new user');
       await preUser.update({
         google_id: req.body.google_id
-      })
+        }, {transaction:t})
 
+        // TODO: refactor
+        // warning: functional duplicate with below!
+        req.session.user=preUser;
+        req.session.mac=preUser.mac;
+
+        console.log(`user login success!`);
+
+        console.debug('we now need to check if this new user has already contact');
+        
       if(!preUser.google_id){
         console.error('what?? this is no way.')
       }
+        t.commit();
       res.sendStatus(200);
       // TODO: check that user model is fully configured 
+        return;
     } else {
-      console.debug('google id is also exists. inserting new record');
+        console.debug('google id is also exists. inserting as a new record');
     }
   }
  
   models.User
-  .findOrCreate({where: {google_id: req.body.google_id,
-  mac: req.body.mac}})
+    .findOrCreate({where: {google_id: req.body.google_id, //유저 검색 또는 생성
+    mac: req.body.mac}, transaction:t})
   .then(([user, created]) => {
     console.log(user.get({
       plain: true
@@ -111,16 +125,85 @@ router.get('/test-send', function(req, res, next){ // 유저 기기 토큰으로
       // user already exists. doesn't matter.
     }
 
+      // warning: functional duplicate with above!
     req.session.user=user;
+      req.session.mac=user.mac;
 
-    console.log(created);
+      console.log(`user login success!`);
+      t.commit();
     res.sendStatus(200);
   }).catch(function(error){
     
     console.error(error);
+      throw Error(error);
+    })
+  } catch (error) {
+    console.error(error);
+    t.rollback();
     res.sendStatus(400);
+  }
   })
-})
+
+async function propagateContact(sourceMac, state, level=0, transaction){  // 접촉 전파
+  if(visited[sourceMac]){
+    console.info('already visited: ');
+    return;
+  }
+  console.debug(`propagating contacts from ${sourceMac}`);
+  visited[sourceMac]=1;
+  let contacts;
+
+  try {
+    // console.debug(`source mac:::: ${sourceMac}`);
+    contacts = await models.Scan.findAll({where:{
+      my_mac:sourceMac
+    }, transaction:transaction});
+    
+    if(!contacts){
+      console.error('something happened. contacts is null!!');
+    }
+
+    for (var i=0;i<contacts.length;i++) {
+      const contact=contacts[i];
+      console.debug('scan mac::::');
+      
+      const user=await models.User.findOne({where:{
+        mac: contact.scan_mac
+      }, transaction:transaction});
+
+      if(user){
+        console.debug('user found : ', user);
+
+        console.debug('CONTACTUSER of scan_mac: ' + contact.scan_mac);
+        const updatedUser = await user.update({
+          state:1
+        }, {transaction:transaction});
+  
+        if(updatedUser){
+          console.debug('User updated!!!');
+          propagateContact(updatedUser.mac, state, level+1);
+        }
+
+      } else {
+        console.debug('user not found.');
+      }
+    
+      // await t.commit();
+    // } catch (error) {
+    //   console.error(error);
+    //   await t.rollback();
+    // }
+    }
+    
+  } catch (error) {
+    console.error(error);
+    await transaction.rollback();
+  }
+  // contacts.forEach(async (element) => {
+  // });
+  
+  console.debug(`found ${contacts.length} contacts`);
+}
 
 router.post('/state', async function(req, res, next){ // 확진자 신고
   console.debug('marking you as infected');
