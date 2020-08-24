@@ -13,7 +13,7 @@ var scanRouter = require('./routes/scan');
 var sessionRouter = require('./routes/session');
 
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/config/config.json')[env];
+const config = require('config');
 
 var app = express();
 

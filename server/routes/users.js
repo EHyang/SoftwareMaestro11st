@@ -1,5 +1,9 @@
 var express = require('express');
 var router = express.Router();
+// var serviceAccount = require("../../config/nice-dotda-firebase-adminsdk-36j2q-87fd7c2ee6.json");
+var config = require('config');
+var serviceAccount = config.get('firebaseSDK')
+
 const models = require('../models');
 
 router.get('/', function(req, res, next) {
