@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "watch": "nodemon --watch . --exec 'node ./bin/www'"
+    "watch": "nodemon --watch . --exec 'node ./bin/www'",
+    "test": "mocha"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -21,5 +22,9 @@
     "nodemon": "^2.0.4",
     "pug": "2.0.0-beta11",
     "sequelize": "^6.3.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.1.1"
   }
 }
