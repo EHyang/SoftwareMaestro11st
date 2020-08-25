@@ -66,9 +66,12 @@ public class SampleScanCallback extends ScanCallback {
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String getTime = simpleDate.format(mDate);
 
+        String key = MyService.mykey;
 
+        Log.d("!!!!!!Key!!!",key);
         ArrayList<ScanData> scanData = new ArrayList<>();
-        scanData.add(new ScanData(data, getTime));
+
+        scanData.add(new ScanData(key,data, getTime));
 
         api.scanData(scanData).enqueue(new Callback<LoginDao>() {
             @Override
@@ -96,5 +99,7 @@ public class SampleScanCallback extends ScanCallback {
 
         Log.e("SCANFAIL", ""+errorCode);
     }
+
+
 
 }

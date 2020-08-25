@@ -39,6 +39,8 @@ public class MyService extends Service {
 
     private Handler handler;
 
+    public static String mykey;
+
     @Override
     public void onCreate() {
         Log.d("Service 333!! Create", " Service Create");
@@ -100,6 +102,8 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("StartCommand", "StartCommand!!!!!!!!!!");
         startForegroundService();
+
+        mykey = intent.getStringExtra("mykey");
 
         scanLeDevice(true);
 

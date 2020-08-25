@@ -116,14 +116,16 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
+                        if (task.isSuccessful()) {
+                            Log.d("로그인 성공!!!!", "구글 로그인 성공");
+                            token = task.getResult().getToken();
+                            RetrofitLogin(token);
+
+                        } else {
                             Log.w("isSuccessful!!", "gogogo!!" + task.getException());
                             return;
-
                         }
-                        token = task.getResult().getToken();
 
-                        RetrofitLogin(token);
 
 
                     }
@@ -152,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
     public void RetrofitLogin(String t) {
 
         Log.d("token!!!!!!", t);
+
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -171,9 +174,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
                 LoginDao data = response.body();
 
-                Log.d("keykeykey!!",data.getRes());
+                Log.d("keykeykey!!", data.getRes());
 
                 if (response.isSuccessful()) {
+                    Log.d("Data 성공!!", "///" + data.getRes());
                     String mykey = data.getRes();
                     kk = data.getRes();
 
@@ -181,8 +185,6 @@ public class LoginActivity extends AppCompatActivity {
                     Intent mykey2 = new Intent(getApplicationContext(), JoinSuc.class);
                     mykey2.putExtra("mykey", mykey);
                     startActivity(mykey2);
-
-
 
 
                 }

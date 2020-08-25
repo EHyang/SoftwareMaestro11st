@@ -56,11 +56,12 @@ public class gogogo extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             Log.d("성공인가요?!!?!", data.getRes());
                         }
+
                     }
 
                     @Override
                     public void onFailure(Call<LoginDao> call, Throwable t) {
-                        Log.d("TEST 실패 ? : ", " 실패 실패");
+                        Log.d("확진요TEST 실패 ? : ", " 실패 실패");
                         Log.d("why? ", t.toString());
                     }
                 });

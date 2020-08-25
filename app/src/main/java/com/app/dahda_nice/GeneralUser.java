@@ -120,7 +120,7 @@ public class GeneralUser extends AppCompatActivity {
         startService(advertise);
 
         Intent intent = new Intent(getApplicationContext(), MyService.class);
-
+        intent.putExtra("mykey",mykey);
         if (Build.VERSION.SDK_INT >= 26) {
             Log.d("26262626y2626 3333", "dkjfslkdjf!!");
             getApplicationContext().startForegroundService(intent);
