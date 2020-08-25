@@ -3,7 +3,9 @@ var router = express.Router();
 var admin = require('firebase-admin');
 // var serviceAccount = require("../../config/nice-dotda-firebase-adminsdk-36j2q-87fd7c2ee6.json");
 var config = require('config');
-var serviceAccount = config.get('firebaseSDK')
+var serviceAccount = config.get('firebaseSDK');
+var { encryptStringWithRsaPublicKey } = require('../util');
+var jwt = require('jsonwebtoken');
 
 console.debug('users router init');
 admin.initializeApp({ // FCM 연동 (테스트)
@@ -101,12 +103,20 @@ router.post('/login', async function(req, res, next) {  // 로그인
     console.error('google id is null');
     res.sendStatus(400);
   }
+
+  if(!req.body.token){
+    console.error('user token is null');
+    res.sendStatus(400);
+  }
+
+  //TODO: Use proper scan_id!!
+  req.body.scan_id=req.body.google_id;
   
   const t = await sequelize.transaction();
   try {
     const preUser = await models.User.findOne({
       where:{
-        token: req.body.token
+        scan_id: req.body.scan_id
       }, transaction:t
     })
   
@@ -116,7 +126,8 @@ router.post('/login', async function(req, res, next) {  // 로그인
         console.info('this is a new user');
         await preUser.update({
           google_id: req.body.google_id,
-          scan_id: 'tmpscanid1112323'
+          token: req.body.token,
+          scan_id: req.body.google_id
         }, {transaction:t})
 
         // TODO: refactor
@@ -133,7 +144,8 @@ router.post('/login', async function(req, res, next) {  // 로그인
         }
         t.commit();
         // res.sendStatus(200);
-        res.json({res: 'thisisyourkeyyeah'});
+        // res.cookie("user", jwtToken)
+        res.json({res: preUser.scan_id});
         // TODO: check that user model is fully configured 
         return;
       } else {
@@ -142,8 +154,10 @@ router.post('/login', async function(req, res, next) {  // 로그인
     }
    
     models.User
-    .findOrCreate({where: {google_id: req.body.google_id, //유저 검색 또는 생성
-    token: req.body.token, scan_id: 'testscanid'}, transaction:t})
+    .findOrCreate({where: {
+      google_id: req.body.google_id, //유저 검색 또는 생성
+      token: req.body.token, 
+      scan_id: req.body.google_id}, transaction:t})
     .then(([user, created]) => {
       console.log(user.get({
         plain: true
@@ -172,19 +186,19 @@ router.post('/login', async function(req, res, next) {  // 로그인
   }
 })
 
-async function propagateContact(sourcetoken, state, level=0, transaction){  // 접촉 전파
-  if(visited[sourcetoken]){
+async function propagateContact(sourceID, state, level=0, transaction){  // 접촉 전파
+  if(visited[sourceID]){
     console.info('already visited: ');
     return;
   }
-  console.debug(`propagating contacts from ${sourcetoken}`);
-  visited[sourcetoken]=1;
+  console.debug(`propagating contacts from ${sourceID}`);
+  visited[sourceID]=1;
   let contacts;
 
   try {
-    // console.debug(`source token:::: ${sourcetoken}`);
+    // console.debug(`source token:::: ${sourceID}`);
     contacts = await models.Scan.findAll({where:{
-      my_token:sourcetoken
+      my_id:sourceID
     }, transaction:transaction});
     
     if(!contacts){
@@ -196,7 +210,7 @@ async function propagateContact(sourcetoken, state, level=0, transaction){  // �
       console.debug('scan token::::');
       
       const user=await models.User.findOne({where:{
-        token: contact.scan_token
+        scan_id: contact.scan_id
       }, transaction:transaction});
 
       if(user){
@@ -209,7 +223,7 @@ async function propagateContact(sourcetoken, state, level=0, transaction){  // �
   
         if(updatedUser){
           console.debug('User updated!!!');
-          propagateContact(updatedUser.token, state, level+1);
+          propagateContact(updatedUser.scan_id, state, level+1);
         }
 
       } else {
@@ -236,9 +250,10 @@ async function propagateContact(sourcetoken, state, level=0, transaction){  // �
 router.post('/state', async function(req, res, next){ // 확진자 신고
   console.debug('marking you as infected');
   
-  if(!req.body.token=='secretPasstoken'){
+  if(!req.body.key=='secretPasstoken'){
     console.error('not allowed');
     res.sendStatus(404);
+    return;
   }
 
   let t = await sequelize.transaction();
@@ -247,7 +262,7 @@ router.post('/state', async function(req, res, next){ // 확진자 신고
     targetUser = await models.User
       .findOne({ where: {
         // token: req.body.token
-        token: req.body.target_token
+        scan_id: req.body.target_scan_id
       }, transaction:t})
     console.debug(`targetUser: ${targetUser}`);
     if(targetUser){
@@ -262,7 +277,7 @@ router.post('/state', async function(req, res, next){ // 확진자 신고
       
       visited={};
       if(req.body.target_state==2){
-        await propagateContact(req.body.target_token, req.body.target_state, 1, t);
+        await propagateContact(targetUser.scan_id, req.body.target_state, 1, t);
       }
 
       t.commit();

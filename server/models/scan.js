@@ -2,14 +2,14 @@ const { Sequelize } = require("sequelize");
 
 module.exports = function (sequelize, DataTypes) {
   const scan = sequelize.define('Scan', {
-    my_token: { field: 'my_token', type: DataTypes.STRING(50), allowNull: false, primarytoken:false },
-    scan_token: { field: 'scan_token', type: DataTypes.STRING(50), allowNull: false },
+    my_id: { field: 'my_id', type: DataTypes.STRING(50), allowNull: false, primary:false },
+    scan_id: { field: 'scan_id', type: DataTypes.STRING(50), allowNull: false },
     scan_time: { field: 'scan_time', type: DataTypes.DATE, allowNull: false, defaultValue: Sequelize.NOW },
   }, {
     underscored: true,
     indexes: [
       {unique:false,
-      fields:['my_token', 'scan_token']}
+      fields:['my_id', 'scan_id']}
     ],
 
     tableName: 'scan'

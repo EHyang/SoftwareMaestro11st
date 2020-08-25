@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+const config = require('config');
+// const jwt = require('jsonwebtoken');
 const models = require('../models');
 const { sequelize } = require('../models');
 
@@ -22,8 +24,8 @@ router.post('/', async function(req, res, next) {
   const created = await models.Scan
     .findOrCreate({
       where: {
-        my_token:req.session.user.token,
-        scan_token:req.body.scan_token,
+        my_id:req.session.user.scan_id,
+        scan_id:req.body.scan_id,
       }
     })
 
@@ -32,7 +34,18 @@ router.post('/', async function(req, res, next) {
 
 router.post('/bulk', async function(req, res, next){  // 스캔 정보 전송
   console.debug('bulk creation started');
-  if(!req.session.user.token){
+  
+  // let jwtok = req.cookies.user;
+
+  // let decoded = jwt.verify(jwtok, config.secret);
+  // if(decoded){
+  //   res.send("권한이 있어서 API 수행 가능")
+  // }
+  // else{
+  //   res.send("권한이 없습니다.")
+  // }
+
+  if(!req.session.user.id){
     console.error('creation fail. please login first');
     res.sendStatus('400');
     return;
@@ -42,7 +55,7 @@ router.post('/bulk', async function(req, res, next){  // 스캔 정보 전송
   console.debug(req.body);
 
   req.body.scans.forEach(scan => {
-    scan.my_token=req.session.user.token
+    scan.my_id=req.session.user.scan_id
   });
   
   console.debug('request scan data:');
@@ -61,7 +74,7 @@ router.post('/bulk', async function(req, res, next){  // 스캔 정보 전송
       await Promise.all(createdScans.map(async (scan) => {  // 스캔 접촉 비동기 동시 실행
         console.debug(`scan: ${scan}`)
         const user = await models.User.findOrCreate({where: {
-          token: scan.scan_token
+          scan_id: scan.scan_id
         }, transaction:t});
         console.debug(`user: ${user}`);
       }))
