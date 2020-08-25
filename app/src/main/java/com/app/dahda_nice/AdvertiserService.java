@@ -52,19 +52,20 @@ public class AdvertiserService extends Service {
 
     private Runnable timeoutRunnable;
 
+
     /**
      * Length of time to allow advertising before automatically shutting off. (10 minutes)
      */
     private long TIMEOUT = TimeUnit.MILLISECONDS.convert(10, TimeUnit.MINUTES);
 
+    private String mykey;
+
     @Override
     public void onCreate() {
-        Log.d("광고 서비스 화면으로 넘오오냐?", " 넘거가자");
-        running = true;
-        initialize();
-        startAdvertising();
-        setTimeout();
+
         super.onCreate();
+
+
     }
 
     @Override
@@ -221,12 +222,17 @@ public class AdvertiserService extends Service {
          */
 
         AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
-        dataBuilder.setIncludeDeviceName(true);
-        String data = "data123";
+//        dataBuilder.setIncludeDeviceName(true);
+
+        String data = mykey;
+
+
+
         dataBuilder.addServiceData(Constants.Service_UUID, data.getBytes(StandardCharsets.UTF_8));
 
 
         return dataBuilder.build();
+
     }
 
     /**
@@ -251,7 +257,7 @@ public class AdvertiserService extends Service {
         public void onStartFailure(int errorCode) {
             super.onStartFailure(errorCode);
 
-            Log.d(TAG, "Advertising failed");
+            Log.d(TAG, "Advertising failed" + errorCode);
             sendFailureIntent(errorCode);
             stopSelf();
 
@@ -273,5 +279,25 @@ public class AdvertiserService extends Service {
         failureIntent.setAction(ADVERTISING_FAILED);
         failureIntent.putExtra(ADVERTISING_FAILED_EXTRA_CODE, errorCode);
         sendBroadcast(failureIntent);
+    }
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if (intent == null) {
+            return Service.START_STICKY;
+        } else {
+            mykey = intent.getStringExtra("mykey");
+
+            running = true;
+            initialize();
+            startAdvertising();
+            setTimeout();
+        }
+
+        return super.onStartCommand(intent, flags, startId);
+
+
     }
 }

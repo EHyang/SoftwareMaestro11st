@@ -3,7 +3,6 @@
     package="com.app.dahda_nice"
     android:targetSandboxVersion="1">
 
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".JoinSuc"></activity>
+        <activity android:name=".gogogo"></activity>
+        <activity android:name=".JoinSuc" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".GeneralUser" />
 
@@ -44,14 +44,11 @@
         <service
             android:name=".AdvertiserService"
             android:enabled="true"
-            android:exported="false" >
-        </service>
+            android:exported="false" />
         <service
             android:name=".MyService"
             android:enabled="true"
-            android:exported="false" >
-        </service>
-
+            android:exported="false" />
     </application>
 
 </manifest>

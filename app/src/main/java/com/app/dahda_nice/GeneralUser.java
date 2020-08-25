@@ -28,23 +28,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GeneralUser extends AppCompatActivity {
 
@@ -56,14 +43,26 @@ public class GeneralUser extends AppCompatActivity {
 
 
 
-
+    public String mykey;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
 
+        Intent intent = getIntent();
+        mykey = intent.getStringExtra("mykey");
 
+        ImageView imageView = findViewById(R.id.gogogo);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), gogogo.class);
+                intent.putExtra("mykey",mykey);
+                startActivity(intent);
+            }
+        });
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH) ||
                 !getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(this, "Bluetooth is not supported", Toast.LENGTH_LONG).show();
@@ -75,10 +74,8 @@ public class GeneralUser extends AppCompatActivity {
 
         bluetoothAdapter = bluetoothManager.getAdapter();
 
-        
-        
-        
-        
+
+
     }
 
 
@@ -99,7 +96,6 @@ public class GeneralUser extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        getApplication().unregisterReceiver(advertisingFailureReceiver);
     }
 
 
@@ -120,6 +116,7 @@ public class GeneralUser extends AppCompatActivity {
 
 
         Intent advertise = new Intent(getApplicationContext(), AdvertiserService.class);
+        advertise.putExtra("mykey",mykey);
         startService(advertise);
 
         Intent intent = new Intent(getApplicationContext(), MyService.class);

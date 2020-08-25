@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,10 +17,14 @@ public class JoinSuc extends AppCompatActivity {
 
         Button button = findViewById(R.id.button);
 
+        Intent intent = getIntent();
+        final String mykey = intent.getStringExtra("mykey");
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),GeneralUser.class);
+                intent.putExtra("mykey",mykey);
                 startActivity(intent);
 
             }

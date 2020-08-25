@@ -4,10 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,9 +27,6 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.net.NetworkInterface;
-import java.util.Collections;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,13 +49,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private String token;
 
+    public static String kk;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Log.d("LoginActivityonCreate!!", " 뭘까아아아아?");
-
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -143,8 +138,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
 
-                            Intent intent = new Intent(getApplicationContext(), JoinSuc.class);
-                            startActivity(intent);
                         } else {
                             Log.d("실패에에에에????????? 왜안넘어가", "!?!?!?@?");
                             Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
@@ -178,8 +171,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
                 LoginDao data = response.body();
 
+                Log.d("keykeykey!!",data.getRes());
+
                 if (response.isSuccessful()) {
-                    Log.d("data 성공!!!!!!!!!", data.getRes() + " //// ");
+                    String mykey = data.getRes();
+                    kk = data.getRes();
+
+
+                    Intent mykey2 = new Intent(getApplicationContext(), JoinSuc.class);
+                    mykey2.putExtra("mykey", mykey);
+                    startActivity(mykey2);
+
+
+
+
                 }
 
             }
