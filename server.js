@@ -14,15 +14,18 @@ var hospRouter  = require('./routes/hosp');
 var inputRouter = require('./routes/input');
 var testlogin = require('./routes/testlogin');
 
+var confirm = require('./routes/confirmed');
+var testnoti = require('./routes/noti');
+
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({
-  secret:'12345678',
-  resave:false,
-  saveUninitalized:true
-}));
+// app.use(session({
+//   secret:'12345678',
+//   resave:false,
+//   saveUninitalized:true
+// }));
 
 app.use('/node_modules', express.static(path.join(__dirname+'/node_modules')));
 
@@ -36,6 +39,9 @@ app.use('/hosp', hospRouter);
 
 app.use('/input', inputRouter);
 app.use('/testlogin', testlogin);
+
+app.use('/noti', testnoti);
+app.use('/confirmed', confirm);
 
 app.listen(3000, function () {
   console.log('Express server listening on port ' + app.get('port'));
