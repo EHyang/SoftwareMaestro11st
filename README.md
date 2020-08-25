@@ -21,29 +21,35 @@
 
 
 
-## Editor & IDE
+### Editor & IDE
 - [Android Studio](https://developer.android.com/studio/index.html) : Mobile Application 제작
 - [Atom](https://atom.io) : Node.js 서버 작성 및 개발 에디터
 - [VScode](https://https://code.visualstudio.com/) : Node.js 서버 작성 및 개발 에디터
 
-## AWS
+### AWS
 - [AWS EC2](https://aws.amazon.com/ko/ec2/) : 클라우드 컴퓨팅
 - [AWS RDS](https://aws.amazon.com/ko/rds/) : 클라우드 데이터 베이스
 - [AWS VPC](https://aws.amazon.com/ko/vpc/) : Virtual Private Cloud
 
-## Etc
+### Etc
 - [Node.js](https://nodejs.org/) : 자바스크립트 기반 백엔드 프레임워크
 - [MySQL](https://www.mysql.com) : 관계형 데이터베이스 관리 시스템(RDBMS)
 
 
-
 ## AWS Architecture
 ### System Structure
-<center><img src="./img/system.png" width=400></center>
+<img src="./img/system.png" width=400>
 
 ### Network Structure
 <img src="./img/network.png" width=400>
 
 ### Database ER-diagram
-#### 이미지 등록 해야함
+<img src="./img/db.JPG" width=400>
 
+
+## WiKi
+
+- [API Referenct](https://13.125.91.162/swmaestro/nice/-/wikis/API-Reference)
+- [DataBase Struct](https://13.125.91.162/swmaestro/nice/-/wikis/DataBase-Struct)
+- [Sequence charts](https://13.125.91.162/swmaestro/nice/-/wikis/Sequence-charts)
+- [ngrok tunneling](https://13.125.91.162/swmaestro/nice/-/wikis/ngrok-tunneling)
