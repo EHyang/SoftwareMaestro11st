@@ -115,7 +115,8 @@ router.post('/login', async function(req, res, next) {  // 로그인
       if(!preUser.google_id){
         console.info('this is a new user');
         await preUser.update({
-          google_id: req.body.google_id
+          google_id: req.body.google_id,
+          scan_id: 'tmpscanid1112323'
         }, {transaction:t})
 
         // TODO: refactor
@@ -131,7 +132,8 @@ router.post('/login', async function(req, res, next) {  // 로그인
           console.error('what?? this is no way.')
         }
         t.commit();
-        res.sendStatus(200);
+        // res.sendStatus(200);
+        res.json({res: 'thisisyourkeyyeah'});
         // TODO: check that user model is fully configured 
         return;
       } else {
@@ -141,7 +143,7 @@ router.post('/login', async function(req, res, next) {  // 로그인
    
     models.User
     .findOrCreate({where: {google_id: req.body.google_id, //유저 검색 또는 생성
-    token: req.body.token}, transaction:t})
+    token: req.body.token, scan_id: 'testscanid'}, transaction:t})
     .then(([user, created]) => {
       console.log(user.get({
         plain: true
@@ -156,7 +158,8 @@ router.post('/login', async function(req, res, next) {  // 로그인
   
       console.log(`user login success!`);
       t.commit();
-      res.sendStatus(200);
+      //res.sendStatus(200);
+      res.send({res:user.scan_id});
     }).catch(function(error){
       
       console.error(error);
