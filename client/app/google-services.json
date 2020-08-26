@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "5576000765",
+    "firebase_url": "https://nice-project-73c13.firebaseio.com",
+    "project_id": "nice-project-73c13",
+    "storage_bucket": "nice-project-73c13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5576000765:android:41305556d6fea89369ea94",
+        "android_client_info": {
+          "package_name": "com.app.dahda_nice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5576000765-4b9h1s9hvps7bd319b9hqhqm6a2sjba8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.dahda_nice",
+            "certificate_hash": "29e1da097db98833f552036f65f1d53a8a0ba930"
+          }
+        },
+        {
+          "client_id": "5576000765-at8dkdb8g8bl9n7ek6m551a1u8bogrua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcNJoJ9VStWm8WxKo2TlQ_DIcZ-AoOkVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5576000765-at8dkdb8g8bl9n7ek6m551a1u8bogrua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
