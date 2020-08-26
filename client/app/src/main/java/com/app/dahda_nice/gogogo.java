@@ -61,7 +61,7 @@ public class gogogo extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<LoginDao> call, Throwable t) {
-                        Log.d("확진요TEST 실패 ? : ", " 실패 실패");
+                        Log.d("실패 ? : ", " 실패 실패");
                         Log.d("why? ", t.toString());
                     }
                 });

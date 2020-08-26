@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://3.34.117.4:3000")
+                .baseUrl("http://e7f9c8a9ef90.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

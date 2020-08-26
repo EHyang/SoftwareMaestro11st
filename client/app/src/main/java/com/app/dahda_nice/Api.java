@@ -9,7 +9,7 @@ import retrofit2.http.POST;
 
 public interface Api {
 
-    @POST("/testlogin")
+    @POST("/login")
     Call<LoginDao> postData(@Body LoginData loginData);
 
     @POST("/input")
@@ -18,8 +18,6 @@ public interface Api {
     @POST("/confirmed")
     Call<LoginDao> mykeyData (@Body ScanData scanData);
 
-//    @POST("/scan/bulk")
-//    Call<LoginDao> scanData (@Body ArrayList<ScanData> scanData);
 
 
 

@@ -25,7 +25,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SampleScanCallback extends ScanCallback {
 
 
-
     @Override
     public void onBatchScanResults(List<ScanResult> results) {
         super.onBatchScanResults(results);
@@ -36,6 +35,7 @@ public class SampleScanCallback extends ScanCallback {
     @Override
     public void onScanResult(int callbackType, ScanResult result) {
         super.onScanResult(callbackType, result);
+
         try {
             Map<ParcelUuid, byte[]> data = result.getScanRecord().getServiceData();
 
@@ -49,6 +49,7 @@ public class SampleScanCallback extends ScanCallback {
     }
 
     private void sendAdvertiseData(String data) {
+
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -56,7 +57,7 @@ public class SampleScanCallback extends ScanCallback {
         Log.d("HWANG DATA123", data);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://3.34.117.4:3000")
+                .baseUrl("http://e7f9c8a9ef90.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -68,15 +69,16 @@ public class SampleScanCallback extends ScanCallback {
 
         String key = MyService.mykey;
 
-        Log.d("!!!!!!Key!!!",key);
+        Log.d("!!!!!!Key!!!", key);
         ArrayList<ScanData> scanData = new ArrayList<>();
 
-        scanData.add(new ScanData(key,data, getTime));
+        scanData.add(new ScanData(key, data, getTime));
 
         api.scanData(scanData).enqueue(new Callback<LoginDao>() {
             @Override
             public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
                 LoginDao data = response.body();
+
 
                 if (response.isSuccessful()) {
                     Log.d("data 성공!!!!!!!!!", data.getRes() + " //// ");
@@ -93,13 +95,13 @@ public class SampleScanCallback extends ScanCallback {
 
     }
 
+
     @Override
     public void onScanFailed(int errorCode) {
         super.onScanFailed(errorCode);
 
-        Log.e("SCANFAIL", ""+errorCode);
+        Log.e("SCANFAIL", "" + errorCode);
     }
-
 
 
 }
