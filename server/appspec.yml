@@ -1,0 +1,41 @@
+version: 0.0
+os: linux
+files:
+  - source: ./nice/ # This line assumes that your deployment code is located in
+    destination: /home/ubuntu/nice
+permissions:
+  # sets application runner script as executable - This example assumes the sample 'nice.sh' script has been added to the the directory 'nice' and serves as the application launcher
+  - object: /home/ubuntu/nice/
+    pattern: "*.sh"
+    owner: ubuntu
+    mode: 755
+    type:
+      - file
+  # sets ubuntu as the owner:group for the application deployment directory
+  - object: /home/ubuntu/
+    pattern: "nice"
+    owner: ubuntu
+    type:
+      - directory
+hooks:
+  # All hook scripts are assumed to be in the /install/aws_cd directory located at the root of the deployment zip archive
+  ApplicationStop:
+    - location: nice/server/scripts/app_stop.sh
+      timeout: 180
+      runas: ubuntu
+  BeforeInstall:
+    - location: nice/server/scripts/before_install.sh
+      timeout: 180
+      runas: ubuntu
+  AfterInstall:
+    - location: nice/server/scripts/after_install.sh
+      timeout: 180
+      runas: ubuntu
+  ApplicationStart:
+    - location: nice/server/scripts/app_start.sh
+      timeout: 180
+      runas: ubuntu
+  ValidateService:
+    - location: nice/server/scripts/validate_service.sh
+      timeout: 180
+      runas: ubuntu
