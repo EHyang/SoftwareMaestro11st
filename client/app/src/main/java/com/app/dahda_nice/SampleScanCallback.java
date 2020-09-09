@@ -2,10 +2,14 @@ package com.app.dahda_nice;
 
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.os.ParcelUuid;
 import android.util.Log;
 
-import com.google.android.material.tabs.TabLayout;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -25,6 +29,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SampleScanCallback extends ScanCallback {
 
 
+    Intent intent;
+
+    Context context;
+    GeneralUser generalUser;
+
     @Override
     public void onBatchScanResults(List<ScanResult> results) {
         super.onBatchScanResults(results);
@@ -41,7 +50,13 @@ public class SampleScanCallback extends ScanCallback {
 
             String advertiseData = new String(data.get(Constants.Service_UUID), StandardCharsets.UTF_8);
             sendAdvertiseData(advertiseData);
+
+
+            Log.d(advertiseData + "!!!", " " + result.getRssi());
+
+
             Log.d("HWANG DATA123", advertiseData);
+
         } catch (Exception e) {
 
         }
@@ -57,20 +72,27 @@ public class SampleScanCallback extends ScanCallback {
         Log.d("HWANG DATA123", data);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://e7f9c8a9ef90.ngrok.io")
+                .baseUrl("http://c2abbef6b755.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         Api api = retrofit.create(Api.class);
+
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String getTime = simpleDate.format(mDate);
 
+        GeneralUser location = new GeneralUser();
+        location.location(getTime);
+
+
+
         String key = MyService.mykey;
 
         Log.d("!!!!!!Key!!!", key);
         ArrayList<ScanData> scanData = new ArrayList<>();
+
 
         scanData.add(new ScanData(key, data, getTime));
 

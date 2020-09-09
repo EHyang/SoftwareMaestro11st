@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://e7f9c8a9ef90.ngrok.io")
+                .baseUrl("http://c2abbef6b755.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -174,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
                 LoginDao data = response.body();
 
-                Log.d("keykeykey!!", data.getRes());
+                Log.d("keykeykey!!", data.getRes()+" ");
 
                 if (response.isSuccessful()) {
                     Log.d("Data 성공!!", "///" + data.getRes());

@@ -226,6 +226,8 @@ public class AdvertiserService extends Service {
 
         String data = mykey;
 
+//        String data = "data";
+
 
 
         dataBuilder.addServiceData(Constants.Service_UUID, data.getBytes(StandardCharsets.UTF_8));
@@ -297,6 +299,9 @@ public class AdvertiserService extends Service {
         }
 
         return super.onStartCommand(intent, flags, startId);
+
+
+
 
 
     }
