@@ -18,18 +18,19 @@ PIDF=$APP/$APPNAME.pid
 /bin/echo "$(date '+%Y-%m-%d %X'): Event: $LIFECYCLE_EVENT" >> $LOG
 
 cd $APP
+systemctl stop badha
 
-if [ -f $CMD ]
-then
-    $CMD stop
-    /bin/echo "$(date '+%Y-%m-%d %X'): Stopping $APPLICATION_NAME" >> $LOG
-elif [ -f $PIDF ]
-then
-    PID=`cat $PIDF`
-    kill -9 $PID
-    /bin/echo "$(date '+%Y-%m-%d %X'): Killing $APPLICATION_NAME [$PID]" >> $LOG
-    rm $PIDF
-else
-    /bin/echo "$(date '+%Y-%m-%d %X'): $CMD not found. Proceeding with deployment" >> $LOG
-fi
+# if [ -f $CMD ]
+# then
+#     $CMD stop
+#     /bin/echo "$(date '+%Y-%m-%d %X'): Stopping $APPLICATION_NAME" >> $LOG
+# elif [ -f $PIDF ]
+# then
+#     PID=`cat $PIDF`
+#     kill -9 $PID
+#     /bin/echo "$(date '+%Y-%m-%d %X'): Killing $APPLICATION_NAME [$PID]" >> $LOG
+#     rm $PIDF
+# else
+#     /bin/echo "$(date '+%Y-%m-%d %X'): $CMD not found. Proceeding with deployment" >> $LOG
+# fi
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Application Stop Hook Completed **" >> $LOG
