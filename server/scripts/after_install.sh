@@ -12,6 +12,8 @@ APP=$HOME/$APPNAME
 # verify that the application directory has the correct owner/group
 /usr/bin/sudo /bin/chown -R $USER:$USER $APP
 
+systemctl enable dahda
+
 echo -e "Done" >> $LOG
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** After Install Hook Completed **" >> $LOG

@@ -10,6 +10,8 @@ PIDF=$APP/$APPNAME.pid
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Started **" >> $LOG
 
 # Do some actions before the installation
+pwd
+cp app.service /etc/systemd/system
 npm install
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Completed **" >> $LOG

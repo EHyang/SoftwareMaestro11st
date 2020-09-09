@@ -2,7 +2,8 @@
 USER=ubuntu
 APPNAME=dahda
 HOME=/home/$USER
-CMD=$APP/$APPNAME.sh
+# CMD=$APP/$APPNAME.sh
+CMD="systemctl start $APPNAME"
 LOG=$HOME/deploy.log
 APP=$HOME/$APPNAME
 

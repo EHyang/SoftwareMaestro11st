@@ -5,7 +5,8 @@
 USER=ubuntu
 APPNAME=dahda
 HOME=/home/$USER
-CMD=$APP/$APPNAME.sh
+# CMD=$APP/$APPNAME.sh
+CMD="systemctl stop dahda"
 LOG=$HOME/deploy.log
 APP=$HOME/$APPNAME
 PIDF=$APP/$APPNAME.pid
