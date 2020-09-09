@@ -40,3 +40,6 @@ hooks:
     - location: nice/server/scripts/validate_service.sh
       timeout: 180
       runas: ubuntu
+artifacts:
+  files:
+    - '**/*'
