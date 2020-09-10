@@ -2,7 +2,7 @@ version: 0.0
 
 os: linux
 files:
-  - source: ./server/ # This line assumes that your deployment code is located in
+  - source: / # This line assumes that your deployment code is located in
     destination: /home/ubuntu/server
 permissions:
   # sets application runner script as executable - This example assumes the sample 'server.sh' script has been added to the the directory 'server' and serves as the application launcher
@@ -21,23 +21,23 @@ permissions:
 hooks:
   # All hook scripts are assumed to be in the /install/aws_cd directory located at the root of the deployment zip archive
   ApplicationStop:
-    - location: server/scripts/app_stop.sh
+    - location: scripts/app_stop.sh
       timeout: 180
       runas: ubuntu
   BeforeInstall:
-    - location: server/scripts/before_install.sh
+    - location: scripts/before_install.sh
       timeout: 180
       runas: ubuntu
   AfterInstall:
-    - location: server/scripts/after_install.sh
+    - location: scripts/after_install.sh
       timeout: 180
       runas: ubuntu
   ApplicationStart:
-    - location: server/scripts/app_start.sh
+    - location: scripts/app_start.sh
       timeout: 180
       runas: ubuntu
   ValidateService:
-    - location: server/scripts/validate_service.sh
+    - location: scripts/validate_service.sh
       timeout: 180
       runas: ubuntu
 artifacts:
