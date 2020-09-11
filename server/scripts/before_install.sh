@@ -11,7 +11,7 @@ PIDF=$APP/$APPNAME.pid
 
 # Do some actions before the installation
 pwd >> $LOG
-sudo cp $APPNAME.service /etc/systemd/system
+sudo cp $HOME/server/$APPNAME.service /etc/systemd/system
 
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash >> $LOG
 
