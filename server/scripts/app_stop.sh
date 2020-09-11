@@ -18,7 +18,7 @@ PIDF=$APP/$APPNAME.pid
 /bin/echo "$(date '+%Y-%m-%d %X'): Event: $LIFECYCLE_EVENT" >> $LOG
 
 cd $APP
-sudo systemctl stop badha
+sudo systemctl stop dahda
 
 # if [ -f $CMD ]
 # then

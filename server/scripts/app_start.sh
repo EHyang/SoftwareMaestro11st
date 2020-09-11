@@ -15,14 +15,15 @@ APP=$HOME/$APPNAME
 pwd >> $LOG
 cd $APP
 
-if [ -f $CMD ]
-then
-    echo $APP >> $LOG
-    pwd >> $LOG
-    # $CMD start
-    # npm start
-    /bin/echo "$(date '+%Y-%m-%d %X'): Starting $APPLICATION_NAME" >> $LOG
-else
-    /bin/echo "$(date '+%Y-%m-%d %X'): $CMD not found. Proceeding with deployment" >> $LOG
-fi
+sudo systemctl start $APPNAME
+# if [ -f $CMD ]
+# then
+#     echo $APP >> $LOG
+#     pwd >> $LOG
+#     # $CMD start
+#     # npm start
+#     /bin/echo "$(date '+%Y-%m-%d %X'): Starting $APPLICATION_NAME" >> $LOG
+# else
+#     /bin/echo "$(date '+%Y-%m-%d %X'): $CMD not found. Proceeding with deployment" >> $LOG
+# fi
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Application Start Hook Completed **" >> $LOG
