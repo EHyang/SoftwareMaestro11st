@@ -2,16 +2,17 @@ var express    = require('express');
 var request    = require('request');
 var xml2js     = require('xml2js');
 
-var db         = require('../dbconfig');
+//var db         = require('../dbconfig');
 var router = express.Router();
 var parser = new xml2js.Parser();
 
 router.get('/', function(req,res){
   console.log("hello");
   var url = 'http://apis.data.go.kr/B551182/pubReliefHospService/getpubReliefHospList';
-  var queryParams = '?' + encodeURIComponent('ServiceKey') + '=Tbe8Bc0gbXmlZCGjqsQ9T9Bj7%2B6lREL%2BSrLH34cqmUsiEVtmKBiXsgb%2F%2BAKy0qOKLq5zvkmGME%2FJpe9yJK7fzg%3D%3D'; /* Service Key*/
+  var queryParams = '?' + encodeURIComponent('ServiceKey') + '=60K0Iowkgeoh%2FZ4rToc%2Brc98k9qYfiP4MP0zOYncF78iAWCUFL5DsD3Ep45dhJkonSDFLzY0OPtiAUvBIg2WjQ%3D%3D'; /* Service Key*/
   queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
-  queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('1085'); /* */
+  queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('1079'); /* */
+  queryParams += '&' + encodeURIComponent('spclAdmTyCd') + '=' + encodeURIComponent('99');
 
   request({
       url: url + queryParams,
