@@ -17,8 +17,8 @@ PIDF=$APP/$APPNAME.pid
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Application Stop Hook Started **" >> $LOG
 /bin/echo "$(date '+%Y-%m-%d %X'): Event: $LIFECYCLE_EVENT" >> $LOG
 
-cd $APP
-sudo systemctl stop dahda
+cd $HOME/server
+#sudo systemctl stop dahda
 
 # if [ -f $CMD ]
 # then
