@@ -72,7 +72,7 @@ public class SampleScanCallback extends ScanCallback {
         Log.d("HWANG DATA123", data);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://c2abbef6b755.ngrok.io")
+                .baseUrl("http://dahda.swm.epikem.com")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -91,6 +91,7 @@ public class SampleScanCallback extends ScanCallback {
         String key = MyService.mykey;
 
         Log.d("!!!!!!Key!!!", key);
+
         ArrayList<ScanData> scanData = new ArrayList<>();
 
 
@@ -103,7 +104,7 @@ public class SampleScanCallback extends ScanCallback {
 
 
                 if (response.isSuccessful()) {
-                    Log.d("data 성공!!!!!!!!!", data.getRes() + " //// ");
+                    Log.d("Scandata 성공!!!!!!!!!", data.getRes() + " //// ");
                 }
 
             }

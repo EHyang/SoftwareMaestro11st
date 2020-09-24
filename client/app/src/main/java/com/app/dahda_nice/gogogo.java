@@ -45,6 +45,7 @@ public class gogogo extends AppCompatActivity {
 
                 Api api = retrofit.create(Api.class);
 
+
                 ScanData scanData = new ScanData(mykey);
 
                 api.mykeyData(scanData).enqueue(new Callback<LoginDao>() {

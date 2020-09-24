@@ -34,28 +34,26 @@ public class GeneralUser extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PERMISSION = 103;
 
 
-    private getlocation getLocation;
-    private LocationManager locationManager;
 
 
-    public String mykey;
+    public static String mykey;
     private BroadcastReceiver broadcastReceiver;
-    private boolean LocaChceck = false;
+    private boolean LocaChceck = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
 
+        Intent intent = getIntent();
+        mykey = intent.getStringExtra("mykey");
+
+
         requestPermission();
 
 
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 new IntentFilter("location"));
-
-
-        Intent intent = getIntent();
-        mykey = intent.getStringExtra("mykey");
 
 
         ImageView imageView = findViewById(R.id.gogogo);
@@ -137,42 +135,38 @@ public class GeneralUser extends AppCompatActivity {
 
 
         Intent advertise = new Intent(getApplicationContext(), AdvertiserService.class);
+        Log.d("User!!!", mykey + "plz");
         advertise.putExtra("mykey", mykey);
-        startService(advertise);
 
         Intent intent = new Intent(getApplicationContext(), MyService.class);
         intent.putExtra("mykey", mykey);
 
         if (Build.VERSION.SDK_INT >= 26) {
             Log.d("SDK_INT >= 26", "Start ForegroundService");
+            getApplicationContext().startForegroundService(advertise);
             getApplicationContext().startForegroundService(intent);
         } else {
             Log.d("SDK_INT < 26", "Start Service");
             startService(intent);
+            startService(advertise);
         }
     }
 
 
     public void location(String time) {
 
-        LocaChceck = false;
         String getTime = time;
         Log.d("스캔했을 때 위치정보가져오는 메서드", getTime);
+        Log.d("LocaCheck", LocaChceck + " !>1>");
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
-        }
-
-        if (LocaChceck) {
-            if (Build.VERSION.SDK_INT >= 26) {
-                Intent intent = new Intent(getApplicationContext(), getlocation.class);
-                Log.d("LocationServiceCheck!", "ForegroundS");
-                getApplicationContext().startForegroundService(intent);
-            } else {
-                Intent intent = new Intent(getApplicationContext(), getlocation.class);
-                Log.d("LocationServiceCheck!", "Service");
-                startService(intent);
-            }
+        if (Build.VERSION.SDK_INT >= 26) {
+            Intent intent = new Intent(getApplicationContext(), getlocation.class);
+            Log.d("LocationServiceCheck!", "ForegroundS");
+            getApplicationContext().startForegroundService(intent);
+        } else {
+            Intent intent = new Intent(getApplicationContext(), getlocation.class);
+            Log.d("LocationServiceCheck!", "Service");
+            startService(intent);
         }
 
 

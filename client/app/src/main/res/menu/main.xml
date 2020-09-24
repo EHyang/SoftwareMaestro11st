@@ -1,13 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
-
     <item android:id="@+id/menu_select"
         android:icon="@drawable/mainlogo"
         app:showAsAction="always"
         android:title="TODO" />
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/account"
+            android:icon="@drawable/amu_bubble_mask"
+            android:title="계정"
+            />
+        <item
+            android:id="@+id/star"
+            android:icon="@drawable/amu_bubble_mask"
+            android:title="즐겨찾기"
+            />
+        <item
+            android:id="@+id/cart"
+            android:icon="@drawable/amu_bubble_mask"
+            android:title="장바구니"
+            />
+    </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/bug_report"
+            android:icon="@drawable/amu_bubble_mask"
+            android:title="버그 리포트"
+            />
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/amu_bubble_mask"
+            android:title="설정"
+            />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/amu_bubble_mask"
+            android:title="로그아웃"
+            />
+    </group>
 
 
 

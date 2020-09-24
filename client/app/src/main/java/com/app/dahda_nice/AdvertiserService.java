@@ -222,12 +222,8 @@ public class AdvertiserService extends Service {
          */
 
         AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
-//        dataBuilder.setIncludeDeviceName(true);
 
         String data = mykey;
-
-//        String data = "data";
-
 
 
         dataBuilder.addServiceData(Constants.Service_UUID, data.getBytes(StandardCharsets.UTF_8));
@@ -286,6 +282,7 @@ public class AdvertiserService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("AdvertiseService in??" , " in?" + intent.getStringExtra("mykey"));
 
         if (intent == null) {
             return Service.START_STICKY;
@@ -299,9 +296,6 @@ public class AdvertiserService extends Service {
         }
 
         return super.onStartCommand(intent, flags, startId);
-
-
-
 
 
     }
