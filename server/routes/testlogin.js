@@ -8,7 +8,7 @@ router.post('/', function(req, res) {
   console.log(req.body);
   var google_id = req.body.google_id;
   var token = req.body.token;
-  var my_key;
+  var my_key = req.body.google_id;
   var login_sql = 'select * From testmembers where google_id = ?';
 
   db.mysql.query(login_sql, google_id, function(err, rows, fields) {
@@ -24,7 +24,6 @@ router.post('/', function(req, res) {
 
         var insert_sql = 'insert into testmembers (google_id,token,my_key,lastest_use) values(?,?,?,?)';
         var now_time = new Date();
-        my_key = 'data123';
 
         var param = [google_id, token, my_key, now_time];
         db.mysql.query(insert_sql, param, function(err, result) {

@@ -3,7 +3,8 @@ var db = require('../dbconfig');
 var router = express.Router();
 
 router.post('/', function(req, res) {
-  var my_key = req.body[0].my_key;
+//  var my_key = req.body[0].my_key;
+  var my_key;
   var scan = req.body;
   var data = req.body;
   var length = scan.length;
@@ -14,6 +15,7 @@ router.post('/', function(req, res) {
   var scan_key, scan_time;
 
   for (var i = 0; i < length; ++i) {
+    my_key = data[i].my_key;
     scan_key = data[i].scan_key;
     scan_time = data[i].scan_time;
 
