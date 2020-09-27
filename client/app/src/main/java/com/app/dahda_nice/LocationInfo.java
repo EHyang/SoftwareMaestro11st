@@ -23,7 +23,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-public class getlocation extends Service implements LocationListener {
+public class LocationInfo extends Service implements LocationListener {
 
     Context mContext;
     Location location;
@@ -69,8 +69,6 @@ public class getlocation extends Service implements LocationListener {
 
 
             if (isNetworkEnabled) {
-
-
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
                 if (locationManager != null) {
