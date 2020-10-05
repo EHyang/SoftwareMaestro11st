@@ -156,26 +156,26 @@ public class GeneralUser extends AppCompatActivity {
 
     private void scanLeDevice(boolean b) {
 
-        Intent advertise = new Intent(getApplicationContext(), AdvertiserService.class);
+        Intent intent = new Intent(getApplicationContext(), AdvertiserService.class);
         Log.d("User!!!", mykey + "plz");
-        advertise.putExtra("mykey", mykey);
-
-        Intent intent = new Intent(getApplicationContext(), MyService.class);
         intent.putExtra("mykey", mykey);
 
-        Intent intentLocation = new Intent(getApplicationContext(), LocationInfo.class);
-        Log.d("LocationServiceCheck!", "ForegroundS");
+//        Intent intent = new Intent(getApplicationContext(), MyService.class);
+//        intent.putExtra("mykey", mykey);
+
+//        Intent intentLocation = new Intent(getApplicationContext(), LocationInfo.class);
+//        Log.d("LocationServiceCheck!", "ForegroundS");
 
         if (Build.VERSION.SDK_INT >= 26) {
             Log.d("SDK_INT >= 26", "Start ForegroundService");
-            getApplicationContext().startForegroundService(advertise);
             getApplicationContext().startForegroundService(intent);
-            getApplicationContext().startForegroundService(intentLocation);
+//            getApplicationContext().startForegroundService(intent);
+//            getApplicationContext().startForegroundService(intentLocation);
         } else {
             Log.d("SDK_INT < 26", "Start Service");
+//            startService(intent);
             startService(intent);
-            startService(advertise);
-            startService(intentLocation);
+//            startService(intentLocation);
 
         }
     }
@@ -186,8 +186,6 @@ public class GeneralUser extends AppCompatActivity {
         String getTime = time;
         Log.d("스캔했을 때 위치정보가져오는 메서드", getTime);
 
-        Intent intent = new Intent(getApplicationContext(), LocationInfo.class);
-        intent.putExtra("location", 900);
 
 
 
