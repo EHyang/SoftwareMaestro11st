@@ -18,9 +18,9 @@ describe('the dahda server', ()=> {
   })
 
   it('should login user 1', async ()=>{
-    const res = await chai.request(app).post('/login').send({
+    const res = await chai.request(app).post('/testlogin').send({
       google_id: 'gid1',
-      my_mac: 'mac1'
+      token: 'mac1'
     });
     res.ok.should.be.true;
     console.log(res.body);
@@ -29,9 +29,9 @@ describe('the dahda server', ()=> {
   })
 
   it('should login user 2', async ()=>{
-    const res = await chai.request(app).post('/login').send({
+    const res = await chai.request(app).post('/testlogin').send({
       google_id: 'gid2',
-      my_mac: 'mac2'
+      token: 'mac2'
     });
     res.ok.should.be.true;
     console.log(res.body);

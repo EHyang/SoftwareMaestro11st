@@ -17,14 +17,10 @@ describe('the dahda server', ()=> {
     server=app.listen(8080);
   })
 
-  it('should provide login route', async ()=>{
-    const res = await chai.request(app).post('/testlogin').send({
-      google_id: 'gid1',
-      token: 'mac1'
-    });
+  it('should reload', async ()=>{
+    console.log('clearing tables...');
+    const res = await chai.request(app).get('/reload');
     res.ok.should.be.true;
-    console.log(res.body);
-    // res.body.res.should.equal('0');
     return;
   })
 

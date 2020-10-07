@@ -18,7 +18,7 @@ describe('the dahda server', ()=> {
   })
 
   it('should login user 1', async ()=>{
-    const res = await chai.request(app).post('/login').send({
+    const res = await chai.request(app).post('/testlogin').send({
       google_id: 'gid1',
       token: 'token1'
     });
@@ -29,7 +29,7 @@ describe('the dahda server', ()=> {
   })
 
   it('should login user 2', async ()=>{
-    const res = await chai.request(app).post('/login').send({
+    const res = await chai.request(app).post('/testlogin').send({
       google_id: 'gid2',
       token: 'token2'
     });
@@ -56,7 +56,7 @@ describe('the dahda server', ()=> {
     console.log('scenario 2 result');
     console.log(res.body);
     res.ok.should.be.true;
-    res.body.ok.should.be.false
+    res.body.res.should.equal(-1);
     return;
   })
 
