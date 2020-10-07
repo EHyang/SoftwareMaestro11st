@@ -43,6 +43,4 @@ app.use('/testlogin', testlogin);
 app.use('/noti', testnoti);
 app.use('/confirmed', confirm);
 
-app.listen(3000, function () {
-  console.log('Express server listening on port ' + app.get('port'));
-});
+module.exports=app;
