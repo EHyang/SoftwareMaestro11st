@@ -9,7 +9,7 @@ hospital_crawling.js 는 매일 특정 시간마다 동작하도록 설정해야
 var express = require('express');
 var request = require('request');
 //var xml2js = require('xml2js');
-var parser = new xml2js.Parser();
+//var parser = new xml2js.Parser();
 
 var axios = require('axios');
 var cheerio = require('cheerio');

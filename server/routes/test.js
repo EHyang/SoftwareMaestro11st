@@ -6,8 +6,8 @@
 
 var express = require('express');
 var request = require('request');
-var xml2js = require('xml2js');
-var parser = new xml2js.Parser();
+//var xml2js = require('xml2js');
+//var parser = new xml2js.Parser();
 var db = require('../dbconfig');
 var router = express.Router();
 
