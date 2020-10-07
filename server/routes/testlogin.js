@@ -1,3 +1,10 @@
+/*
+2020-10-07 태양
+login.js을 대체하여 사용중임.
+
+코드 정리 필요
+*/
+
 var express = require('express');
 var db = require('../dbconfig');
 var uuid4 = require('uuid4');
@@ -66,9 +73,9 @@ router.post('/', function(req, res) {
           'res': my_key
         });
         //  res.render('input_data');
-      }
-    }
-  });
-});
+      } // else -- end
+    } // else -- end
+  }); // login_sql db -- end
+}); // router -- end
 
 module.exports = router;

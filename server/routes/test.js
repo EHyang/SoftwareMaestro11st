@@ -1,3 +1,9 @@
+/*
+2020-10-07 태양
+
+각종 코드 확인용 js파일임.
+*/
+
 var express = require('express');
 var request = require('request');
 var xml2js = require('xml2js');
