@@ -5,6 +5,7 @@ const http = require('http');
 
 chai.use(chaiHttp);
 chai.should();
+const expect = chai.expect;
 
 describe('the dahda server', ()=> {
 
@@ -15,6 +16,13 @@ describe('the dahda server', ()=> {
 
   before(()=>{
     server=app.listen(8080);
+  })
+
+  it('should reload', async ()=>{
+    console.log('clearing tables...');
+    const res = await chai.request(app).get('/reload');
+    res.ok.should.be.true;
+    return;
   })
 
   it('should login user 1', async ()=>{
@@ -57,6 +65,7 @@ describe('the dahda server', ()=> {
     console.log(res.body);
     res.ok.should.be.true;
     res.body.res.should.equal(-1);
+    expect(res.body.tokens).include.members(['token1', 'token2']);
     return;
   })
 
