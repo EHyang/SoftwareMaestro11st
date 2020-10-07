@@ -16,6 +16,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteReadOnlyDatabaseException;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +31,8 @@ import android.widget.Toast;
 public class GeneralUser extends AppCompatActivity {
 
 
+    private final String dbName = "Dahda";
+
     String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
     private BluetoothAdapter bluetoothAdapter;
     private static final int REQUEST_ENABLE_BT = 101;
@@ -35,12 +40,16 @@ public class GeneralUser extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PERMISSION = 103;
 
     public static String mykey;
+    String latitude;
+    String longitude;
+
+    SQLiteDatabase database = null;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String latitude = intent.getStringExtra("latitude");
-            String longitude = intent.getStringExtra("longitude");
+            latitude = intent.getStringExtra("latitude");
+            longitude = intent.getStringExtra("longitude");
 
             Log.d("Check Receicer", latitude + " /// " + longitude);
 
@@ -52,8 +61,18 @@ public class GeneralUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
 
+        database = this.openOrCreateDatabase(dbName,MODE_PRIVATE,null);
+        database.execSQL("CREATE TABLE IF NOT EXISTS " + dbName
+                + "(time VARCHAR(20), lcoation VARCHAR(20))");
+
+        database.execSQL("INSERT INTO " + dbName +
+                "(time,location) Values(" + "2019"+","+ "korea" +");");
+
+
+
         Intent intent = getIntent();
         mykey = intent.getStringExtra("mykey");
+
 
 
         requestPermission();
@@ -185,6 +204,14 @@ public class GeneralUser extends AppCompatActivity {
 
         String getTime = time;
         Log.d("스캔했을 때 위치정보가져오는 메서드", getTime);
+
+
+        SQLiteDatabase dbhwang = this.openOrCreateDatabase(dbName,MODE_PRIVATE,null);
+
+        Cursor cursor = dbhwang.rawQuery("SELECT * FROM " + dbName,null);
+
+        Log.d("dbInformation" , cursor.getString(cursor.getColumnIndex("time")));
+        Log.d("dbInformation2" , cursor.getString(cursor.getColumnIndex("location")));
 
 
 
