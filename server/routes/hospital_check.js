@@ -1,8 +1,11 @@
+/*
+2020-10-07 태양
+수집된 선별진료소 목록을 확인하기 위해 임시로 만들어짐.
+*/
+
 var express = require('express');
-var request = require('request');
-var xml2js = require('xml2js');
-var parser = new xml2js.Parser();
 var db = require('../dbconfig');
+
 var router = express.Router();
 
 router.get('/', async function(req, res) {
@@ -18,7 +21,7 @@ router.get('/', async function(req, res) {
     }
     show += "</table></body></html>";
     res.send(show);
-  });
-});
+  }); // select db -- end
+}); // router -- end
 
 module.exports = router;
