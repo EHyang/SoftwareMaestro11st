@@ -39,6 +39,7 @@ router.post('/', function(req, res) {
             res.json({
               'res': '-1'
             });
+            return;
           } else {
             console.log('input success!');
           }
