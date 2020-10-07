@@ -1,3 +1,10 @@
+/*
+2020-10-07 태양
+login.js을 대체하여 사용중임.
+
+코드 정리 필요
+*/
+
 var express = require('express');
 var db = require('../dbconfig');
 var uuid4 = require('uuid4');
@@ -8,7 +15,7 @@ router.post('/', function(req, res) {
   console.log(req.body);
   var google_id = req.body.google_id;
   var token = req.body.token;
-  var my_key;
+  var my_key = req.body.google_id;
   var login_sql = 'select * From testmembers where google_id = ?';
 
   db.mysql.query(login_sql, google_id, function(err, rows, fields) {
@@ -24,7 +31,6 @@ router.post('/', function(req, res) {
 
         var insert_sql = 'insert into testmembers (google_id,token,my_key,lastest_use) values(?,?,?,?)';
         var now_time = new Date();
-        my_key = 'data123';
 
         var param = [google_id, token, my_key, now_time];
         db.mysql.query(insert_sql, param, function(err, result) {
@@ -67,9 +73,9 @@ router.post('/', function(req, res) {
           'res': my_key
         });
         //  res.render('input_data');
-      }
-    }
-  });
-});
+      } // else -- end
+    } // else -- end
+  }); // login_sql db -- end
+}); // router -- end
 
 module.exports = router;
