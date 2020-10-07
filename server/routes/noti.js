@@ -1,3 +1,8 @@
+/*
+2020-10-07 태양
+코드 정리 필요
+*/
+
 var express = require('express');
 var db = require('../dbconfig');
 var router = express.Router();
