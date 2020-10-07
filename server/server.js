@@ -14,6 +14,7 @@ var hospRouter  = require('./routes/hopital_crawling');
 var hospitalRouter = require('./routes/hospital_check');
 var inputRouter = require('./routes/input');
 var testlogin = require('./routes/testlogin');
+var reloadRouter = require('./routes/reload');
 
 var confirm = require('./routes/confirmed');
 var testnoti = require('./routes/noti');
@@ -41,6 +42,7 @@ app.use('/hospital_check', hospitalRouter);
 
 app.use('/input', inputRouter);
 app.use('/testlogin', testlogin);
+app.use('/reload', reloadRouter);
 
 app.use('/noti', testnoti);
 app.use('/confirmed', confirm);
