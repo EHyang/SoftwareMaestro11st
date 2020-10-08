@@ -9,7 +9,7 @@ var db = require('../dbconfig');
 var router = express.Router();
 
 router.get('/', async function(req, res) {
-  var show = "<html><head><title>시발...</title></head><body><table><th>num</th><th>name</th><th>x</th><th>y</th>";
+  var show = "<html><head><title>선별진료소 목록</title></head><body><table><th>num</th><th>name</th><th>x</th><th>y</th>";
   await db.mysql.query("select * from hospital", function(err, rows, fields) {
     for (var i = 0; i < rows.length; i++) {
       show += "<tr>";
