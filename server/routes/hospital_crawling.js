@@ -19,6 +19,7 @@ var router = express.Router();
 
 router.get('/', async function(req, res) {
   var check = req.query.check;
+  let id = 1;
 
   db.mysql.query("delete from hospital", function(err, result) {
     if (err) {
