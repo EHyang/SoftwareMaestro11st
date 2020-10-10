@@ -9,6 +9,13 @@ hospital_crawling.js 는 매일 특정 시간마다 동작하도록 설정해야
 hospital_crawling.js 는 node-cron 을 사용하여 특정 시간 마다 동작하도록 설정함.
 기존 res.redirect를 통해 hostial_check로 넘어갔던 방법대신, 크롤링을 통해 데이터 베이스에 직접 추가하도록 설정하였다.
 
+cron
+* * * * * * 매초
+* * * * * 매분
+* * * * 매시간
+* * * 매일
+* * 매달
+
 */
 
 var express = require('express');
@@ -21,7 +28,7 @@ var cheerio = require('cheerio');
 var db = require('../dbconfig');
 var cron = require('node-cron');
 
-cron.schedule('* * * * *', async () => {
+cron.schedule('* * * *', async () => {
   var time = new Date();
 
   db.mysql.query("update tt set time = ? where num = 1", time, function(err, result) {
