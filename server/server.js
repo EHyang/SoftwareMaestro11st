@@ -1,3 +1,9 @@
+/*
+2020-10-10 태양
+사용하지 않는 라우터 정리.
+*/
+
+
 var express    = require('express');
 var bodyParser = require('body-parser');
 //var session    = require('express-session');
@@ -10,7 +16,7 @@ var app = express();
 var indexRouter = require('./routes/index');
 //var scanRouter = require('./routes/scan');
 var testRouter  = require('./routes/test');
-var hospRouter  = require('./routes/hospital_crawling');
+//var hospRouter  = require('./routes/hospital_crawling');
 var hospitalRouter = require('./routes/hospital_check');
 var inputRouter = require('./routes/input');
 var testlogin = require('./routes/testlogin');
@@ -36,7 +42,7 @@ app.use('/', indexRouter);
 //app.use('/login', loginRouter);
 //app.use('/scan', scanRouter);
 app.use('/test', testRouter);
-app.use('/hospital_crawling', hospRouter);
+//app.use('/hospital_crawling', hospRouter);
 app.use('/hospital_check', hospitalRouter);
 
 app.use('/input', inputRouter);
