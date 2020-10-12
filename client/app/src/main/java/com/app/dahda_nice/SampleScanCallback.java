@@ -4,11 +4,8 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.ParcelUuid;
 import android.util.Log;
-
-import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -72,7 +69,7 @@ public class SampleScanCallback extends ScanCallback {
         Log.d("HWANG DATA123", data);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://dahda.swm.epikem.com")
+                .baseUrl("http://3.34.117.4:3000")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -80,7 +77,7 @@ public class SampleScanCallback extends ScanCallback {
 
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
-        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String getTime = simpleDate.format(mDate);
 
         GeneralUser location = new GeneralUser();
@@ -88,7 +85,7 @@ public class SampleScanCallback extends ScanCallback {
 
 
 
-        String key = MyService.mykey;
+        String key = BackgroundService.mykey;
 
         Log.d("!!!!!!Key!!!", key);
 

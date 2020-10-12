@@ -16,10 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteReadOnlyDatabaseException;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,43 +40,40 @@ public class GeneralUser extends AppCompatActivity {
     String latitude;
     String longitude;
 
-    SQLiteDatabase database = null;
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            latitude = intent.getStringExtra("latitude");
-            longitude = intent.getStringExtra("longitude");
-
-            Log.d("Check Receicer", latitude + " /// " + longitude);
-
-        }
-    };
+//    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            latitude = intent.getStringExtra("latitude");
+//            longitude = intent.getStringExtra("longitude");
+//
+//            Log.d("Check Receiver", latitude + " /// " + longitude);
+//
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
 
-        database = this.openOrCreateDatabase(dbName,MODE_PRIVATE,null);
-        database.execSQL("CREATE TABLE IF NOT EXISTS " + dbName
-                + "(time VARCHAR(20), lcoation VARCHAR(20))");
-
-        database.execSQL("INSERT INTO " + dbName +
-                "(time,location) Values(" + "2019"+","+ "korea" +");");
-
+//        database = this.openOrCreateDatabase(dbName,MODE_PRIVATE,null);
+//        database.execSQL("CREATE TABLE IF NOT EXISTS " + dbName
+//                + "(time VARCHAR(20), lcoation VARCHAR(20))");
+//
+//        database.execSQL("INSERT INTO " + dbName +
+//                "(time,location) Values(" + "2019"+","+ "korea" +");");
 
 
         Intent intent = getIntent();
         mykey = intent.getStringExtra("mykey");
 
 
-
         requestPermission();
 
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-                new IntentFilter("location"));
+//        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+//                new IntentFilter("location"));
 
 
         ImageView imageView = findViewById(R.id.gogogo);
@@ -144,7 +138,8 @@ public class GeneralUser extends AppCompatActivity {
             }
         }
         if (index != -1) {
-            ActivityCompat.requestPermissions(this, requestPermissions, REQUEST_PERMISSION);
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSION);
+
         } else {
             scanLeDevice(true);
         }
@@ -175,7 +170,7 @@ public class GeneralUser extends AppCompatActivity {
 
     private void scanLeDevice(boolean b) {
 
-        Intent intent = new Intent(getApplicationContext(), AdvertiserService.class);
+        Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
         Log.d("User!!!", mykey + "plz");
         intent.putExtra("mykey", mykey);
 
@@ -206,14 +201,12 @@ public class GeneralUser extends AppCompatActivity {
         Log.d("스캔했을 때 위치정보가져오는 메서드", getTime);
 
 
-        SQLiteDatabase dbhwang = this.openOrCreateDatabase(dbName,MODE_PRIVATE,null);
-
-        Cursor cursor = dbhwang.rawQuery("SELECT * FROM " + dbName,null);
-
-        Log.d("dbInformation" , cursor.getString(cursor.getColumnIndex("time")));
-        Log.d("dbInformation2" , cursor.getString(cursor.getColumnIndex("location")));
-
-
+//        SQLiteDatabase dbhwang = this.openOrCreateDatabase(dbName,MODE_PRIVATE,null);
+//
+//        Cursor cursor = dbhwang.rawQuery("SELECT * FROM " + dbName,null);
+//
+//        Log.d("dbInformation" , cursor.getString(cursor.getColumnIndex("time")));
+//        Log.d("dbInformation2" , cursor.getString(cursor.getColumnIndex("location")));
 
 
     }

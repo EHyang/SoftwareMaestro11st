@@ -18,6 +18,7 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -26,18 +27,35 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class AdvertiserService extends Service implements LocationListener {
+public class BackgroundService extends Service implements LocationListener {
 
-    private static final String TAG = AdvertiserService.class.getSimpleName();
+    private static final String TAG = BackgroundService.class.getSimpleName();
 
     private static final int FOREGROUND_NOTIFICATION_ID = 1;
 
@@ -82,7 +100,7 @@ public class AdvertiserService extends Service implements LocationListener {
      */
     private long TIMEOUT = TimeUnit.MILLISECONDS.convert(10, TimeUnit.MINUTES);
 
-    private String mykey;
+    static String mykey;
 
 
     /**
@@ -93,78 +111,91 @@ public class AdvertiserService extends Service implements LocationListener {
     Location location;
     double latitude;
     double longitude;
-    protected LocationManager locationManager;
-
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
-
-    private Location getLocation() {
-        locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
-
-        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-        if (!isGPSEnabled && !isNetworkEnabled) {
-
-        } else {
 
 
-            int hasFineLocationPermission = ContextCompat.checkSelfPermission(mContext,
-                    Manifest.permission.ACCESS_FINE_LOCATION);
-            int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(mContext,
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
+    private static final long MIN_TIME_BW_UPDATES = 5000;
 
 
-            if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                    hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 3000;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationRequest locationRequest;
+    private LocationSettingsRequest locationSettingsRequest;
 
-
-            } else
-                return null;
-
-
-            if (isNetworkEnabled) {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-
-                if (locationManager != null) {
-                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    if (location != null) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-
-                        Log.d("네트워크위치", location.getLongitude() + " /// " + location.getLatitude());
-
-                        Intent intent = new Intent("location");
-                        intent.putExtra("latitude", location.getLatitude());
-                        intent.putExtra("longitude", location.getLongitude());
-                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-                    }
-                }
-            }
-
-
-            if (isGPSEnabled) {
-                if (location == null) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    if (locationManager != null) {
-                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-
-                            Log.d("GPS 위치", location.getLongitude() + " /// " + location.getLatitude());
-
-                            Intent intent = new Intent("location");
-                            intent.putExtra("latitude", location.getLatitude());
-                            intent.putExtra("longitude", location.getLongitude());
-                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-                        }
-                    }
-                }
-            }
-        }
-        return location;
-    }
+//    protected LocationManager locationManager;
+//
+//    private Location getLocation() {
+//
+//        mContext = getBaseContext();
+//        locationManager = (LocationManager) getBaseContext().getSystemService(LOCATION_SERVICE);
+//
+//        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+//
+//        if (!isGPSEnabled && !isNetworkEnabled) {
+//            Log.d("Gps,Network No!!", "No!!");
+//        } else {
+//            Log.d("possible location", "yes!! enough");
+//
+//            int hasFineLocationPermission = ContextCompat.checkSelfPermission(mContext,
+//                    Manifest.permission.ACCESS_FINE_LOCATION);
+//            int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(mContext,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION);
+//
+//
+//            if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+//                    hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+//
+//
+//            } else
+//                return null;
+//
+//
+//            if (isNetworkEnabled) {
+//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+//
+//                if (locationManager != null) {
+//                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                    if (location != null) {
+//                        latitude = location.getLatitude();
+//                        longitude = location.getLongitude();
+//
+//                        Log.d("네트워크위치", location.getLongitude() + " /// " + location.getLatitude());
+//
+//                        Intent intent = new Intent("location");
+//                        intent.putExtra("latitude", location.getLatitude());
+//                        intent.putExtra("longitude", location.getLongitude());
+//                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+//                    }
+//                }
+//            }
+//
+//
+//            if (isGPSEnabled) {
+//                if (location == null) {
+//                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+//                    if (locationManager != null) {
+//                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                        if (location != null) {
+//                            latitude = location.getLatitude();
+//                            longitude = location.getLongitude();
+//
+//                            Log.d("GPS 위치", location.getLongitude() + " /// " + location.getLatitude());
+//
+//                            Intent intent = new Intent("location");
+//                            intent.putExtra("latitude", location.getLatitude());
+//                            intent.putExtra("longitude", location.getLongitude());
+//                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        return location;
+//
+//    }
 
     @Override
     public void onCreate() {
@@ -172,8 +203,8 @@ public class AdvertiserService extends Service implements LocationListener {
         super.onCreate();
 
         Log.d("Service !! Create", " Service Create");
-        getLocation();
 
+        initData();
         handler = new Handler();
 
         final BluetoothManager bluetoothManager =
@@ -384,6 +415,7 @@ public class AdvertiserService extends Service implements LocationListener {
             super.onStartSuccess(settingsInEffect);
             Log.d(TAG, "Advertising successfully started");
         }
+
     }
 
     /**
@@ -400,7 +432,7 @@ public class AdvertiserService extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("AdvertiseService in??" , " in?" + intent.getStringExtra("mykey"));
+        Log.d("AdvertiseService in??", " in?" + intent.getStringExtra("mykey"));
 
         if (intent == null) {
             return Service.START_STICKY;
@@ -412,14 +444,44 @@ public class AdvertiserService extends Service implements LocationListener {
             startAdvertising();
             setTimeout();
             scanLeDevice(true);
+//            getLocation();
+            startLocationUpdates();
         }
 
         return super.onStartCommand(intent, flags, startId);
     }
 
+    private LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+            Location currentLocation = locationResult.getLastLocation();
+            Log.d("Locations", currentLocation.getLatitude() + "," + currentLocation.getLongitude());
+            //Share/Publish Location
+        }
+    };
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mFusedLocationClient.requestLocationUpdates(this.locationRequest,
+                this.locationCallback, Looper.myLooper());
+    }
+
+    private void initData() {
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mFusedLocationClient =
+                LocationServices.getFusedLocationProviderClient(getApplicationContext());
+
+    }
 
     private void scanLeDevice(final boolean enable) {
-        Log.d("스캔하고 있니 진짜로??!!!?","엄 화나네");
+        Log.d("스캔하고 있니 진짜로??!!!?", "엄 화나네");
         if (enable) {
             // Stops scanning after a pre-defined scan period.
             handler.postDelayed(new Runnable() {
@@ -445,7 +507,7 @@ public class AdvertiserService extends Service implements LocationListener {
 
             scanCallback = new SampleScanCallback();
             bluetoothLeScanner.startScan(new ArrayList<ScanFilter>(), scanSettings, scanCallback);
-            Log.d("hwanghwang!!","fjfj");
+            Log.d("hwanghwang!!", "fjfj");
 
         } else {
             hwang = false;

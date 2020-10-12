@@ -10,6 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import retrofit2.http.GET;
+
 public class LoadingActivity extends AppCompatActivity {
 
 
