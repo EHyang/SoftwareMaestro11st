@@ -5,18 +5,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,43 +33,26 @@ public class GeneralUser extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PERMISSION = 103;
 
     public static String mykey;
-    String latitude;
-    String longitude;
+    public static String aLatitude;
+    public static String aLongitude;
 
 
-//    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            latitude = intent.getStringExtra("latitude");
-//            longitude = intent.getStringExtra("longitude");
-//
-//            Log.d("Check Receiver", latitude + " /// " + longitude);
-//
-//        }
-//    };
+    Database database;
+    DatabaseControl databaseControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
 
-//        database = this.openOrCreateDatabase(dbName,MODE_PRIVATE,null);
-//        database.execSQL("CREATE TABLE IF NOT EXISTS " + dbName
-//                + "(time VARCHAR(20), lcoation VARCHAR(20))");
-//
-//        database.execSQL("INSERT INTO " + dbName +
-//                "(time,location) Values(" + "2019"+","+ "korea" +");");
-
+        database = new Database(this, "Dahda", null, 1);
+        databaseControl = new DatabaseControl(database);
 
         Intent intent = getIntent();
         mykey = intent.getStringExtra("mykey");
 
 
         requestPermission();
-
-
-//        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-//                new IntentFilter("location"));
 
 
         ImageView imageView = findViewById(R.id.gogogo);
@@ -174,41 +153,25 @@ public class GeneralUser extends AppCompatActivity {
         Log.d("User!!!", mykey + "plz");
         intent.putExtra("mykey", mykey);
 
-//        Intent intent = new Intent(getApplicationContext(), MyService.class);
-//        intent.putExtra("mykey", mykey);
-
-//        Intent intentLocation = new Intent(getApplicationContext(), LocationInfo.class);
-//        Log.d("LocationServiceCheck!", "ForegroundS");
 
         if (Build.VERSION.SDK_INT >= 26) {
             Log.d("SDK_INT >= 26", "Start ForegroundService");
             getApplicationContext().startForegroundService(intent);
-//            getApplicationContext().startForegroundService(intent);
-//            getApplicationContext().startForegroundService(intentLocation);
         } else {
             Log.d("SDK_INT < 26", "Start Service");
-//            startService(intent);
             startService(intent);
-//            startService(intentLocation);
 
         }
     }
 
 
-    public void location(String time) {
+    public void scanData(String data, int time) {
+        databaseControl.select(data, time, aLatitude, aLongitude);
+    }
 
-        String getTime = time;
-        Log.d("스캔했을 때 위치정보가져오는 메서드", getTime);
-
-
-//        SQLiteDatabase dbhwang = this.openOrCreateDatabase(dbName,MODE_PRIVATE,null);
-//
-//        Cursor cursor = dbhwang.rawQuery("SELECT * FROM " + dbName,null);
-//
-//        Log.d("dbInformation" , cursor.getString(cursor.getColumnIndex("time")));
-//        Log.d("dbInformation2" , cursor.getString(cursor.getColumnIndex("location")));
-
-
+    public void locationData(String latitude, String longitude) {
+        aLatitude = latitude;
+        aLongitude = longitude;
     }
 
 
@@ -221,5 +184,11 @@ public class GeneralUser extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        databaseControl.dbclose();
     }
 }

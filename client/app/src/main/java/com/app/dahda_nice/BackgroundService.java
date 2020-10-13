@@ -94,6 +94,7 @@ public class BackgroundService extends Service implements LocationListener {
 
     private Handler handler;
 
+    GeneralUser generalUser = new GeneralUser();
 
     /**
      * Length of time to allow advertising before automatically shutting off. (10 minutes)
@@ -117,85 +118,11 @@ public class BackgroundService extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 5000;
 
 
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 3000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
     private LocationSettingsRequest locationSettingsRequest;
 
-//    protected LocationManager locationManager;
-//
-//    private Location getLocation() {
-//
-//        mContext = getBaseContext();
-//        locationManager = (LocationManager) getBaseContext().getSystemService(LOCATION_SERVICE);
-//
-//        boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-//        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-//
-//        if (!isGPSEnabled && !isNetworkEnabled) {
-//            Log.d("Gps,Network No!!", "No!!");
-//        } else {
-//            Log.d("possible location", "yes!! enough");
-//
-//            int hasFineLocationPermission = ContextCompat.checkSelfPermission(mContext,
-//                    Manifest.permission.ACCESS_FINE_LOCATION);
-//            int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(mContext,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION);
-//
-//
-//            if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-//                    hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
-//
-//
-//            } else
-//                return null;
-//
-//
-//            if (isNetworkEnabled) {
-//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-//
-//                if (locationManager != null) {
-//                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                    if (location != null) {
-//                        latitude = location.getLatitude();
-//                        longitude = location.getLongitude();
-//
-//                        Log.d("네트워크위치", location.getLongitude() + " /// " + location.getLatitude());
-//
-//                        Intent intent = new Intent("location");
-//                        intent.putExtra("latitude", location.getLatitude());
-//                        intent.putExtra("longitude", location.getLongitude());
-//                        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-//                    }
-//                }
-//            }
-//
-//
-//            if (isGPSEnabled) {
-//                if (location == null) {
-//                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-//                    if (locationManager != null) {
-//                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                        if (location != null) {
-//                            latitude = location.getLatitude();
-//                            longitude = location.getLongitude();
-//
-//                            Log.d("GPS 위치", location.getLongitude() + " /// " + location.getLatitude());
-//
-//                            Intent intent = new Intent("location");
-//                            intent.putExtra("latitude", location.getLatitude());
-//                            intent.putExtra("longitude", location.getLongitude());
-//                            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//
-//        return location;
-//
-//    }
 
     @Override
     public void onCreate() {
@@ -444,7 +371,6 @@ public class BackgroundService extends Service implements LocationListener {
             startAdvertising();
             setTimeout();
             scanLeDevice(true);
-//            getLocation();
             startLocationUpdates();
         }
 
@@ -455,7 +381,11 @@ public class BackgroundService extends Service implements LocationListener {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
+
             Location currentLocation = locationResult.getLastLocation();
+            String latitude = String.valueOf( currentLocation.getLatitude());
+            String longitude = String.valueOf(currentLocation.getLongitude());
+            generalUser.locationData(latitude,longitude);
             Log.d("Locations", currentLocation.getLatitude() + "," + currentLocation.getLongitude());
             //Share/Publish Location
         }

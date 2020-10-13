@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,13 +76,18 @@ public class SampleScanCallback extends ScanCallback {
 
         Api api = retrofit.create(Api.class);
 
-        long now = System.currentTimeMillis();
-        Date mDate = new Date(now);
-        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String getTime = simpleDate.format(mDate);
+        int time = (int) (System.currentTimeMillis());
+        Timestamp timestamp = new Timestamp(time);
+        int ts = Integer.parseInt(timestamp.toString());
+
+
+//        long now = System.currentTimeMillis();
+//        Date mDate = new Date(now);
+//        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String getTime = simpleDate.format(mDate);
 
         GeneralUser location = new GeneralUser();
-        location.location(getTime);
+        location.scanData(data,ts);
 
 
 
@@ -92,7 +98,7 @@ public class SampleScanCallback extends ScanCallback {
         ArrayList<ScanData> scanData = new ArrayList<>();
 
 
-        scanData.add(new ScanData(key, data, getTime));
+        scanData.add(new ScanData(key, data, ts));
 
         api.scanData(scanData).enqueue(new Callback<LoginDao>() {
             @Override
