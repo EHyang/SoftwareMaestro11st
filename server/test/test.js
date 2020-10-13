@@ -12,3 +12,4 @@ require('./case2');
 require('./scenario1');
 require('./scenario2');
 require('./scenario3');
+require('./scenario4');
