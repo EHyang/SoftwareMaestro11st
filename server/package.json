@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --watch ./test/test.js",
+    "test-watch": "mocha --watch ./test/test.js",
+    "test": "mocha ./test/test.js --exit",
     "watch": "nodemon --watch index.js",
     "start": "nodemon server.js"
   },
