@@ -5,7 +5,7 @@ my_key는 현재 google_id 를 사용함.
 */
 
 var express = require('express');
-var db = require('../dbconfig');
+var db = require('../dbconfig-load');
 var router = express.Router();
 
 router.post('/', function(req, res) {

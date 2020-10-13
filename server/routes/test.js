@@ -8,7 +8,7 @@ var express = require('express');
 var request = require('request');
 var xml2js = require('xml2js');
 var parser = new xml2js.Parser();
-var db = require('../dbconfig');
+var db = require('../dbconfig-load');
 var router = express.Router();
 
 router.get('/', async function(req, res) {

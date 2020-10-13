@@ -4,7 +4,7 @@
 */
 
 var express = require('express');
-var db = require('../dbconfig');
+var db = require('../dbconfig-load');
 var router = express.Router();
 
 var FCM = require('fcm-node');

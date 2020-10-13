@@ -6,7 +6,7 @@ login.js을 대체하여 사용중임.
 */
 
 var express = require('express');
-var db = require('../dbconfig');
+var db = require('../dbconfig-load');
 var uuid4 = require('uuid4');
 var router = express.Router();
 

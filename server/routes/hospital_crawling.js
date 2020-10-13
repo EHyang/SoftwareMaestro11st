@@ -13,7 +13,7 @@ var parser = new xml2js.Parser();
 
 var axios = require('axios');
 var cheerio = require('cheerio');
-var db = require('../dbconfig');
+var db = require('../dbconfig-load');
 
 var router = express.Router();
 
