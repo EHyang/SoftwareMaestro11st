@@ -70,7 +70,7 @@ cron.schedule('* * * *', async () => {
 
       await db.mysql.query(insert_sql, param, function(err, result) {
         if (err) {
-          console.log("DB input err" + err);
+          //console.log("DB input err" + err);
         } else {
           //console.log(hospname + " DB input");
         }
@@ -95,7 +95,7 @@ cron.schedule('* * * *', async () => {
         if ($(this).find('td.name strong').text()) {
           await findStar($(this).find('td.name strong').text()) + '<br>';
         } else {
-          console.log("ㄴㄴ");
+          console.log("crawling failed");
         }
       }); // each -- end
       // if (number === 30) {
