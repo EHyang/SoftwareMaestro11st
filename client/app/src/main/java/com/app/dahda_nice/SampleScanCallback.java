@@ -32,6 +32,9 @@ public class SampleScanCallback extends ScanCallback {
     Context context;
     GeneralUser generalUser;
 
+    String getTime;
+    String daTa;
+
     @Override
     public void onBatchScanResults(List<ScanResult> results) {
         super.onBatchScanResults(results);
@@ -61,13 +64,14 @@ public class SampleScanCallback extends ScanCallback {
 
     }
 
-    private void sendAdvertiseData(String data) {
+    private void sendAdvertiseData(String d) {
 
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
 
-        Log.d("HWANG DATA123", data);
+        daTa = d;
+        Log.d("HWANG DATA123kkk", daTa);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://3.34.117.4:3000")
@@ -76,29 +80,22 @@ public class SampleScanCallback extends ScanCallback {
 
         Api api = retrofit.create(Api.class);
 
-        int time = (int) (System.currentTimeMillis());
-        Timestamp timestamp = new Timestamp(time);
-        int ts = Integer.parseInt(timestamp.toString());
 
-
-//        long now = System.currentTimeMillis();
-//        Date mDate = new Date(now);
-//        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        String getTime = simpleDate.format(mDate);
-
-        GeneralUser location = new GeneralUser();
-        location.scanData(data,ts);
-
+        long now = System.currentTimeMillis();
+        Date mDate = new Date(now);
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        getTime = simpleDate.format(mDate);
 
 
         String key = BackgroundService.mykey;
 
-        Log.d("!!!!!!Key!!!", key);
+        Log.d("scanCheck!!33", key);
 
         ArrayList<ScanData> scanData = new ArrayList<>();
 
 
-        scanData.add(new ScanData(key, data, ts));
+        scanData.add(new ScanData(key, daTa, getTime));
+
 
         api.scanData(scanData).enqueue(new Callback<LoginDao>() {
             @Override
@@ -108,6 +105,10 @@ public class SampleScanCallback extends ScanCallback {
 
                 if (response.isSuccessful()) {
                     Log.d("Scandata 성공!!!!!!!!!", data.getRes() + " //// ");
+
+
+                    Log.d("보내줄거얌??", "맞앙??");
+                    SendTest.scanData(daTa, getTime);
                 }
 
             }

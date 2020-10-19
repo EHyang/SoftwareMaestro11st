@@ -27,7 +27,7 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "create table if not exists " + TABLE_NAME + "(" +
                 ID + " text not null , " +
-                COL_1+ " integer not null , " +
+                COL_1+ " datetime not null , " +
                 COL_2+ " text not null , " +
                 COL_3+ " text not null);";
 

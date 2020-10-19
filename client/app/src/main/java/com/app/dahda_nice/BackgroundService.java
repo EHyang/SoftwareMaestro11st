@@ -94,7 +94,8 @@ public class BackgroundService extends Service implements LocationListener {
 
     private Handler handler;
 
-    GeneralUser generalUser = new GeneralUser();
+    SendTest sendTest = new SendTest();
+//    GeneralUser generalUser = new GeneralUser();
 
     /**
      * Length of time to allow advertising before automatically shutting off. (10 minutes)
@@ -118,7 +119,7 @@ public class BackgroundService extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 5000;
 
 
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 3000;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
     private LocationSettingsRequest locationSettingsRequest;
@@ -255,7 +256,6 @@ public class BackgroundService extends Service implements LocationListener {
                     .build();
         }
 
-        Log.d("여기까지는 들어오나?", " 사실이야? ");
         startForeground(FOREGROUND_NOTIFICATION_ID, n);
 
 
@@ -383,9 +383,12 @@ public class BackgroundService extends Service implements LocationListener {
             super.onLocationResult(locationResult);
 
             Location currentLocation = locationResult.getLastLocation();
-            String latitude = String.valueOf( currentLocation.getLatitude());
+            String latitude = String.valueOf(currentLocation.getLatitude());
             String longitude = String.valueOf(currentLocation.getLongitude());
-            generalUser.locationData(latitude,longitude);
+            SendTest.aLongitude = longitude;
+            SendTest.aLatitude = latitude;
+
+
             Log.d("Locations", currentLocation.getLatitude() + "," + currentLocation.getLongitude());
             //Share/Publish Location
         }
@@ -411,7 +414,7 @@ public class BackgroundService extends Service implements LocationListener {
     }
 
     private void scanLeDevice(final boolean enable) {
-        Log.d("스캔하고 있니 진짜로??!!!?", "엄 화나네");
+        Log.d("scanLeDevice Check", "Check");
         if (enable) {
             // Stops scanning after a pre-defined scan period.
             handler.postDelayed(new Runnable() {
@@ -424,7 +427,7 @@ public class BackgroundService extends Service implements LocationListener {
                         public void run() {
                             scanLeDevice(true);
                         }
-                    }, 5000);
+                    }, 15000);
                 }
             }, 5000);
 
@@ -437,7 +440,9 @@ public class BackgroundService extends Service implements LocationListener {
 
             scanCallback = new SampleScanCallback();
             bluetoothLeScanner.startScan(new ArrayList<ScanFilter>(), scanSettings, scanCallback);
-            Log.d("hwanghwang!!", "fjfj");
+            Log.d("mykeyCheck", mykey);
+
+
 
         } else {
             hwang = false;

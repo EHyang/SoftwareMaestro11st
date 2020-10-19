@@ -33,8 +33,6 @@ public class GeneralUser extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PERMISSION = 103;
 
     public static String mykey;
-    public static String aLatitude;
-    public static String aLongitude;
 
 
     Database database;
@@ -164,15 +162,24 @@ public class GeneralUser extends AppCompatActivity {
         }
     }
 
-
-    public void scanData(String data, int time) {
-        databaseControl.select(data, time, aLatitude, aLongitude);
+    public void sendDatabase(String data, String getTime, String aLatitude, String aLongitude) {
+        databaseControl.select(data, getTime, aLatitude, aLongitude);
     }
 
-    public void locationData(String latitude, String longitude) {
-        aLatitude = latitude;
-        aLongitude = longitude;
-    }
+
+//    public void scanData(String data, String tm) {
+//
+//        if (aLatitude != null && aLongitude != null) {
+//            Log.d("null Check",data+ ", " + tm+ ", " +aLatitude+ ", " +aLongitude);
+//            databaseControl.select(data, tm, aLatitude, aLongitude);
+//        }
+//    }
+//
+//
+//    public void locationData(String latitude, String longitude) {
+//        aLatitude = latitude;
+//        aLongitude = longitude;
+//    }
 
 
     @Override
@@ -189,6 +196,7 @@ public class GeneralUser extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        databaseControl.delete();
         databaseControl.dbclose();
     }
 }

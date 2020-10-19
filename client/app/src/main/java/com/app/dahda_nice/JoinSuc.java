@@ -8,12 +8,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+
+
 public class JoinSuc extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_suc);
+
 
         Button button = findViewById(R.id.button);
 

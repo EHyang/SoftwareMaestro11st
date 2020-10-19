@@ -15,10 +15,10 @@ public class ScanData {
 
     @Expose
     @SerializedName("scan_time")
-    int scan_time;
+    String scan_time;
 
 
-    public ScanData(String my_key, String scan_key, int scan_time) {
+    public ScanData(String my_key, String scan_key, String scan_time) {
         this.my_key = my_key;
         this.scan_key = scan_key;
         this.scan_time = scan_time;

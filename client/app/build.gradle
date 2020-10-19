@@ -60,5 +60,9 @@ dependencies {
 
     implementation 'me.relex:circleindicator:1.2.2'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
+
+
+
 }
 apply plugin: 'com.google.gms.google-services'

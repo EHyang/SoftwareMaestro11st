@@ -3,19 +3,20 @@ package com.app.dahda_nice;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class DatabaseControl {
 
     Database database;
     SQLiteDatabase sqLiteDatabase;
-    private final int PIVOT_TIME = 504;
+    private final int PIVOT_TIME = 14;
 
     public DatabaseControl(Database database) {
         this.database = database;
     }
 
 
-    public void insert(String id, int time, String latitude, String longitude) {
+    public void insert(String id, String time, String latitude, String longitude) {
         sqLiteDatabase = database.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(database.ID, id);
@@ -27,7 +28,8 @@ public class DatabaseControl {
 
     }
 
-    public void select(String id, int time, String latitude, String longitude) {
+    public void select(String id, String time, String latitude, String longitude) {
+        Log.d("databaseCheck", id +", "+ time +", "+ latitude+", "+longitude );
         sqLiteDatabase = database.getWritableDatabase();
 
         String sqlSelect = "SELECT id FROM dahda WHERE id ==" + id;
@@ -44,7 +46,7 @@ public class DatabaseControl {
 
     }
 
-    public void update(String id, int time, String latitude, String longitude) {
+    public void update(String id, String time, String latitude, String longitude) {
         sqLiteDatabase = database.getWritableDatabase();
         String sqlUpdate = "UPDATE dahda SET time=" + time + ", latitude=" + latitude + ", " +
                 "longitude=" + longitude +" WHERE id =="+id;
@@ -52,9 +54,10 @@ public class DatabaseControl {
 
     }
 
-    public void delete(int time) {
+    public void delete() {
         sqLiteDatabase = database.getWritableDatabase();
-        String sqlDelete = "DELETE FROM dahda a WHERE a.time +" + PIVOT_TIME + "<" +time;
+
+        String sqlDelete = "DELETE FROM dahda WHERE time < DATE_SUB(NOW(),INTEVAL14DAY)";
         sqLiteDatabase.execSQL(sqlDelete);
     }
 
