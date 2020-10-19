@@ -1,6 +1,10 @@
 /*
 2020-10-10 태양
 사용하지 않는 라우터 정리.
+
+2020-10-19 태양
+hospital_crawling을 접근해줘야 node-cron 이 실행되기에
+한번 접근함.
 */
 
 
@@ -16,7 +20,7 @@ var app = express();
 var indexRouter = require('./routes/index');
 //var scanRouter = require('./routes/scan');
 var testRouter  = require('./routes/test');
-//var hospRouter  = require('./routes/hospital_crawling');
+var hospRouter  = require('./routes/hospital_crawling');
 var hospitalRouter = require('./routes/hospital_check');
 var inputRouter = require('./routes/input');
 var testlogin = require('./routes/testlogin');
