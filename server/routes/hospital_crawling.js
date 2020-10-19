@@ -28,7 +28,7 @@ var cheerio = require('cheerio');
 var db = require('../dbconfig');
 var cron = require('node-cron');
 
-cron.schedule('* * * *', async () => {
+cron.schedule('0 * * * *', async () => {
   var time = new Date();
 
   db.mysql.query("update tt set time = ? where num = 1", time, function(err, result) {
