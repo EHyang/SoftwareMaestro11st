@@ -11,8 +11,10 @@ public class DatabaseControl {
     SQLiteDatabase sqLiteDatabase;
     private final int PIVOT_TIME = 14;
 
+
     public DatabaseControl(Database database) {
         this.database = database;
+
     }
 
 
@@ -29,12 +31,20 @@ public class DatabaseControl {
     }
 
     public void select(String id, String time, String latitude, String longitude) {
+
         Log.d("databaseCheck", id +", "+ time +", "+ latitude+", "+longitude );
+
+
+
         sqLiteDatabase = database.getWritableDatabase();
 
-        String sqlSelect = "SELECT id FROM dahda WHERE id ==" + id;
+        String sqlSelect = "SELECT ID FROM dahda WHERE id=='" + id + "'";
 
         Cursor cursor = sqLiteDatabase.rawQuery(sqlSelect, null);
+
+        while (cursor.moveToNext()) {
+            Log.d("opopCheckCheckPlz2",cursor.getString(0));
+        }
 
         if (cursor.getCount() == 0) {
             insert(id, time, latitude, longitude);
@@ -47,17 +57,21 @@ public class DatabaseControl {
     }
 
     public void update(String id, String time, String latitude, String longitude) {
+
         sqLiteDatabase = database.getWritableDatabase();
-        String sqlUpdate = "UPDATE dahda SET time=" + time + ", latitude=" + latitude + ", " +
-                "longitude=" + longitude +" WHERE id =="+id;
+        String sqlUpdate = "UPDATE dahda SET time='" + time + "', latitude='" + latitude + "', " +
+                "longitude='" + longitude +"' WHERE id =='"+id+"'";
         sqLiteDatabase.execSQL(sqlUpdate);
+
+        Log.d("databaseUpdate","checkUpdate");
 
     }
 
     public void delete() {
         sqLiteDatabase = database.getWritableDatabase();
 
-        String sqlDelete = "DELETE FROM dahda WHERE time < DATE_SUB(NOW(),INTEVAL14DAY)";
+//        String sqlDelete = "DELETE FROM dahda WHERE time < DATE_SUB(NOW(),INTEVAL14DAY)";
+        String sqlDelete = "DELETE FROM dahda";
         sqLiteDatabase.execSQL(sqlDelete);
     }
 

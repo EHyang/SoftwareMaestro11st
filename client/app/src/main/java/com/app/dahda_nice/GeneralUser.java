@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,8 +36,8 @@ public class GeneralUser extends AppCompatActivity {
     public static String mykey;
 
 
-    Database database;
-    DatabaseControl databaseControl;
+    static Database database;
+    static DatabaseControl databaseControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,10 @@ public class GeneralUser extends AppCompatActivity {
 
         database = new Database(this, "Dahda", null, 1);
         databaseControl = new DatabaseControl(database);
+        databaseControl.delete();
+
+
+
 
         Intent intent = getIntent();
         mykey = intent.getStringExtra("mykey");
@@ -162,24 +167,17 @@ public class GeneralUser extends AppCompatActivity {
         }
     }
 
-    public void sendDatabase(String data, String getTime, String aLatitude, String aLongitude) {
+    public static void sendDatabase(String data, String getTime, String aLatitude, String aLongitude) {
+
+        Log.d("null Check22", data + ", " + getTime + ", " + aLatitude + ", " + aLongitude);
+
         databaseControl.select(data, getTime, aLatitude, aLongitude);
-    }
-
-
-//    public void scanData(String data, String tm) {
-//
-//        if (aLatitude != null && aLongitude != null) {
-//            Log.d("null Check",data+ ", " + tm+ ", " +aLatitude+ ", " +aLongitude);
-//            databaseControl.select(data, tm, aLatitude, aLongitude);
+//        if (data != null && getTime != null && aLatitude != null && aLongitude != null) {
+//            Log.d("null Check33", data + ", " + getTime + ", " + aLatitude + ", " + aLongitude);
+//            databaseControl.select(data, getTime, aLatitude, aLongitude);
 //        }
-//    }
-//
-//
-//    public void locationData(String latitude, String longitude) {
-//        aLatitude = latitude;
-//        aLongitude = longitude;
-//    }
+
+    }
 
 
     @Override

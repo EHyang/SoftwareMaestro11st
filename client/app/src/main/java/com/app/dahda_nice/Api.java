@@ -20,7 +20,4 @@ public interface Api {
     Call<LoginDao> mykeyData (@Body ScanData scanData);
 
 
-
-
-
 }
