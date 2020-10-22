@@ -2,6 +2,7 @@ package com.app.dahda_nice;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -58,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Log.d("LoginActivityonCreate!!", " 뭘까아아아아?");
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         firebaseAuth = FirebaseAuth.getInstance();
 

@@ -1,5 +1,6 @@
 package com.app.dahda_nice;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -22,6 +23,8 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         startanim();
 

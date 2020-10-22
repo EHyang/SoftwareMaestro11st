@@ -22,9 +22,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".gogogo"></activity>
-        <activity android:name=".JoinSuc" />
+        <activity android:name=".JoinSuc">
+
+        </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".GeneralUser" />
+        <activity android:name=".GeneralUser">
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

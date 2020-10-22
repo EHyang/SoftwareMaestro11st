@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="60dp"
             android:fontFamily="@font/nanumsquareeb"
             android:text="확진자 접촉 시 "
             android:textColor="#000000"
@@ -40,7 +40,39 @@
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/virus2" />
+            android:src="@drawable/number3" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/nanumsquareeb"
+            android:text="확진자와 접촉을 하게 되면"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/nanumsquareeb"
+            android:text="알림을 통하여"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:fontFamily="@font/nanumsquareeb"
+            android:text="사용자에게 알려줍니다."
+            android:textColor="#000000" />
+
     </LinearLayout>
 
 </FrameLayout>

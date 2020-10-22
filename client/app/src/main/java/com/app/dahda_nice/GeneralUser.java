@@ -44,11 +44,13 @@ public class GeneralUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
 
+        getSupportActionBar().setIcon(R.drawable.number6);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         database = new Database(this, "Dahda", null, 1);
         databaseControl = new DatabaseControl(database);
         databaseControl.delete();
-
-
 
 
         Intent intent = getIntent();
@@ -56,18 +58,6 @@ public class GeneralUser extends AppCompatActivity {
 
 
         requestPermission();
-
-
-        ImageView imageView = findViewById(R.id.gogogo);
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), gogogo.class);
-                intent.putExtra("mykey", mykey);
-                startActivity(intent);
-            }
-        });
 
 
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH) ||
