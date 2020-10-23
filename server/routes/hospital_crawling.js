@@ -16,6 +16,9 @@ cron
 * * * 매일
 * * 매달
 
+2020-10-23 태양
+코드 정리, log 삭제
+
 */
 
 var express = require('express');
@@ -33,7 +36,7 @@ cron.schedule('0 * * * *', async () => {
 
   db.mysql.query("update tt set time = ? where num = 1", time, function(err, result) {
     if (err) {
-      console.log("input failed");
+      console.log("now time input failed");
     } else {
       console.log("input now   " + time);
     }
@@ -43,9 +46,9 @@ cron.schedule('0 * * * *', async () => {
 
   db.mysql.query("delete from hospital", function(err, result) {
     if (err) {
-      console.log("delete 오류");
+      console.log("hospital table data delete error");
     } else {
-      console.log("reset 완료");
+      console.log("hospital table reset success");
     }
   }); // delete db -- end
 

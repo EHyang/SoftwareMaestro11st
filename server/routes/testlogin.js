@@ -3,6 +3,9 @@
 login.js을 대체하여 사용중임.
 
 코드 정리 필요
+
+2020-10-23 태양
+코드 정리, log 삭제
 */
 
 var express = require('express');
@@ -11,8 +14,8 @@ var uuid4 = require('uuid4');
 var router = express.Router();
 
 router.post('/', function(req, res) {
-  console.log('someggggggggggggggggggggggggggggggggggg');
-  console.log(req.body);
+  //console.log('someggggggggggggggggggggggggggggggggggg');
+  //console.log(req.body);
   var google_id = req.body.google_id;
   var token = req.body.token;
   var my_key = req.body.google_id;
@@ -25,9 +28,9 @@ router.post('/', function(req, res) {
         'res': '-1'
       });
     } else {
-      console.log(rows);
+      //console.log(rows);
       if (rows[0] == undefined) {
-        console.log(rows[0]);
+        //console.log(rows[0]);
 
         var insert_sql = 'insert into testmembers (google_id,token,my_key,lastest_use) values(?,?,?,?)';
         var now_time = new Date();
@@ -40,7 +43,7 @@ router.post('/', function(req, res) {
               'res': '-1'
             });
           } else {
-            console.log('input success!');
+            console.log('sign input success!');
           }
         });
         console.log("sign up success");
