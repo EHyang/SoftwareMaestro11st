@@ -9,6 +9,7 @@ login.js을 대체하여 사용중임.
 
 2020-10-30 태양
 - UUID4를 사용하여 개인 고유 KEY 발급
+- 로그인 및 회원가입시 응답에 state 추가
 */
 
 var express = require('express');
