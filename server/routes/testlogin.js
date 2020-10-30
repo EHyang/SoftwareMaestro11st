@@ -6,6 +6,9 @@ login.js을 대체하여 사용중임.
 
 2020-10-23 태양
 코드 정리, log 삭제
+
+2020-10-30 태양
+- UUID4를 사용하여 개인 고유 KEY 발급
 */
 
 var express = require('express');
@@ -18,7 +21,7 @@ router.post('/', function(req, res) {
   //console.log(req.body);
   var google_id = req.body.google_id;
   var token = req.body.token;
-  var my_key = req.body.google_id;
+  var my_key;
   var login_sql = 'select * From testmembers where google_id = ?';
 
   db.mysql.query(login_sql, google_id, function(err, rows, fields) {
@@ -35,6 +38,11 @@ router.post('/', function(req, res) {
         var insert_sql = 'insert into testmembers (google_id,token,my_key,lastest_use) values(?,?,?,?)';
         var now_time = new Date();
 
+        var uuid = uuid4().split('-');
+        my_key = uuid[2] + uuid[1] + uuid[0] + uuid[3] + uuid[4];
+        console.log(uuid);
+        console.log(my_key);
+
         var param = [google_id, token, my_key, now_time];
         db.mysql.query(insert_sql, param, function(err, result) {
           if (err) {
@@ -48,7 +56,8 @@ router.post('/', function(req, res) {
         });
         console.log("sign up success");
         res.json({
-          'res': my_key
+          'res': my_key,
+          'state': '0'
         });
       } else {
         console.log('login success');
@@ -73,7 +82,8 @@ router.post('/', function(req, res) {
 
         var re = [rows[0]['state'], '0'];
         res.json({
-          'res': my_key
+          'res': my_key,
+          'state': rows[0]['state']
         });
         //  res.render('input_data');
       } // else -- end

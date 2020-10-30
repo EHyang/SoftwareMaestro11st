@@ -19,6 +19,8 @@ cron
 2020-10-23 태양
 코드 정리, log 삭제
 
+2020-10-30 태양
+접근하는 함수 횟수 증가
 */
 
 var express = require('express');
@@ -107,7 +109,7 @@ cron.schedule('0 * * * *', async () => {
     }); // then -- end
   }; // getHtml -- end
 
-  for (var i = 1; i <= 30; i++) {
+  for (var i = 1; i <= 31; i++) {
     console.log(i + "번째 함수 호출");
     await getHtml(i);
   }
