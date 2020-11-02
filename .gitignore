@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 node_modules
+dbconfig.js
+
