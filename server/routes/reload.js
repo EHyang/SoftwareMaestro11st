@@ -10,19 +10,9 @@ var db = require('../dbconfig-load');
 var uuid4 = require('uuid4');
 var router = express.Router();
 
+// temporary api for test
 router.get('/', function(req, res) {
   console.log('cleaning tables...');
-  
-  var drop_members_sql = 'truncate testmembers';
-
-  db.mysql.query(drop_members_sql, [], function(err, rows, fields) {
-    if (err) {
-      console.log('165 err :' + err);
-    } else {
-      // console.log(rows);
-    } // else -- end
-  }); // login_sql db -- end
-
   
   var drop_scans_sql = 'truncate scan';
 
@@ -32,6 +22,23 @@ router.get('/', function(req, res) {
       res.json({
         'res': '-1'
       });
+      return;
+    } else {
+      // console.log(rows);
+      // res.sendStatus(200);
+    } // else -- end
+  }); // login_sql db -- end
+
+  
+  var drop_scans_sql = 'truncate members';
+
+  db.mysql.query(drop_scans_sql, [], function(err, rows, fields) {
+    if (err) {
+      console.log('166 err :' + err);
+      res.json({
+        'res': '-1'
+      });
+      return;
     } else {
       // console.log(rows);
       res.sendStatus(200);
