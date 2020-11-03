@@ -4,6 +4,23 @@ hospital_crawling.js 는 매일 특정 시간마다 동작하도록 설정해야
 동작이후에는 임시로 hospital_check 를 통해 데이터베이스에 저장된 값을 확인 할 수 있도록 설정해둠.
 
 - xml2js 는 사용하지 않음
+
+2020-10-10 태양
+hospital_crawling.js 는 node-cron 을 사용하여 특정 시간 마다 동작하도록 설정함.
+기존 res.redirect를 통해 hostial_check로 넘어갔던 방법대신, 크롤링을 통해 데이터 베이스에 직접 추가하도록 설정하였다.
+
+cron
+* * * * * * 매초
+* * * * * 매분
+* * * * 매시간
+* * * 매일
+* * 매달
+
+2020-10-23 태양
+코드 정리, log 삭제
+
+2020-10-30 태양
+접근하는 함수 횟수 증가
 */
 
 var express = require('express');
@@ -14,18 +31,26 @@ var request = require('request');
 var axios = require('axios');
 var cheerio = require('cheerio');
 var db = require('../dbconfig');
+var cron = require('node-cron');
 
-var router = express.Router();
+cron.schedule('0 * * * *', async () => {
+  var time = new Date();
 
-router.get('/', async function(req, res) {
-  var check = req.query.check;
+  db.mysql.query("update tt set time = ? where num = 1", time, function(err, result) {
+    if (err) {
+      console.log("now time input failed");
+    } else {
+      console.log("input now   " + time);
+    }
+  });
+
   let id = 1;
 
   db.mysql.query("delete from hospital", function(err, result) {
     if (err) {
-      console.log("delete 오류");
+      console.log("hospital table data delete error");
     } else {
-      console.log("reset 완료");
+      console.log("hospital table reset success");
     }
   }); // delete db -- end
 
@@ -50,7 +75,7 @@ router.get('/', async function(req, res) {
 
       await db.mysql.query(insert_sql, param, function(err, result) {
         if (err) {
-          console.log("DB input err" + err);
+          //console.log("DB input err" + err);
         } else {
           //console.log(hospname + " DB input");
         }
@@ -75,21 +100,17 @@ router.get('/', async function(req, res) {
         if ($(this).find('td.name strong').text()) {
           await findStar($(this).find('td.name strong').text()) + '<br>';
         } else {
-          console.log("ㄴㄴ");
+          console.log("crawling failed");
         }
       }); // each -- end
-      if (number === 30) {
-        res.redirect('/hospital_check');
-      }
+      // if (number === 30) {
+      //   res.redirect('/hospital_check');
+      // }
     }); // then -- end
   }; // getHtml -- end
 
-  for (var i = 1; i <= 30; i++) {
+  for (var i = 1; i <= 31; i++) {
     console.log(i + "번째 함수 호출");
     await getHtml(i);
   }
-}); // router--end
-
-
-
-module.exports = router;
+}); // cron -- end

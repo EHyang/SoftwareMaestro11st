@@ -2,6 +2,9 @@
 2020-10-07 태양
 scan.js을 사용하지 않기 위해 만듬.
 my_key는 현재 google_id 를 사용함.
+
+2020-10-23 태양
+코드 정리, log 삭제
 */
 
 var express = require('express');
@@ -27,8 +30,8 @@ router.post('/', function(req, res) {
 
   insert_sql = insert_sql.slice(0, -1);
 
-  console.log(insert_sql);
-  
+//  console.log(insert_sql);
+
   db.mysql.query(insert_sql, function(err, result) {
     if (err) {
       console.log(err);
@@ -36,7 +39,7 @@ router.post('/', function(req, res) {
         'res': '-1'
       });
     }
-    console.log('input success!');
+    console.log('scandata input success!');
     res.json({
       'res': '0'
     });
