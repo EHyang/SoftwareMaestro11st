@@ -24,7 +24,20 @@ router.post('/', function(req, res, next) {
 
 });
 
+
+router.post('/cancel', function(req, res, next) {
+  console.log(req.body);
   var my_key = req.body.my_key;
+  var update_sql = 'update members set state = 0,degree=0 where my_key = ?';
+  db.mysql.query(update_sql, my_key, function(err, result) {
+    if (err) {
+      console.log(err);
+      res.json({'res':'0'});
+    }
+    res.json({'res':'1'});
+  });
+
+});
 
 router.post('/v2', function(req, res, next) {
   console.log('call confirm!');
