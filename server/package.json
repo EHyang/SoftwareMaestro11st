@@ -7,7 +7,7 @@
     "test-watch": "mocha --watch ./test/test.js",
     "test": "mocha ./test/test.js --exit",
     "watch": "nodemon --watch index.js",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js --delay 1"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "fcm-node": "^1.5.2",
     "lodash": "^4.17.20",
     "mysql": "^2.18.1",
+    "node-cron": "^2.0.3",
     "nodemon": "^2.0.4",
     "request": "^2.88.2",
     "uuid4": "^2.0.2",

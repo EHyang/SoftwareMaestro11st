@@ -1,3 +1,15 @@
+/*
+2020-10-10 태양
+사용하지 않는 라우터 정리.
+
+2020-10-19 태양
+hospital_crawling을 접근해줘야 node-cron 이 실행되기에
+한번 접근함.
+
+2주지난 데이터 삭제를 위해 everyMidnight.js 작성함.
+*/
+
+
 var express    = require('express');
 var bodyParser = require('body-parser');
 //var session    = require('express-session');
@@ -19,6 +31,8 @@ var reloadRouter = require('./routes/reload');
 var confirm = require('./routes/confirmed');
 var testnoti = require('./routes/noti');
 
+var everyMidnight = require('./routes/everyMidnight');
+
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(bodyParser.json());
@@ -37,7 +51,7 @@ app.use('/', indexRouter);
 //app.use('/login', loginRouter);
 //app.use('/scan', scanRouter);
 app.use('/test', testRouter);
-app.use('/hospital_crawling', hospRouter);
+//app.use('/hospital_crawling', hospRouter);
 app.use('/hospital_check', hospitalRouter);
 
 app.use('/input', inputRouter);

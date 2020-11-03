@@ -1,6 +1,13 @@
 /*
 2020-10-07 태양
 코드 정리 필요
+
+2020-10-23 태양
+코드 정리, log 삭제
+
+2020-10-30 태양
+- 접촉자에게 알림보내기전에 상태 업데이트
+- 접촉자에게 알림과 동시에 접촉시간 전송(진행중)
 */
 
 var express = require('express');
@@ -159,14 +166,14 @@ async function propagateContacts(target, degree){
   
 }
 
-router.get('/', async function(req, res) {
-  logger(req.query.my_key + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!내가 노티보낸다고!!!!!!!!!!!!!!!!!!!!!!!!!");
-  var my_key = req.query.my_key;
+router.get('/', function(req, res) {
+  console.log(req.query.my_key + " send noti");
+  var infect = req.query.my_key;
 
   var select_scan = 'select distinct scan_key from scan where my_key = ?';
   var select_my = 'select distinct my_key from scan where scan_key = ?';
   var arr = [];
-  await db.mysql.query(select_scan, my_key, function(err, rows, fields) {
+  db.mysql.query(select_scan, infect, function(err, rows, fields) {
     if (err) {
       logger(err);
     } else {
@@ -175,7 +182,7 @@ router.get('/', async function(req, res) {
       }
     }
   });
-  await db.mysql.query(select_my, my_key, async function(err, rows, fields) {
+  db.mysql.query(select_my, infect, function(err, rows, fields) {
     if (err) {
       logger(err);
     } else {
@@ -183,7 +190,7 @@ router.get('/', async function(req, res) {
         arr.push(rows[i]["my_key"]);
       }
     }
-    logger(arr);
+    //console.log(arr);
 
     var uniq = arr.reduce(function(a, b) {
       if (a.indexOf(b) < 0) a.push(b);
@@ -199,11 +206,24 @@ router.get('/', async function(req, res) {
     var select_token = 'select token from members where my_key = ?';
     select_token = 'select * from members';
 
-    await db.mysql.query(select_token, uniq, async function(err, rows, fields) {
-      logger("여기");
-      logger(rows);
-      const tokens=[];
-      const errors=[];
+    //console.log(uniq);
+
+    var select_token = 'select token from testmembers where my_key = ?';
+
+    var update_state = 'update testmembers set state = 1 where my_key = ?';
+
+    var select_time = "select scan_time from scan where (my_key = ? and scan_key = ?) or (my_key = ? and scan_key = ?) order by scan_time desc limit 1";
+    
+    db.mysql.query(update_state, uniq, function(err, rows, fields) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("update state success");
+      }
+    });
+
+    db.mysql.query(select_token, uniq, function(err, rows, fields) {
+    //  console.log("여기");
       if (err) {
         logger(err);
       } else {
@@ -215,17 +235,18 @@ router.get('/', async function(req, res) {
             collapse_key: 'dev',
 
             notification: {
-              title: 'hello',
-              body: 'Hi there~'
-            }
+              title: 'test',
+              body: 'FCM noti test'
+            }//,
+            //data: {
+
+            //}
           };
           fcm.send(message, function(err, res) {
             if (err) {
-              logger(err);
-              logger("에러나써");
-              errors.push(err);
+              console.log(err);
             } else {
-              logger("잘가써");
+              console.log("send message success");
             }
           });
         }
@@ -241,7 +262,7 @@ router.get('/', async function(req, res) {
 });
 
 router.get('/v2', async function(req, res) {
-  logger(req.query.my_key + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!내가 노티보낸다고!!!!!!!!!!!!!!!!!!!!!!!!!");
+  logger(req.query.my_key + " noti");
   var my_key = req.query.my_key;
   contacts = [];
   visited = {};

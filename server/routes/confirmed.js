@@ -1,10 +1,15 @@
+/*
+2020-10-23 태양
+코드 정리, log 삭제
+*/
+
 var express = require('express');
 var db = require('../dbconfig-load');
 var FCM = require('fcm-node');
 
 var router = express.Router();
-var serverKey = 'AAAAAUxbBP0:APA91bGJXZcQPsAjo-CZjCNGuE7zWzN4SjF_2hfoMGefgwJmneM82GBa1SnTN87xwEBsF8Yv8tjKkTKtvgE-bn0w_0QNGS08faIA6r6ofR41nreQbIepS4mFXfLU_ETLOwpsbtbgT5Sr';
-var fcm = new FCM(serverKey);
+//var serverKey = 'AAAAAUxbBP0:APA91bGJXZcQPsAjo-CZjCNGuE7zWzN4SjF_2hfoMGefgwJmneM82GBa1SnTN87xwEBsF8Yv8tjKkTKtvgE-bn0w_0QNGS08faIA6r6ofR41nreQbIepS4mFXfLU_ETLOwpsbtbgT5Sr';
+//var fcm = new FCM(serverKey);
 
 router.post('/', function(req, res, next) {
   // console.log(req);
@@ -48,7 +53,7 @@ router.post('/v2', function(req, res, next) {
       console.log(err);
       //res.json({'res':'0'});
     }
-    console.log('update success!');
+    console.log('member state update success!');
     //res.json({'res':'1'});
     next(res.redirect('/noti/v2?my_key=' + my_key));
   });
