@@ -17,6 +17,8 @@ const info = {
   database : process.env.DB_NAME || db.info.database
 };
 
+console.log(info.user);
+
 let mysql = mySql.createConnection(info);
 
 module.exports = { mysql, info };
