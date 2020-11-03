@@ -3,9 +3,11 @@
 
 매일 자정마다 데이터 베이스에서 2주지난 스캔 데이터 삭제 스케쥴 추가!
 
+2020-11-03 현우
+- dbconfig-load 사용
 */
 
-var db = require('../dbconfig');
+var db = require('../dbconfig-load');
 var cron = require('node-cron');
 
 cron.schedule('0 0 * * *', async () => {

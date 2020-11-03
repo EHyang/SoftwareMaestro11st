@@ -2,13 +2,16 @@
 2020-10-07 태양
 
 각종 코드 확인용 js파일임.
+
+2020-11-03 현우
+- dbconfig-load 사용
 */
 
 var express = require('express');
 var request = require('request');
 //var xml2js = require('xml2js');
 //var parser = new xml2js.Parser();
-var db = require('../dbconfig');
+var db = require('../dbconfig-load');
 const cron = require('node-cron');
 var axios = require('axios');
 var cheerio = require('cheerio');

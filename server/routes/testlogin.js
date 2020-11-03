@@ -13,6 +13,11 @@ login.js을 대체하여 사용중임.
 
 2020-11-02 태양
 - 일단 다시 원복
+
+2020-11-03 현우
+- v2 api 추가 버전 병합
+- dbconfig 로드 스크립트 사용
+
 */
 
 var express = require('express');
@@ -100,7 +105,7 @@ router.post('/', function(req, res) {
   }); // login_sql db -- end
 }); // router -- end
 
-// TODO: REMOVE THIS
+// TODO: REMOVE THIS (this is for test)
 const STATEOVERRIDERLOL = undefined;
 
 router.post('/v2', function(req, res) {

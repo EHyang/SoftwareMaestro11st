@@ -3,6 +3,9 @@
 login.js을 대체하여 사용중임.
 
 코드 정리 필요
+
+2020-11-03 현우
+- dbconfig-load 사용
 */
 
 var express = require('express');
