@@ -35,7 +35,7 @@ var axios = require('axios');
 var cheerio = require('cheerio');
 var db = require('../dbconfig-load');
 var cron = require('node-cron');
-
+console.log("hello");
 cron.schedule('0 * * * *', async () => {
   var time = new Date();
 

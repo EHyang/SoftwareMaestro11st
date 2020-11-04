@@ -19,7 +19,6 @@ var path       = require('path');
 var app = express();
 
 //var loginRouter = require('./routes/login');
-var everyMidnight = require('./routes/everyMidnight');
 
 var routes = require('./routes');
 

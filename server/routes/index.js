@@ -3,7 +3,8 @@ var router = express.Router();
 
 //var scanRouter = require('./routes/scan');
 var testRouter  = require('./test');
-var hospRouter  = require('./hospital_crawling');
+var hospRouter  = require('../util/hospital_crawling');
+var everyMidnight = require('../util/everyMidnight');
 var hospitalRouter = require('./hospital_check');
 var inputRouter = require('./input');
 var testlogin = require('./testlogin');
