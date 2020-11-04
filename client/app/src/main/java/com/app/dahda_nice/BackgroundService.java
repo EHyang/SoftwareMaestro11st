@@ -59,12 +59,6 @@ public class BackgroundService extends Service implements LocationListener {
 
     private static final int FOREGROUND_NOTIFICATION_ID = 1;
 
-    /**
-     * A global variable to let AdvertiserFragment check if the Service is running without needing
-     * to start or bind to it.
-     * This is the best practice method as defined here:
-     * https://groups.google.com/forum/#!topic/android-developers/jEvXMWgbgzE
-     */
     public static boolean running = false;
 
     public static final String ADVERTISING_FAILED =
@@ -102,7 +96,7 @@ public class BackgroundService extends Service implements LocationListener {
      */
     private long TIMEOUT = TimeUnit.MILLISECONDS.convert(10, TimeUnit.MINUTES);
 
-    static String mykey;
+    public static String mykey;
 
 
     /**
@@ -146,11 +140,7 @@ public class BackgroundService extends Service implements LocationListener {
 
     @Override
     public void onDestroy() {
-        /**
-         * Note that onDestroy is not guaranteed to be called quickly or at all. Services exist at
-         * the whim of the system, and onDestroy can be delayed or skipped entirely if memory need
-         * is critical.
-         */
+
         running = false;
         stopAdvertising();
         mHandler.removeCallbacks(timeoutRunnable);
@@ -158,18 +148,13 @@ public class BackgroundService extends Service implements LocationListener {
         super.onDestroy();
     }
 
-    /**
-     * Required for extending service, but this will be a Started Service only, so no need for
-     * binding.
-     */
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-    /**
-     * Get references to system Bluetooth objects if we don't have them already.
-     */
+
     private void initialize() {
         if (mBluetoothLeAdvertiser == null) {
             BluetoothManager mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
@@ -184,10 +169,7 @@ public class BackgroundService extends Service implements LocationListener {
 
     }
 
-    /**
-     * Starts a delayed Runnable that will cause the BLE Advertising to timeout and stop after a
-     * set amount of time.
-     */
+
     private void setTimeout() {
         mHandler = new Handler();
         timeoutRunnable = new Runnable() {
@@ -201,9 +183,7 @@ public class BackgroundService extends Service implements LocationListener {
         mHandler.postDelayed(timeoutRunnable, TIMEOUT);
     }
 
-    /**
-     * Starts BLE Advertising.
-     */
+
     private void startAdvertising() {
         goForeground();
 
@@ -221,11 +201,6 @@ public class BackgroundService extends Service implements LocationListener {
         }
     }
 
-    /**
-     * Move service to the foreground, to avoid execution limits on background processes.
-     * <p>
-     * Callers should call stopForeground(true) when background work is complete.
-     */
     private void goForeground() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
@@ -246,12 +221,14 @@ public class BackgroundService extends Service implements LocationListener {
             n = new Notification.Builder(this, channelId)
                     .setContentTitle("Dahda Application")
                     .setContentText("This device is discoverable to others nearby.")
+                    .setSmallIcon(R.drawable.number6)
                     .setContentIntent(pendingIntent)
                     .build();
         } else {
             n = new Notification.Builder(this)
                     .setContentTitle("Advertising device via Bluetooth")
                     .setContentText("This device is discoverable to others nearby.")
+                    .setSmallIcon(R.drawable.number6)
                     .setContentIntent(pendingIntent)
                     .build();
         }
@@ -259,21 +236,9 @@ public class BackgroundService extends Service implements LocationListener {
         startForeground(FOREGROUND_NOTIFICATION_ID, n);
 
 
-        /**2020-08-21 13:19:42.911 26784-26784/com.example.android.bluetoothadvertisements E/AndroidRuntime: FATAL EXCEPTION: main
-         Process: com.example.android.bluetoothadvertisements, PID: 26784
-         android.app.RemoteServiceException: Bad notification for startForeground: java.lang.RuntimeException: invalid channel for service notification: Notification(channel=null pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x40 color=0x00000000 vis=PRIVATE semFlags=0x0 semPriority=0 semMissedCount=0)
-         at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2096)
-         at android.os.Handler.dispatchMessage(Handler.java:107)
-         at android.os.Looper.loop(Looper.java:237)
-         at android.app.ActivityThread.main(ActivityThread.java:7860)
-         at java.lang.reflect.Method.invoke(Native Method)
-         at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)
-         at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1068) */
     }
 
-    /**
-     * Stops BLE Advertising.
-     */
+
     private void stopAdvertising() {
         Log.d(TAG, "Service: Stopping Advertising");
         if (mBluetoothLeAdvertiser != null) {
@@ -282,19 +247,10 @@ public class BackgroundService extends Service implements LocationListener {
         }
     }
 
-    /**
-     * Returns an AdvertiseData object which includes the Service UUID and Device Name.
-     */
+
     private AdvertiseData buildAdvertiseData() {
 
-        /**
-         * Note: There is a strict limit of 31 Bytes on packets sent over BLE Advertisements.
-         *  This includes everything put into AdvertiseData including UUIDs, device info, &
-         *  arbitrary service or manufacturer data.
-         *  Attempting to send packets over this limit will result in a failure with error code
-         *  AdvertiseCallback.ADVERTISE_FAILED_DATA_TOO_LARGE. Catch this error in the
-         *  onStartFailure() method of an AdvertiseCallback implementation.
-         */
+
 
         AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
 
@@ -308,10 +264,7 @@ public class BackgroundService extends Service implements LocationListener {
 
     }
 
-    /**
-     * Returns an AdvertiseSettings object set to use low power (to help preserve battery life)
-     * and disable the built-in timeout since this code uses its own timeout runnable.
-     */
+
     private AdvertiseSettings buildAdvertiseSettings() {
         AdvertiseSettings.Builder settingsBuilder = new AdvertiseSettings.Builder();
         settingsBuilder.setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_POWER);
@@ -321,10 +274,7 @@ public class BackgroundService extends Service implements LocationListener {
     }
 
 
-    /**
-     * Custom callback after Advertising succeeds or fails to start. Broadcasts the error code
-     * in an Intent to be picked up by AdvertiserFragment and stops this Service.
-     */
+
     private class SampleAdvertiseCallback extends AdvertiseCallback {
 
         @Override
@@ -345,10 +295,6 @@ public class BackgroundService extends Service implements LocationListener {
 
     }
 
-    /**
-     * Builds and sends a broadcast intent indicating Advertising has failed. Includes the error
-     * code as an extra. This is intended to be picked up by the {@code AdvertiserFragment}.
-     */
     private void sendFailureIntent(int errorCode) {
         Intent failureIntent = new Intent();
         failureIntent.setAction(ADVERTISING_FAILED);
@@ -359,19 +305,20 @@ public class BackgroundService extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("AdvertiseService in??", " in?" + intent.getStringExtra("mykey"));
+        Log.d("AdvertiseService in??", " in? " + intent.getStringExtra("mykey"));
+        mykey = intent.getStringExtra("mykey");
 
         if (intent == null) {
             return Service.START_STICKY;
         } else {
-            mykey = intent.getStringExtra("mykey");
+//            mykey = intent.getStringExtra("mykey");
 
             running = true;
             initialize();
             startAdvertising();
             setTimeout();
-            scanLeDevice(true);
             startLocationUpdates();
+            scanLeDevice(true);
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -429,7 +376,7 @@ public class BackgroundService extends Service implements LocationListener {
                         }
                     }, 15000);
                 }
-            }, 5000);
+            }, 3000);
 
             hwang = true;
 
@@ -440,8 +387,6 @@ public class BackgroundService extends Service implements LocationListener {
 
             scanCallback = new SampleScanCallback();
             bluetoothLeScanner.startScan(new ArrayList<ScanFilter>(), scanSettings, scanCallback);
-            Log.d("mykeyCheck", mykey);
-
 
 
         } else {

@@ -19,39 +19,31 @@ public class MainActivity extends AppCompatActivity {
 
     FragmentPagerAdapter fragmentPagerAdapter;
     TextView textView;
-
+    ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
-
-        textView = findViewById(R.id.skip);
-
-        ViewPager viewPager = findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
 
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
 
 
+
         CircleIndicator circleIndicator = findViewById(R.id.indicator);
         circleIndicator.setViewPager(viewPager);
-
-        textView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-
-                return false;
-            }
-        });
-
-
     }
+
+
+    public void showLoginPage() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+
 
 
 }

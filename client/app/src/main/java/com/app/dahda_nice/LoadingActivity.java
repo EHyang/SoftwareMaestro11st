@@ -23,8 +23,6 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
 
         startanim();
 

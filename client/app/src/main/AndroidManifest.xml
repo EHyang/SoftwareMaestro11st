@@ -9,26 +9,24 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".gogogo"></activity>
-        <activity android:name=".JoinSuc">
-
-        </activity>
+        <activity android:name=".Clinic"></activity>
+        <activity android:name=".CoronaRull" />
+        <activity android:name=".ConfirmAc" />
+        <activity android:name=".JoinSuc" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".GeneralUser">
-
-        </activity>
+        <activity android:name=".GeneralUser" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

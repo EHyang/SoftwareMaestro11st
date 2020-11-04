@@ -59,8 +59,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Log.d("LoginActivityonCreate!!", " 뭘까아아아아?");
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -130,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
 
-
                     }
                 });
 
@@ -163,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://3.34.117.4:3000")
+                .baseUrl("http://3.34.117.4:3001")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -177,15 +174,19 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
                 LoginDao data = response.body();
 
-                Log.d("keykeykey!!", data.getRes()+" ");
+                Log.d("keykeykey!!", data.getRes() + " ");
 
                 if (response.isSuccessful()) {
                     Log.d("Data 성공!!", "///" + data.getRes());
+                    Log.d("Data 성공!!", "///" + data.getState());
                     String mykey = data.getRes();
+                    int state = data.getState();
+
                     kk = data.getRes();
 
 
                     Intent mykey2 = new Intent(getApplicationContext(), JoinSuc.class);
+                    mykey2.putExtra("state",state);
                     mykey2.putExtra("mykey", mykey);
                     startActivity(mykey2);
 

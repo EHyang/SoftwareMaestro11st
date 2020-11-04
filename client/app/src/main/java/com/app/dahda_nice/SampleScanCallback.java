@@ -53,9 +53,6 @@ public class SampleScanCallback extends ScanCallback {
             sendAdvertiseData(advertiseData);
 
 
-            Log.d(advertiseData + "!!!", " " + result.getRssi());
-
-
             Log.d("HWANG DATA123", advertiseData);
 
         } catch (Exception e) {
@@ -74,7 +71,7 @@ public class SampleScanCallback extends ScanCallback {
         Log.d("HWANG DATA123kkk", daTa);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://3.34.117.4:3000")
+                .baseUrl("http://3.34.117.4:3001")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -85,7 +82,7 @@ public class SampleScanCallback extends ScanCallback {
         Date mDate = new Date(now);
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         getTime = simpleDate.format(mDate);
-
+        Log.d("scanCheck!!33", getTime);
 
         String key = BackgroundService.mykey;
 
@@ -101,8 +98,6 @@ public class SampleScanCallback extends ScanCallback {
             @Override
             public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
                 LoginDao data = response.body();
-
-
                 if (response.isSuccessful()) {
                     Log.d("Scandata 성공!!!!!!!!!", data.getRes() + " //// ");
 

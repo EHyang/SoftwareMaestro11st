@@ -2,24 +2,42 @@ package com.app.dahda_nice;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
+import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class GeneralUser extends AppCompatActivity {
@@ -31,7 +49,7 @@ public class GeneralUser extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private static final int REQUEST_ENABLE_BT = 101;
     private static final int REQUEST_PERMISSION = 102;
-    private static final int REQUEST_LOCATION_PERMISSION = 103;
+
 
     public static String mykey;
 
@@ -39,23 +57,49 @@ public class GeneralUser extends AppCompatActivity {
     static Database database;
     static DatabaseControl databaseControl;
 
+    private DrawerLayout mDrawerLayout;
+    NavigationView navigationView;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(navigationView);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    MyinfoFrag myinfoFrag;
+    TotalInfoFrag totalInfoFrag;
+    LocalInfoFrag localInfoFrag;
+    ConfirmFrag confirmFrag;
+    ContactFrag contactFrag;
+
+
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
 
-        getSupportActionBar().setIcon(R.drawable.number6);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         database = new Database(this, "Dahda", null, 1);
         databaseControl = new DatabaseControl(database);
         databaseControl.delete();
 
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         mykey = intent.getStringExtra("mykey");
 
+        int state = intent.getIntExtra("state", -1);
 
         requestPermission();
 
@@ -72,8 +116,105 @@ public class GeneralUser extends AppCompatActivity {
         bluetoothAdapter = bluetoothManager.getAdapter();
 
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        navigationView = findViewById(R.id.nav_view);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_action_name);
+        mDrawerLayout = findViewById(R.id.drawlayout);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                mDrawerLayout.closeDrawers();
+                Log.d("Check", menuItem.getItemId() + " ");
+
+                int id = menuItem.getItemId();
+
+                switch (id) {
+                    case R.id.one:
+                        Intent one = new Intent(getApplicationContext(), CoronaRull.class);
+                        startActivity(one);
+                        break;
+                    case R.id.two:
+                        break;
+                    case R.id.three:
+                        Intent three = new Intent(getApplicationContext(), ConfirmAc.class);
+                        startActivity(three);
+                        break;
+
+                }
+
+                return true;
+            }
+        });
+
+
+        myinfoFrag = new MyinfoFrag();
+        totalInfoFrag = new TotalInfoFrag();
+        localInfoFrag = new LocalInfoFrag();
+        confirmFrag = new ConfirmFrag();
+        contactFrag = new ContactFrag();
+
+
+        replaceFrag(state);
+
+//        fragmentTransaction.replace(R.id.framelayout_, myinfoFrag);
+//        fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
+//        fragmentTransaction.replace(R.id.framelayout_c, localInfoFrag).commit();
+
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.contentSwipeLayout);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                stateCheck(); // your code
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
+
     }
 
+
+    private void replaceFrag(int state) {
+
+        fragmentManager= getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
+        switch (state) {
+            case 0:
+                mDrawerLayout.setBackgroundColor(getResources().getColor(R.color.colorService));
+                fragmentTransaction.replace(R.id.framelayout_, myinfoFrag);
+                fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
+                fragmentTransaction.replace(R.id.framelayout_c, localInfoFrag).commit();
+                break;
+            case 1:
+                mDrawerLayout.setBackgroundColor(Color.parseColor("#FFD700"));
+                fragmentTransaction.replace(R.id.framelayout_, contactFrag);
+                fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
+                fragmentTransaction.replace(R.id.framelayout_c, localInfoFrag).commit();
+                break;
+            case 2:
+                mDrawerLayout.setBackgroundColor(Color.parseColor("#DC143C"));
+                fragmentTransaction.replace(R.id.framelayout_, confirmFrag);
+                fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
+                fragmentTransaction.replace(R.id.framelayout_c, localInfoFrag).commit();
+                break;
+        }
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        stateCheck();
+
+    }
 
     @Override
     public void onResume() {
@@ -83,11 +224,52 @@ public class GeneralUser extends AppCompatActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            requestPermission();
+//            requestPermission();
         }
+
 
         requestPermission();
 
+
+    }
+
+    private void stateCheck() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://3.34.117.4:3001")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        Api api = retrofit.create(Api.class);
+
+        ConfirmData confirmData = new ConfirmData(mykey);
+
+        api.stateCheck(confirmData).enqueue(new Callback<LoginDao>() {
+            @Override
+            public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
+                LoginDao data = response.body();
+
+                Log.d("keykeykey!!", data.getRes() + " ");
+
+                if (response.isSuccessful()) {
+                    Log.d("Data 성공!!", "///" + data.getRes());
+
+                    int state = Integer.parseInt(data.getRes());
+                    replaceFrag(state);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<LoginDao> call, Throwable t) {
+                Log.d("TEST 실패 ? : ", " 실패 실패");
+                Log.d("why? ", t.toString());
+            }
+        });
 
     }
 
@@ -134,25 +316,25 @@ public class GeneralUser extends AppCompatActivity {
         if (check == permissions.length) {
             scanLeDevice(true);
         } else {
-            requestPermission();
+//            requestPermission();
         }
 
 
     }
 
-    private void scanLeDevice(boolean b) {
+    private void scanLeDevice(boolean message) {
 
-        Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
-        Log.d("User!!!", mykey + "plz");
-        intent.putExtra("mykey", mykey);
+        Intent mainservice = new Intent(getApplicationContext(), BackgroundService.class);
+        Log.d("User!!!", mykey + "  plz");
+        mainservice.putExtra("mykey", mykey);
 
 
         if (Build.VERSION.SDK_INT >= 26) {
             Log.d("SDK_INT >= 26", "Start ForegroundService");
-            getApplicationContext().startForegroundService(intent);
+            startForegroundService(mainservice);
         } else {
             Log.d("SDK_INT < 26", "Start Service");
-            startService(intent);
+            startService(mainservice);
 
         }
     }
@@ -161,11 +343,7 @@ public class GeneralUser extends AppCompatActivity {
 
         Log.d("null Check22", data + ", " + getTime + ", " + aLatitude + ", " + aLongitude);
 
-        databaseControl.select(data, getTime, aLatitude, aLongitude);
-//        if (data != null && getTime != null && aLatitude != null && aLongitude != null) {
-//            Log.d("null Check33", data + ", " + getTime + ", " + aLatitude + ", " + aLongitude);
-//            databaseControl.select(data, getTime, aLatitude, aLongitude);
-//        }
+//        databaseControl.select(data, getTime, aLatitude, aLongitude);
 
     }
 
@@ -175,7 +353,7 @@ public class GeneralUser extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_ENABLE_BT) {
-            requestPermission();
+//            requestPermission();
         }
 
 

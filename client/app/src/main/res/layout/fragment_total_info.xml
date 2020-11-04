@@ -3,12 +3,122 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/radius"
     tools:context=".TotalInfoFrag">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#000000"
+                android:fontFamily="@font/nanumsquareeb"
+                android:gravity="center"
+                android:text="확진환자"
+                android:textStyle="bold" />
+
+            <TextView
+                android:textColor="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareeb"
+                android:gravity="center"
+                android:text="격리해제"
+                android:textStyle="bold" />
+
+            <TextView
+                android:textColor="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareeb"
+                android:gravity="center"
+                android:text="완치자"
+                android:textStyle="bold" />
+
+            <TextView
+                android:textColor="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareeb"
+                android:gravity="center"
+                android:text="사망자"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textColor="#ff0000"
+                android:textSize="20dp"
+                android:id="@+id/confirmedPerson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareeb"
+                android:gravity="center"
+                android:text="14,562"
+                android:textStyle="bold" />
+
+            <TextView
+                android:textColor="#50dcdf"
+                android:textSize="20dp"
+                android:id="@+id/releasePerson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareeb"
+                android:gravity="center"
+                android:text="13,629"
+                android:textStyle="bold" />
+
+            <TextView
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:id="@+id/curePerson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareeb"
+                android:gravity="center"
+                android:text="13,729"
+                android:textStyle="bold" />
+
+            <TextView
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:id="@+id/deadPerson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareeb"
+                android:gravity="center"
+                android:text="304"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>

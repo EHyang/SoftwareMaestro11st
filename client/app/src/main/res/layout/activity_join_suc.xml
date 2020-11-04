@@ -14,7 +14,7 @@
         android:layout_marginTop="60dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="회원 가입 완료!"
+        android:text="완료!"
         android:textStyle="bold"
         android:textSize="20dp"/>
 
@@ -35,8 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="코로나 예방을 위해"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
+        android:textSize="20dp" />
     <TextView
         android:layout_marginTop="20dp"
         android:textColor="#000000"
@@ -45,8 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="모두 함께 노력해요!"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
+        android:textSize="20dp" />
 
 
     <Button
