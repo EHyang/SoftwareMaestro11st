@@ -10,11 +10,8 @@
 
 var express = require('express');
 var db = require('@db');
-var FCM = require('fcm-node');
 
 var router = express.Router();
-//var serverKey = 'AAAAAUxbBP0:APA91bGJXZcQPsAjo-CZjCNGuE7zWzN4SjF_2hfoMGefgwJmneM82GBa1SnTN87xwEBsF8Yv8tjKkTKtvgE-bn0w_0QNGS08faIA6r6ofR41nreQbIepS4mFXfLU_ETLOwpsbtbgT5Sr';
-//var fcm = new FCM(serverKey);
 
 router.post('/', function(req, res, next) {
   // console.log(req);
@@ -30,9 +27,6 @@ router.post('/', function(req, res, next) {
     console.log('select success!');
     res.json({'res':rows[0].state});
   });
-
 });
-
-
 
 module.exports = router;
