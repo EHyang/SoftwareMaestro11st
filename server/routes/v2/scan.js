@@ -8,11 +8,20 @@ my_key는 현재 google_id 를 사용함.
 
 2020-11-03 현우
 - dbconfig-load 사용
+
+2020-11-04 현우
+- rename: input->scan
 */
 
+// TODO: v3에 합치기
+// 고려사항(합칠부분):
+// - 사용 테이블
+// - 라우트 이름
+
 var express = require('express');
-var db = require('../dbconfig-load');
+var db = require('@db');
 var router = express.Router();
+
 
 router.post('/', function(req, res) {
   //  var my_key = req.body[0].my_key;

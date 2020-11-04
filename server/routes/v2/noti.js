@@ -16,8 +16,13 @@
 
 */
 
+// TODO: v3에 합치기
+// 고려사항(합칠부분):
+// - 사용 테이블
+// - propagateContacts 접촉 전파 함수
+
 var express = require('express');
-var db = require('../dbconfig-load');
+var db = require('@db');
 var router = express.Router();
 
 var FCM = require('fcm-node');
@@ -172,102 +177,7 @@ async function propagateContacts(target, degree){
   
 }
 
-router.get('/', function(req, res) {
-  console.log(req.query.my_key + " send noti");
-  var infect = req.query.my_key;
-
-  var select_scan = 'select distinct scan_key from scan where my_key = ?';
-  var select_my = 'select distinct my_key from scan where scan_key = ?';
-  var arr = [];
-  db.mysql.query(select_scan, infect, function(err, rows, fields) {
-    if (err) {
-      logger(err);
-    } else {
-      for (var i = 0; i < rows.length; ++i) {
-        arr.push(rows[i]["scan_key"]);
-      }
-    }
-  });
-  db.mysql.query(select_my, infect, function(err, rows, fields) {
-    if (err) {
-      logger(err);
-    } else {
-      for (var i = 0; i < rows.length; ++i) {
-        arr.push(rows[i]["my_key"]);
-      }
-    }
-    //console.log(arr);
-
-    var uniq = arr.reduce(function(a, b) {
-      if (a.indexOf(b) < 0) a.push(b);
-      return a;
-    }, []);
-    
-    if(uniq[0]=='undefined'){
-      uniq=uniq.splice(1);
-    }
-    
-    logger(uniq);
-    logger(uniq);
-    var select_token = 'select token from members where my_key = ?';
-    select_token = 'select * from members';
-
-    //console.log(uniq);
-
-    var select_token = 'select token from testmembers where my_key = ?';
-
-    var update_state = 'update testmembers set state = 1 where my_key = ?';
-
-    var select_time = "select scan_time from scan where (my_key = ? and scan_key = ?) or (my_key = ? and scan_key = ?) order by scan_time desc limit 1";
-    
-    db.mysql.query(update_state, uniq, function(err, rows, fields) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("update state success");
-      }
-    });
-
-    db.mysql.query(select_token, uniq, function(err, rows, fields) {
-    //  console.log("여기");
-      if (err) {
-        logger(err);
-      } else {
-        for (var i = 0; i < rows.length; ++i) {
-          logger(rows[i]['token']);
-          tokens.push(rows[i]['token']);
-          var message = {
-            to: rows[i]['token'],
-            collapse_key: 'dev',
-
-            notification: {
-              title: 'test',
-              body: 'FCM noti test'
-            }//,
-            //data: {
-
-            //}
-          };
-          fcm.send(message, function(err, res) {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("send message success");
-            }
-          });
-        }
-      }
-      if(errors){
-        console.error('error');
-        res.json({res:-1, errors, tokens});
-      }else {
-        res.json({res:0, tokens});
-      }
-    });
-  });
-});
-
-router.get('/v2', async function(req, res) {
+router.get('/', async function(req, res) {
   logger(req.query.my_key + " noti");
   var my_key = req.query.my_key;
   contacts = [];
@@ -277,10 +187,6 @@ router.get('/v2', async function(req, res) {
   await propagateContacts(my_key, 0);
 
   logger('propagation DONE');
-
-  tokens=globalContacts;
-
-  logger(tokens);
 
   res.json({res: 0});
 });

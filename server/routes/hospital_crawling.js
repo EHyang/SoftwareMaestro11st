@@ -21,6 +21,9 @@ cron
 
 2020-10-30 태양
 접근하는 함수 횟수 증가
+
+2020-11-03 현우
+- dbconfig-load 사용
 */
 
 var express = require('express');
@@ -30,7 +33,7 @@ var request = require('request');
 
 var axios = require('axios');
 var cheerio = require('cheerio');
-var db = require('../dbconfig');
+var db = require('../dbconfig-load');
 var cron = require('node-cron');
 
 cron.schedule('0 * * * *', async () => {
