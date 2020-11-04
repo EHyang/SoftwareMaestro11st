@@ -1,12 +1,13 @@
 /*
-2020-10-07 태양
-login.js을 대체하여 사용중임.
-
-코드 정리 필요
+테스트용 함수
 
 2020-11-03 현우
 - dbconfig-load 사용
 */
+
+// TODO: 
+// - [ ] v3에 합치기
+// - [ ] process.env 사용하여 개발서버에서만 작동하게 하기
 
 var express = require('express');
 var db = require('../dbconfig-load');
