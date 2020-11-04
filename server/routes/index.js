@@ -16,7 +16,7 @@ var testnoti = require('./noti');
 
 
 const v2 = require('./v2');
-// const v3 = require('./v3');
+const v3 = require('./v3');
 
 router.get('/', function(req, res){
   console.log('someone connect your page');
@@ -37,6 +37,6 @@ router.use('/noti', testnoti);
 router.use('/confirmed', confirm);
 
 router.use('/v2', v2);
-// router.use('/v3', v3.routes());
+router.use('/v3', v3);
 
 module.exports = router;
