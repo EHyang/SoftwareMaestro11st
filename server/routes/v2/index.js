@@ -7,12 +7,12 @@ const scan = require('./scan');
 const state = require('./state');
 
 const router = new express.Router();
-router.use('/confirmed', confirmed.route());
-router.use('/hospital_check', hospital_check.route());
-router.use('/noti', noti.route());
-router.use('/reload', reload.route());
-router.use('/scan', scan.route());
-router.use('/state', state.route());
+router.use('/confirmed', confirmed);
+router.use('/hospital_check', hospital_check);
+router.use('/noti', noti);
+router.use('/reload', reload);
+router.use('/scan', scan);
+router.use('/state', state);
 
 module.exports = router;
 

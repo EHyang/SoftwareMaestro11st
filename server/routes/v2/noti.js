@@ -22,7 +22,7 @@
 // - propagateContacts 접촉 전파 함수
 
 var express = require('express');
-var db = require('../dbconfig-load');
+var db = require('@db');
 var router = express.Router();
 
 var FCM = require('fcm-node');

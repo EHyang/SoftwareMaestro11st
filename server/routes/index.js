@@ -35,7 +35,7 @@ router.use('/state', stateRouter);
 router.use('/noti', testnoti);
 router.use('/confirmed', confirm);
 
-router.use('/v2', v2.routes());
+router.use('/v2', v2);
 // router.use('/v3', v3.routes());
 
 module.exports = router;

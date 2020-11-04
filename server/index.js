@@ -1,3 +1,4 @@
+require('module-alias/register');
 const app = require('./server');
 
 app.listen(3001, ()=>{

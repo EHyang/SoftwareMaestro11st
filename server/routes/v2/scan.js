@@ -19,7 +19,7 @@ my_key는 현재 google_id 를 사용함.
 // - 라우트 이름
 
 var express = require('express');
-var db = require('../dbconfig-load');
+var db = require('@db');
 var router = express.Router();
 
 

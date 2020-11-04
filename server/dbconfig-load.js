@@ -1,24 +1,25 @@
 const mySql = require('mysql');
-const fs = require('fs');
-let db;
-try {
-  if(fs.existsSync(__dirname + '/dbconfig.js')){
-    db=require('./dbconfig');
-  }
-} catch (error) {
-  console.log(error);
+const config = require('config');
+
+if(global.mysql != undefined){
+  module.exports = { mysql, info };
+  console.debug('skipping mysql loading');
+  return;
 }
-console.log(db);
+
 const info = {
-  host     : process.env.DB_HOST || db.info.host,
-  user     : process.env.DB_USER || db.info.user,
-  password : process.env.DB_PASSWORD || db.info.password,
-  port     : process.env.DB_PORT || db.info.port,
-  database : process.env.DB_NAME || db.info.database
+  host     : process.env.DB_HOST || config.get('db.host'),
+  user     : process.env.DB_USER || config.get('db.user'),
+  password : process.env.DB_PASSWORD || config.get('db.password'),
+  port     : process.env.DB_PORT || config.get('db.port'),
+  database : process.env.DB_NAME || config.get('db.database')
 };
 
 console.log(info.user);
 
 let mysql = mySql.createConnection(info);
+
+global.mysql=mysql;
+global.info=info;
 
 module.exports = { mysql, info };

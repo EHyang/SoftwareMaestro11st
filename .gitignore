@@ -14,4 +14,4 @@
 .cxx
 node_modules
 dbconfig.js
-
+**/config/*

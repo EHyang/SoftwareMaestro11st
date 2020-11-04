@@ -10,7 +10,7 @@
 // - [ ] process.env 사용하여 개발서버에서만 작동하게 하기
 
 var express = require('express');
-var db = require('../dbconfig-load');
+var db = require('@db');
 var router = express.Router();
 
 // temporary api for test
