@@ -5,12 +5,12 @@
 
 var express = require('express');
 var db = require('@db');
-var FCM = require('fcm-node');
 
 var router = express.Router();
 
 router.post('/', function(req, res, next) {
   // console.log(req);
+  
   console.log(req.body);
   var my_key = req.body.my_key;
   var select_sql = 'select state from members where my_key = ?';

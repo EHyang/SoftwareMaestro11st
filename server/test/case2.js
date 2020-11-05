@@ -20,7 +20,7 @@ describe('the dahda server', ()=> {
 
   it('should reload', async ()=>{
     console.log('clearing tables...');
-    const res = await chai.request(app).get('/reload');
+    const res = await chai.request(app).get(routes.reload);
     res.ok.should.be.true;
     return;
   })
