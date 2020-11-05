@@ -5,6 +5,8 @@ const noti = require('./noti');
 const reload = require('./reload');
 const scan = require('./scan');
 const state = require('./state');
+const login = require('./login');
+const set = require('./set');
 
 const router = new express.Router();
 router.use('/confirmed', confirmed);
@@ -13,6 +15,8 @@ router.use('/noti', noti);
 router.use('/reload', reload);
 router.use('/scan', scan);
 router.use('/state', state);
+router.use('/login', login);
+router.use('/set', set);
 
 module.exports = router;
 

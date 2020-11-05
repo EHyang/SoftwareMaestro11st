@@ -13,8 +13,6 @@ var db = require('@db');
 var FCM = require('fcm-node');
 
 var router = express.Router();
-//var serverKey = 'AAAAAUxbBP0:APA91bGJXZcQPsAjo-CZjCNGuE7zWzN4SjF_2hfoMGefgwJmneM82GBa1SnTN87xwEBsF8Yv8tjKkTKtvgE-bn0w_0QNGS08faIA6r6ofR41nreQbIepS4mFXfLU_ETLOwpsbtbgT5Sr';
-//var fcm = new FCM(serverKey);
 
 router.post('/cancel', function(req, res, next) {
   console.log(req.body);
@@ -42,7 +40,9 @@ router.post('/', function(req, res, next) {
     }
     console.log('member state update success!');
     //res.json({'res':'1'});
-    next(res.redirect('/noti/v2?my_key=' + my_key));
+
+    // 아래 부분 주의!
+    next(res.redirect('/api/v2/noti?my_key=' + my_key));
   });
 
 });
