@@ -21,12 +21,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Clinic"></activity>
-        <activity android:name=".CoronaRull" />
-        <activity android:name=".ConfirmAc" />
-        <activity android:name=".JoinSuc" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".GeneralUser" />
+        <activity
+            android:name=".Clinic"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".CoronaRull"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ConfirmAc"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".JoinSuc"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GeneralUser"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -36,8 +48,13 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoadingActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".LoadingActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

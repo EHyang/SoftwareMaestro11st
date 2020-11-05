@@ -1,8 +1,12 @@
 package com.app.dahda_nice;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,39 +15,63 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Clinic extends AppCompatActivity {
+public class Clinic extends AppCompatActivity implements OnMapReadyCallback {
+
     private GoogleMap mgoogleMap;
+
+    static double latitude = 0;
+    static double longitude = 0;
+    private LatLng MyLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clinic);
 
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        supportMapFragment.getMapAsync((OnMapReadyCallback) this);
-
+        supportMapFragment.getMapAsync(this);
 
     }
-
 
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         mgoogleMap = googleMap;
 
-        final LatLng Pocheon = new LatLng(37.894936, 127.200344);   // 마커 추가
+        location(latitude, longitude);
 
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(Pocheon);
-        markerOptions.title("포천시청");                                    // 마커 옵션 추가
-        googleMap.addMarker(markerOptions);                                 // 마커 등록
+        markerOptions.position(MyLocation);
+        markerOptions.title("남궁 황");
+        googleMap.addMarker(markerOptions);
 
         googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                mgoogleMap.moveCamera(CameraUpdateFactory.newLatLng(Pocheon));
+                mgoogleMap.moveCamera(CameraUpdateFactory.newLatLng(MyLocation));
                 mgoogleMap.animateCamera(CameraUpdateFactory.zoomTo(10));
             }
-        }); // 구글맵 로딩이 완료되면 카메라 위치 조정
+        });
+    }
+
+
+    private void location(double latitude, double longitude) {
+
+        if (latitude != 0 && longitude != 0) {
+            Log.d("여기로 들어갔나?", "여기맞아?");
+            MyLocation = new LatLng(latitude, longitude);
+        } else {
+            MyLocation = new LatLng(37.5642135, 127.0016985);
+            Log.d("여기로 들어갔나?", "여기맞아?222");
+        }
+
+
     }
 }

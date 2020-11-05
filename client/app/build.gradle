@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.android.support:appcompat-v7:22.2.0'
 
+    compile "com.android.support:percent:25.2.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'

@@ -330,6 +330,8 @@ public class BackgroundService extends Service implements LocationListener {
             super.onLocationResult(locationResult);
 
             Location currentLocation = locationResult.getLastLocation();
+            Clinic.latitude = currentLocation.getLatitude();
+            Clinic.longitude = currentLocation.getLongitude();
             String latitude = String.valueOf(currentLocation.getLatitude());
             String longitude = String.valueOf(currentLocation.getLongitude());
             SendTest.aLongitude = longitude;

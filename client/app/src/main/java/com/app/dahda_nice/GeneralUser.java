@@ -99,7 +99,7 @@ public class GeneralUser extends AppCompatActivity {
         final Intent intent = getIntent();
         mykey = intent.getStringExtra("mykey");
 
-        int state = intent.getIntExtra("state", -1);
+        final int state = intent.getIntExtra("state", -1);
 
         requestPermission();
 
@@ -142,6 +142,8 @@ public class GeneralUser extends AppCompatActivity {
                         startActivity(one);
                         break;
                     case R.id.two:
+                        Intent two = new Intent(getApplicationContext(),Clinic.class);
+                        startActivity(two);
                         break;
                     case R.id.three:
                         Intent three = new Intent(getApplicationContext(), ConfirmAc.class);
