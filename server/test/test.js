@@ -6,6 +6,7 @@
 //   await require('./scenario2');
 // })();
 
+require('module-alias/register');
 require('./reload');
 require('./case1');
 require('./case2');

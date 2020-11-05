@@ -118,7 +118,7 @@ describe('the dahda server', ()=> {
   })
 
   // TODO : test notifications occur without re-confirming user 1 !!
-  it('should paremters', async()=>{
+  it('should paramters', async()=>{
     const res = await chai.request(app).post(routes.confirm).send({
       my_key: 'gid1'
     });
