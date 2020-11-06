@@ -1,123 +1,59 @@
 /*
-2020-10-07 태양
-
-각종 코드 확인용 js파일임.
-
-2020-11-03 현우
-- dbconfig-load 사용
+2020-11-06 태양
+- 새로운 파일 생성
+- 확진자 수 파악
 */
-
-var express = require('express');
 var request = require('request');
-//var xml2js = require('xml2js');
-//var parser = new xml2js.Parser();
+var express = require('express');
+var xml2js = require('xml2js');
 var db = require('@db');
-const cron = require('node-cron');
+var router = express.Router();
 var axios = require('axios');
 var cheerio = require('cheerio');
 
-var router = express.Router();
 
-// cron.schedule('* * * * *', async () => {
-//   var time = new Date();
-//
-//   db.mysql.query("update tt set time = ? where num = 1", time, function(err, result) {
-//     if (err) {
-//       console.log("input failed");
-//     } else {
-//       console.log("input now   " + time);
-//     }
-//   });
-//
-//   let id = 1;
-//
-//   db.mysql.query("delete from hospital", function(err, result) {
-//     if (err) {
-//       console.log("delete 오류");
-//     } else {
-//       console.log("reset 완료");
-//     }
-//   }); // delete db -- end
-//
-//   const kakaoGet = async hospname => {
-//     var insert_sql = "insert into hospital (num, name, x, y) values(?,?,?,?)";
-//     var url = 'https://dapi.kakao.com/v2/local/search/keyword.json';
-//     var queryParams = '?' + encodeURIComponent('page') + '=' + encodeURIComponent('1');
-//     queryParams += '&' + encodeURIComponent('size') + '=' + encodeURIComponent('1');
-//     queryParams += '&' + encodeURIComponent('query') + '=' + encodeURIComponent(hospname);
-//
-//     await request({
-//       url: url + queryParams,
-//       method: 'GET',
-//       headers: {
-//         'Authorization': 'KakaoAK fe7467539d84c3bb76f33d417a5399a4'
-//       }
-//     }, async function(err, response, body) {
-//       var js = JSON.parse(body);
-//       var data = js['documents'];
-//       var param = [id++, hospname, data[0]['x'], data[0]['y']];
-//       //console.log(id + " " + data[0]['place_name'] + " " + data[0]['x'] + " " + data[0]['y']);
-//
-//       await db.mysql.query(insert_sql, param, function(err, result) {
-//         if (err) {
-//           console.log("DB input err" + err);
-//         } else {
-//           //console.log(hospname + " DB input");
-//         }
-//       }); // insert db -- end
-//     }); // request -- end
-//   }; // kakaoGet -- end
-//
-//   const findStar = async str => {
-//     if (str.indexOf('*') !== -1) {
-//       str = str.substr(0, str.indexOf('*'));
-//     }
-//     await kakaoGet(str);
-//   }; // findStar -- end
-//
-//   const getHtml = async number => {
-//     console.log(number + "번째 함수 응답");
-//
-//     await axios.get(`https://www.mohw.go.kr/react/ncov/selclinic04ls.jsp?page=${number}`).then(html => {
-//       const $ = cheerio.load(html.data);
-//       const $bodyList = $("table.co_tb_base tbody.tb_center").children("tr");
-//       $bodyList.each(async function(i, elem) {
-//         if ($(this).find('td.name strong').text()) {
-//           await findStar($(this).find('td.name strong').text()) + '<br>';
-//         } else {
-//           console.log("ㄴㄴ");
-//         }
-//       }); // each -- end
-//       // if (number === 30) {
-//       //   res.redirect('/hospital_check');
-//       // }
-//     }); // then -- end
-//   }; // getHtml -- end
-//
-//   for (var i = 1; i <= 30; i++) {
-//     console.log(i + "번째 함수 호출");
-//     await getHtml(i);
-//   }
-//
-// });
+router.get('/', function (req, response) {
+    const getHtml = async () => {
+        try {
+          return await axios.get("http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun=");
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      
+      getHtml()
+        .then(html => {
+          let ulList = [];
+          const $ = cheerio.load(html.data);
+          const $bodyList = $("div.rpsa_map").children("div.rpsam_graph");
 
-
-
-router.get('/', async function(req, res) {
-  // var show = "<html><head><title>시발...</title></head><body><table><th>num</th><th>name</th><th>x</th><th>y</th>";
-  // await db.mysql.query("select * from hospital", function(err, rows, fields) {
-  //   for (var i = 0; i < rows.length; i++) {
-  //     show += "<tr>";
-  //     show += "<td>" + rows[i]['num'] + "</td>";
-  //     show += "<td>" + rows[i]['name'] + "</td>";
-  //     show += "<td>" + rows[i]['x'] + "</td>";
-  //     show += "<td>" + rows[i]['y'] + "</td>";
-  //     show += "</tr>";
-  //   }
-  //   show += "</table></body></html>";
-  //   res.send(show);
-  // });
-
+          $bodyList.each(function(i, elem) {
+            ulList[i] = {
+                seoul: $(this).find('button[data-city=map_city1] span.num').text(),
+                busan: $(this).find('button[data-city=map_city2] span.num').text(),
+                daegu: $(this).find('button[data-city=map_city3] span.num').text(),
+                incheon: $(this).find('button[data-city=map_city4] span.num').text(),
+                gwangju: $(this).find('button[data-city=map_city5] span.num').text(),
+                daejeon: $(this).find('button[data-city=map_city6] span.num').text(),
+                ulsan: $(this).find('button[data-city=map_city7] span.num').text(),
+                sejong: $(this).find('button[data-city=map_city8] span.num').text(),
+                gyeonggi: $(this).find('button[data-city=map_city9] span.num').text(),
+                gangwon: $(this).find('button[data-city=map_city10] span.num').text(),
+                chungbuk: $(this).find('button[data-city=map_city11] span.num').text(),
+                chungnam: $(this).find('button[data-city=map_city12] span.num').text(),
+                jeonbuk: $(this).find('button[data-city=map_city13] span.num').text(),
+                jeonnam: $(this).find('button[data-city=map_city14] span.num').text(),
+                gyeongbuk: $(this).find('button[data-city=map_city15] span.num').text(),
+                gyeongnam: $(this).find('button[data-city=map_city16] span.num').text(),
+                jeju: $(this).find('button[data-city=map_city17] span.num').text(),
+                quarantine: $(this).find('button[data-city=map_city18] span.num').text()
+            };
+          });
+      
+          const data = ulList.filter(n => n.seoul);
+          return data;
+        })
+        .then(res => console.log(res));
 });
 
 module.exports = router;

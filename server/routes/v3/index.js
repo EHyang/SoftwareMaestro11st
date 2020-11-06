@@ -6,6 +6,9 @@ const reload = require('./reload');
 const scan = require('./scan');
 const state = require('./state');
 const login = require('./login');
+const count = require('./count');
+const local = require('./local_count');
+const test = require('./test');
 
 const router = new express.Router();
 router.use('/confirmed', confirmed);
@@ -15,7 +18,9 @@ router.use('/reload', reload);
 router.use('/scan', scan);
 router.use('/state', state);
 router.use('/login', login);
-
+router.use('/count', count);
+router.use('/local',local);
+router.use('/test',test);
 module.exports = router;
 
 
