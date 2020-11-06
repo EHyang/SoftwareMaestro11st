@@ -22,40 +22,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="#000000"
                 android:fontFamily="@font/nanumsquareeb"
                 android:gravity="center"
                 android:text="확진환자"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquareeb"
+                android:gravity="center"
+                android:text="검사 중"
                 android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nanumsquareeb"
                 android:gravity="center"
                 android:text="격리해제"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <TextView
-                android:textColor="#000000"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/nanumsquareeb"
-                android:gravity="center"
-                android:text="완치자"
-                android:textStyle="bold" />
-
-            <TextView
-                android:textColor="#000000"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nanumsquareeb"
                 android:gravity="center"
                 android:text="사망자"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
 
@@ -70,51 +71,52 @@
             android:orientation="horizontal">
 
             <TextView
-                android:textColor="#ff0000"
-                android:textSize="20dp"
-                android:id="@+id/confirmedPerson"
+                android:id="@+id/confirmed_person"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nanumsquareeb"
                 android:gravity="center"
                 android:text="14,562"
+                android:textColor="#ff0000"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:textColor="#50dcdf"
-                android:textSize="20dp"
-                android:id="@+id/releasePerson"
+                android:id="@+id/examined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nanumsquareeb"
                 android:gravity="center"
                 android:text="13,629"
+                android:textColor="#50dcdf"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:id="@+id/curePerson"
+
+                android:id="@+id/normal_person"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nanumsquareeb"
                 android:gravity="center"
                 android:text="13,729"
+                android:textColor="#000000"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:id="@+id/deadPerson"
+                android:id="@+id/dead_person"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/nanumsquareeb"
                 android:gravity="center"
                 android:text="304"
+                android:textColor="#000000"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
 

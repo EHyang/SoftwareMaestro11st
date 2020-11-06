@@ -25,6 +25,12 @@ public interface Api {
     @POST("api/v2/state")
     Call<LoginDao> stateCheck (@Body ConfirmData confirmData);
 
+    @POST("api/v3/count")
+    Call<MiddleData> middledata ();
+
+    @POST("api/v3/local")
+    Call<LocalData> localdata ();
+
 
 
 }

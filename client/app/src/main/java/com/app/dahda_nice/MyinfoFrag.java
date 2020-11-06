@@ -17,12 +17,12 @@ public class MyinfoFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        getActivity().startService(new Intent(getActivity(),BackgroundService.class));
-
+        View view = (View) inflater.inflate(R.layout.fragment_myinfo, container, false);
 
 
-        return inflater.inflate(R.layout.fragment_myinfo, container, false);
+
+
+        return view;
 
 
 
