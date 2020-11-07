@@ -53,7 +53,7 @@ router.get('/', function (req, response) {
           const data = ulList.filter(n => n.seoul);
           return data;
         })
-        .then(res => response.json(res));
+        .then(res => response.json(res[0]));
 });
 
 module.exports = router;
