@@ -17,6 +17,7 @@ cache:
     - node_modules/
     - server/node_modules/
     - client-web/node_modules
+    - .npm
     - server/.npm
     - client-web/.npm
 
