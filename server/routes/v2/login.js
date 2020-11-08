@@ -34,8 +34,8 @@ var router = express.Router();
 const STATEOVERRIDERLOL = undefined;
 
 router.post('/', function(req, res) {
-  console.log('someggggggggggggggggggggggggggggggggggg');
-  console.log(req.body);
+  // console.log('someggggggggggggggggggggggggggggggggggg');
+  // console.log(req.body);
   var google_id = req.body.google_id;
   var token = req.body.token;
   var my_key = req.body.google_id;
@@ -43,16 +43,16 @@ router.post('/', function(req, res) {
 
   db.mysql.query(login_sql, google_id, function(err, rows, fields) {
     if (err) {
-      console.log('137 err :' + err);
+      // console.log('137 err :' + err);
       res.json({
         'res': '-1',
         'state': '-1'
       });
     } else {
-      console.log(rows);
+      // console.log(rows);
       if (rows[0] == undefined) {
-        console.log('NEW REGISTER');
-        console.log(rows[0]);
+        // console.log('NEW REGISTER');
+        // console.log(rows[0]);
 
         var insert_sql = 'insert into members (google_id,token,my_key,lastest_use) values(?,?,?,?)';
         var now_time = new Date();
@@ -60,25 +60,25 @@ router.post('/', function(req, res) {
         var param = [google_id, token, my_key, now_time];
         db.mysql.query(insert_sql, param, function(err, result) {
           if (err) {
-            console.log('150 err :' + err);
+            // console.log('150 err :' + err);
             res.json({
               'res': '-1',
               'state': '-1'
             });
             return;
           } else {
-            console.log('input success!');
+            // console.log('input success!');
           }
         });
-        console.log("sign up success");
+        // console.log("sign up success");
         res.json({
           'res': my_key,
           'state': STATEOVERRIDERLOL || 0
         });
       } else {
-        console.log('LOGIN');
-        console.log('login success');
-        console.log(rows[0]['google_id'] + ' now state is : ' + rows[0]['state']);
+        // console.log('LOGIN');
+        // console.log('login success');
+        // console.log(rows[0]['google_id'] + ' now state is : ' + rows[0]['state']);
         var update_sql = 'update members set lastest_use = (?) where google_id = (?)';
         var now_time = new Date();
 
@@ -86,13 +86,13 @@ router.post('/', function(req, res) {
         my_key = rows[0]['my_key'];
         db.mysql.query(update_sql, param, function(err, result) {
           if (err) {
-            console.log('178 err : ' + err);
+            // console.log('178 err : ' + err);
             res.json({
               'res': '-1',
               'state': '-1'
             });
           } else {
-            console.log('update lastest use time!');
+            // console.log('update lastest use time!');
           }
         });
 

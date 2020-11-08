@@ -15,12 +15,12 @@ var FCM = require('fcm-node');
 var router = express.Router();
 
 router.post('/cancel', function(req, res, next) {
-  console.log(req.body);
+  // console.log(req.body);
   var my_key = req.body.my_key;
   var update_sql = 'update members set state = 0,degree=0 where my_key = ?';
   db.mysql.query(update_sql, my_key, function(err, result) {
     if (err) {
-      console.log(err);
+      // console.log(err);
       res.json({'res':'0'});
     }
     res.json({'res':'1'});
@@ -29,16 +29,17 @@ router.post('/cancel', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  console.log('call confirm!');
-  console.log(req.body);
+  // console.log('call confirm!');
+  // console.log(req.body);
   var my_key = req.body.my_key;
   var update_sql = 'update members set state = 2,degree=0 where my_key = ?';
   db.mysql.query(update_sql, my_key, function(err, result) {
     if (err) {
-      console.log(err);
-      //res.json({'res':'0'});
+      console.error(err);
+      // res.json({'res':'0'});
+      throw Error(err);
     }
-    console.log('member state update success!');
+    // console.log('member state update success!');
     //res.json({'res':'1'});
 
     // 아래 부분 주의!

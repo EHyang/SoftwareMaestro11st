@@ -22,7 +22,7 @@ describe('the dahda server', ()=> {
   })
 
   it('should reload', async ()=>{
-    console.log('clearing tables...');
+    // console.debug('clearing tables...');
     const res = await api.reload();
     res.ok.should.be.true;
     return;
@@ -31,7 +31,7 @@ describe('the dahda server', ()=> {
   it('should login user 1', async ()=>{
     const res = await api.login('gid1', 'token1');
     res.ok.should.be.true;
-    console.log(res.body);
+    // console.debug(res.body);
     // res.body.res.should.equal('0');
     return;
   })
@@ -39,7 +39,7 @@ describe('the dahda server', ()=> {
   it('should login user 2', async ()=>{
     const res = await api.login('gid2', 'token2');
     res.ok.should.be.true;
-    console.log(res.body);
+    // console.debug(res.body);
     // res.body.res.should.equal('0');
     return;
   })
@@ -47,7 +47,7 @@ describe('the dahda server', ()=> {
   it('should login user 3', async ()=>{
     const res = await api.login('gid3', 'token3');
     res.ok.should.be.true;
-    console.log(res.body);
+    // console.debug(res.body);
     // res.body.res.should.equal('0');
     return;
   })
@@ -70,19 +70,31 @@ describe('the dahda server', ()=> {
     return;
   })
 
-  it('should store new confirmed user', async()=>{
+  it('should confirm user 1', async()=>{
     const res = await api.confirm('gid1');
 
-    console.log('scenario 3 result');
-    console.log(res.body);
     res.ok.should.be.true;
     res.body.res.should.equal(0);
-    expect(res.body.tokens).include.members(['token1', 'token2', 'token3']);
     return;
+  })
+  
+  it('is true that user 1 was confirmed', async () => {
+    const res = await api.state('gid1');
+    res.body.res.should.equal(2);
+  })
+
+  it('is true that user 2 has contact', async () => {
+    const res = await api.state('gid2');
+    res.body.res.should.equal(1);
+  })
+
+  it('is true that user 3 has contact', async () => {
+    const res = await api.state('gid3');
+    res.body.res.should.equal(1);
   })
 
   after(()=>{
-    console.log('test done');
+    // console.debug('test done');
     server.close();
     server.removeAllListeners();
   })
