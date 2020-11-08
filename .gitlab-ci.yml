@@ -17,6 +17,8 @@ cache:
     - node_modules/
     - server/node_modules/
     - client-web/node_modules
+    - server/.npm
+    - client-web/.npm
 
 # variables:
 #   NODE_ENV: development
