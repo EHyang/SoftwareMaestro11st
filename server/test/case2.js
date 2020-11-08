@@ -9,7 +9,7 @@ const api = require('./api');
 chai.use(chaiHttp);
 chai.should();
 
-describe('the dahda server', ()=> {
+describe('case 2', ()=> {
 
   /**
    * @type {http.Server}

@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 chai.should();
 const expect = chai.expect;
 
-describe('the dahda server', ()=> {
+describe('scenario 2', ()=> {
 
   /**
    * @type {http.Server}

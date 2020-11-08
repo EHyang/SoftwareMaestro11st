@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 chai.should();
 const expect = chai.expect;
 
-describe('the dahda server', ()=> {
+describe('scenario 3', ()=> {
 
   /**
    * @type {http.Server}
@@ -77,7 +77,7 @@ describe('the dahda server', ()=> {
     res.body.res.should.equal(0);
     return;
   })
-  
+
   it('is true that user 1 was confirmed', async () => {
     const res = await api.state('gid1');
     res.body.res.should.equal(2);
