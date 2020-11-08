@@ -8,11 +8,11 @@ if(global.mysql != undefined){
 }
 
 const info = {
-  host     : process.env.DB_HOST || config.get('db.host'),
-  user     : process.env.DB_USER || config.get('db.user'),
-  password : process.env.DB_PASSWORD || config.get('db.password'),
-  port     : process.env.DB_PORT || config.get('db.port'),
-  database : process.env.DB_NAME || config.get('db.database')
+  host     : config.get('db.host'),
+  user     : config.get('db.user'),
+  password : config.get('db.password'),
+  port     : config.get('db.port'),
+  database : config.get('db.database')
 };
 
 console.log(info.user);
