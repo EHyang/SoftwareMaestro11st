@@ -13,6 +13,9 @@ image: node:latest
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
+  key:
+    files:
+      - server/package.json
   paths:
     - node_modules/
     - server/node_modules/
@@ -37,9 +40,11 @@ test:
   stage: test
   script: 
     - cd server
-    - npm ci --cache ../server-npm --prefer-offline
+    # - npm ci --cache ../server-npm --prefer-offline
     - echo "environment:"
     - echo $NODE_ENV
+    - echo "Running install"
+    - npm install
     - echo "Running tests"
     - npm run test
   artifacts:
