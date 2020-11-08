@@ -24,7 +24,7 @@ var router = express.Router();
 
 var FCM = require('fcm-node');
 var config = require('config');
-var serverKey = config.get('fcm-key');
+var serverKey = config.get('FCM_KEY');
 var fcm = new FCM(serverKey);
 
 var visited = {};

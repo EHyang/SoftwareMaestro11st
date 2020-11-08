@@ -69,7 +69,7 @@ cron.schedule('0 * * * *', async () => {
       url: url + queryParams,
       method: 'GET',
       headers: {
-        'Authorization': config.get('KakaoAK')
+        'Authorization': 'KakaoAK ' + config.get('KakaoAK')
       }
     }, async function(err, response, body) {
       var js = JSON.parse(body);
