@@ -1,3 +1,4 @@
+require('./init');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../server');
@@ -6,6 +7,7 @@ const routes = require('./routes');
 
 chai.use(chaiHttp);
 chai.should();
+
 
 describe('the dahda server', ()=> {
 

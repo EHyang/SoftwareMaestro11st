@@ -7,9 +7,9 @@
 // })();
 
 require('module-alias/register');
-require('./reload');
 require('./case1');
 require('./case2');
+require('./case3');
 require('./scenario1');
 require('./scenario2');
 require('./scenario3');
