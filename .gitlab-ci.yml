@@ -41,7 +41,7 @@ test:
     - echo $NODE_ENV
     - echo "Running tests"
     - npm install
-    - npx mocha
+    - npm run test
   artifacts:
     paths:
       - node_modules/
