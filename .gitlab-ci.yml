@@ -28,6 +28,7 @@ test:
   script: 
     - cd server/
     - echo "Running tests"
+    - npm install
     - npm install --only=dev
     - npm run test
 #    - node scripts/index.js
