@@ -10,6 +10,9 @@
 
 2020-11-03 현우
 - dbconfig-load 사용
+
+2020-11-09 태양
+- 화면으로 보여주는 것 대신 바로 JSON 으로 응답 전송
 */
 
 var express = require('express');
@@ -39,8 +42,9 @@ router.get('/', async function(req, res) {
       show += "<td>" + rows[i]['y'] + "</td>";
       show += "</tr>";
     }
-    show += "</table></body></html>";
-    res.send(show);
+    res.json(rows);
+    //show += "</table></body></html>";
+    //res.send(show);
   }); // select db -- end
 }); // router -- end
 
