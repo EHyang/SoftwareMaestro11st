@@ -15,6 +15,8 @@ describe('scenario 1', ()=> {
    * @type {http.Server}
    */
   let server;
+  let scanKey1;
+  let scanKey2;
 
   before(()=>{
     server=app.listen(8080);
@@ -31,7 +33,7 @@ describe('scenario 1', ()=> {
     const res = await api.login('gid1', 'mac1');
     res.ok.should.be.true;
     console.log(res.body);
-    // res.body.res.should.equal('0');
+    scanKey1 = res.body.res;
     return;
   })
 
@@ -39,13 +41,13 @@ describe('scenario 1', ()=> {
     const res = await api.login('gid2', 'mac2');
     res.ok.should.be.true;
     console.log(res.body);
-    // res.body.res.should.equal('0');
+    scanKey2 = res.body.res;
     return;
   })
 
   it('should scan user 1 with user 2', async ()=>{
     const res = await api.scan([
-      {my_key: 'gid1',scan_key:'gid2', scan_time:Date.now()}
+      {my_key: scanKey1,scan_key:scanKey2, scan_time:Date.now()}
     ]);
     res.ok.should.be.true;
     // res.body.res.should.equal('0');

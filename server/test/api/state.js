@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 chai.should();
 
 async function state(my_key){
-    return await chai.request(app).get(routes.state).send({
+    return await chai.request(app).post(routes.state).send({
         my_key
     });
 }
