@@ -1,14 +1,16 @@
+require('./init');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../server');
 const http = require('http');
 const routes = require('./routes');
+const api = require('./api');
 
 chai.use(chaiHttp);
 chai.should();
 const expect = chai.expect;
 
-describe('the dahda server', ()=> {
+describe('scenario 2', ()=> {
 
   /**
    * @type {http.Server}
@@ -20,36 +22,30 @@ describe('the dahda server', ()=> {
   })
 
   it('should reload', async ()=>{
-    console.log('clearing tables...');
-    const res = await chai.request(app).get(routes.reload);
+    console.debug('clearing tables...');
+    const res = await api.reload();
     res.ok.should.be.true;
     return;
   })
 
   it('should login user 1', async ()=>{
-    const res = await chai.request(app).post(routes.login).send({
-      google_id: 'gid1',
-      token: 'token1'
-    });
+    const res = await api.login('gid1', 'token1');
     res.ok.should.be.true;
-    console.log(res.body);
+    console.debug(res.body);
     // res.body.res.should.equal('0');
     return;
   })
 
   it('should login user 2', async ()=>{
-    const res = await chai.request(app).post(routes.login).send({
-      google_id: 'gid2',
-      token: 'token2'
-    });
+    const res = await api.login('gid2', 'token2');
     res.ok.should.be.true;
-    console.log(res.body);
+    console.debug(res.body);
     // res.body.res.should.equal('0');
     return;
   })
 
   it('should scan user 1 with user 2', async ()=>{
-    const res = await chai.request(app).post(routes.scan).send([
+    const res = await api.scan([
       {my_key: 'gid1',scan_key:'gid2', scan_time:Date.now()}
     ]);
     res.ok.should.be.true;
@@ -57,21 +53,26 @@ describe('the dahda server', ()=> {
     return;
   })
 
-  it('should store new confirmed user', async()=>{
-    const res = await chai.request(app).post(routes.confirm).send({
-      my_key: 'gid1'
-    });
-
-    console.log('scenario 2 result');
-    console.log(res.body);
+  it('should confirm user 1', async()=>{
+    const res = await api.confirm('gid1');
+    console.debug(res.body);
     res.ok.should.be.true;
     res.body.res.should.equal(0);
-    expect(res.body.tokens).include.members(['token1', 'token2']);
     return;
   })
 
+  it('is true that user 1 was confirmed', async () => {
+    const res = await api.state('gid1');
+    res.body.res.should.equal(2);
+  })
+
+  it('is true that user 2 has contact', async () => {
+    const res = await api.state('gid2');
+    res.body.res.should.equal(1);
+  })
+
   after(()=>{
-    console.log('test done');
+    console.debug('test done');
     server.close();
   })
 });

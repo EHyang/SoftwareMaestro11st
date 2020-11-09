@@ -6,6 +6,7 @@
   "scripts": {
     "test-watch": "mocha --watch ./test/test.js",
     "test": "mocha ./test/test.js --exit",
+    "mocha": "mocha --exit",
     "watch": "nodemon --watch . index.js --delay 1",
     "start": "nodemon index.js"
   },

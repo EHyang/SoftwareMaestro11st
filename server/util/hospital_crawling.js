@@ -35,7 +35,8 @@ var axios = require('axios');
 var cheerio = require('cheerio');
 var db = require('../dbconfig-load');
 var cron = require('node-cron');
-console.log("hello");
+const config = require('config');
+
 cron.schedule('0 * * * *', async () => {
   var time = new Date();
 
@@ -68,7 +69,7 @@ cron.schedule('0 * * * *', async () => {
       url: url + queryParams,
       method: 'GET',
       headers: {
-        'Authorization': 'KakaoAK fe7467539d84c3bb76f33d417a5399a4'
+        'Authorization': `KakaoAK ${config.get('KakaoAK')}`
       }
     }, async function(err, response, body) {
       var js = JSON.parse(body);

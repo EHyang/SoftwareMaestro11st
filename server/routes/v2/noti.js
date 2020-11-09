@@ -14,6 +14,8 @@
 - dbconfig 로드 스크립트 사용
 - logger 함수 사용
 
+2020-11-05 현우
+- fcm key config로 옮김
 */
 
 // TODO: v3에 합치기
@@ -24,17 +26,17 @@
 var express = require('express');
 var db = require('@db');
 var router = express.Router();
+var config = require('config');
 
 var FCM = require('fcm-node');
-// TODO: remove server key from source code!
-var serverKey = 'AAAAAUxbBP0:APA91bGJXZcQPsAjo-CZjCNGuE7zWzN4SjF_2hfoMGefgwJmneM82GBa1SnTN87xwEBsF8Yv8tjKkTKtvgE-bn0w_0QNGS08faIA6r6ofR41nreQbIepS4mFXfLU_ETLOwpsbtbgT5Sr';
+var serverKey = config.get('FCM_KEY');
 var fcm = new FCM(serverKey);
 
 var visited = {};
-let globalContacts = [];
+let globalContacts = new Set();
 
 function logger(msg){
-  //console.log(msg);
+  // console.log(msg);
 }
 
 async function propagateContacts(target, degree){
@@ -51,7 +53,7 @@ async function propagateContacts(target, degree){
   visited[sourceID]=1;
 
   try {
-    // logger(`source token:::: ${sourceID}`);
+    // logger(`source my_key:::: ${sourceID}`);
 
     var select_scan = 'select distinct scan_key from scan where my_key = ?';
     var select_my = 'select distinct my_key from scan where scan_key = ?';
@@ -94,9 +96,10 @@ async function propagateContacts(target, degree){
 
     await Promise.all([q1, q2]);
   
+    logger('start reduce');
     var uniq = arr.reduce(function(a, b) {
       logger(a,b);
-      if (a.indexOf(b) < 0) a.push(b);
+      if (a.indexOf(b) < 0 && !visited[b]) a.push(b);
       logger(a,b);
       return a;
     }, []);
@@ -105,8 +108,15 @@ async function propagateContacts(target, degree){
       logger('contact list is empty. aborting');
       return;
     }
-
-    globalContacts = globalContacts.concat(uniq); // concat is NOT inplace
+    
+    uniq.forEach(element => {
+      if(!visited[element]){
+        globalContacts.add(element);
+      }
+    });
+    logger('end reduce');
+    logger(uniq);
+    // globalContacts = globalContacts.add(...uniq); // concat is NOT inplace
     logger('global contacts:d');
     logger(globalContacts);
 
@@ -120,7 +130,7 @@ async function propagateContacts(target, degree){
           return reject(err);
         }
         logger('UPDATE DONE!');
-        logger(rows);
+        // logger(rows);
         resolve();
       });
 
@@ -129,8 +139,8 @@ async function propagateContacts(target, degree){
     await q3;
 
     const q4 = new Promise((resolve, reject) => {
-      var select_token = 'select token from members where my_key in ( ? )';
-      db.mysql.query(select_token, [uniq], async function(err, rows, fields) {
+      var select_key = 'select my_key from members where my_key in ( ? )';
+      db.mysql.query(select_key, [uniq], async function(err, rows, fields) {
         logger("여기");
         logger(rows);
         const tokens=[];
@@ -140,10 +150,10 @@ async function propagateContacts(target, degree){
           return reject(err);
         } else {
           for (var i = 0; i < rows.length; ++i) {
-            logger(rows[i]['token']);
-            tokens.push(rows[i]['token']);
+            logger(rows[i]['my_key']);
+            tokens.push(rows[i]['my_key']);
             var message = {
-              to: rows[i]['token'],
+              to: rows[i]['my_key'],
               collapse_key: 'dev',
 
               notification: {
@@ -160,7 +170,7 @@ async function propagateContacts(target, degree){
                 logger("잘가써");
               }
             });
-            await propagateContacts(rows[i]['token'], degree)
+            await propagateContacts(rows[i]['my_key'], degree)
           }
         }
 

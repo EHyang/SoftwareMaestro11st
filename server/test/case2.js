@@ -1,13 +1,15 @@
+require('./init');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../server');
 const http = require('http');
 const routes = require('./routes');
+const api = require('./api');
 
 chai.use(chaiHttp);
 chai.should();
 
-describe('the dahda server', ()=> {
+describe('case 2', ()=> {
 
   /**
    * @type {http.Server}
@@ -20,16 +22,14 @@ describe('the dahda server', ()=> {
 
   it('should reload', async ()=>{
     console.log('clearing tables...');
-    const res = await chai.request(app).get('/reload');
+    // const res = await chai.request(app).get(routes.reload);
+    const res = await api.reload();
     res.ok.should.be.true;
     return;
   })
   
   it('should provide login route', async ()=>{
-    const res = await chai.request(app).post(routes.login).send({
-      google_id: 'gid1',
-      token: 'mac1'
-    });
+    const res = await api.login('gid1', 'mac1');
     if(res.ok==false){
       console.log(res);
     }

@@ -29,8 +29,8 @@ router.use('/test', testRouter);
 //router.use('/hospital_crawling', hospRouter);
 router.use('/hospital_check', hospitalRouter);
 
-router.use('/input', inputRouter);
-router.use('/testlogin', testlogin);
+router.use('/scan', inputRouter);
+router.use('/login', testlogin);
 router.use('/reload', reloadRouter);
 router.use('/state', stateRouter);
 router.use('/noti', testnoti);

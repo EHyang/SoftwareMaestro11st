@@ -42,16 +42,16 @@ router.post('/', function(req, res) {
 
   insert_sql = insert_sql.slice(0, -1);
 
-//  console.log(insert_sql);
+// //  console.log(insert_sql);
 
   db.mysql.query(insert_sql, function(err, result) {
     if (err) {
-      console.log(err);
+      // console.log(err);
       res.json({
         'res': '-1'
       });
     }
-    console.log('scandata input success!');
+    // console.log('scandata input success!');
     res.json({
       'res': '0'
     });
