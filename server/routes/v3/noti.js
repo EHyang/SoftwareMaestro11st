@@ -14,22 +14,24 @@
 - dbconfig 로드 스크립트 사용
 - logger 함수 사용
 
+2020-11-05 현우
+- fcm key config로 옮김
 */
 
 var express = require('express');
 var db = require('@db');
 var router = express.Router();
+var config = require('config');
 
 var FCM = require('fcm-node');
-// TODO: remove server key from source code!
-var serverKey = 'AAAAAUxbBP0:APA91bGJXZcQPsAjo-CZjCNGuE7zWzN4SjF_2hfoMGefgwJmneM82GBa1SnTN87xwEBsF8Yv8tjKkTKtvgE-bn0w_0QNGS08faIA6r6ofR41nreQbIepS4mFXfLU_ETLOwpsbtbgT5Sr';
+var serverKey = config.get('FCM_KEY');
 var fcm = new FCM(serverKey);
 
 var visited = {};
-let globalContacts = [];
+let globalContacts = new Set();
 
 function logger(msg){
-  //console.log(msg);
+  // console.log(msg);
 }
 
 async function propagateContacts(target, degree){
@@ -89,9 +91,10 @@ async function propagateContacts(target, degree){
 
     await Promise.all([q1, q2]);
   
+    logger('start reduce');
     var uniq = arr.reduce(function(a, b) {
       logger(a,b);
-      if (a.indexOf(b) < 0) a.push(b);
+      if (a.indexOf(b) < 0 && !visited[b]) a.push(b);
       logger(a,b);
       return a;
     }, []);
@@ -100,8 +103,15 @@ async function propagateContacts(target, degree){
       logger('contact list is empty. aborting');
       return;
     }
-
-    globalContacts = globalContacts.concat(uniq); // concat is NOT inplace
+    
+    uniq.forEach(element => {
+      if(!visited[element]){
+        globalContacts.add(element);
+      }
+    });
+    logger('end reduce');
+    logger(uniq);
+    // globalContacts = globalContacts.add(...uniq); // concat is NOT inplace
     logger('global contacts:d');
     logger(globalContacts);
 
@@ -172,7 +182,7 @@ async function propagateContacts(target, degree){
   
 }
 
-router.get('/', function(req, res) {
+router.get('/bak', function(req, res) {
   console.log(req.query.my_key + " send noti");
   var infect = req.query.my_key;
 
@@ -267,7 +277,7 @@ router.get('/', function(req, res) {
   });
 });
 
-router.get('/v2', async function(req, res) {
+router.get('/', async function(req, res) {
   logger(req.query.my_key + " noti");
   var my_key = req.query.my_key;
   contacts = [];

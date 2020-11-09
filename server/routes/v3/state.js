@@ -19,13 +19,18 @@ router.post('/', function(req, res, next) {
   var my_key = req.body.my_key;
   var select_sql = 'select state from members where my_key = ?';
   db.mysql.query(select_sql, my_key, function(err, rows, fields) {
-    if (err) {
+    try {
+      if(err){
+        throw err;
+      }
+
+      console.log('select success!');
+      res.json({'res':rows[0].state});
+    } catch (err) {
       console.log(err);
       res.json({'res':'0'});
       return;
     }
-    console.log('select success!');
-    res.json({'res':rows[0].state});
   });
 });
 

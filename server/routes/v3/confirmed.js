@@ -13,8 +13,23 @@
 
 var express = require('express');
 var db = require('@db');
+var FCM = require('fcm-node');
 
 var router = express.Router();
+
+router.post('/cancel', function(req, res, next) {
+  // console.log(req.body);
+  var my_key = req.body.my_key;
+  var update_sql = 'update members set state = 0,degree=0 where my_key = ?';
+  db.mysql.query(update_sql, my_key, function(err, result) {
+    if (err) {
+      // console.log(err);
+      res.json({'res':'0'});
+    }
+    res.json({'res':'1'});
+  });
+
+});
 
 router.post('/', function(req, res, next) {
   //console.log(req.body);
@@ -23,12 +38,12 @@ router.post('/', function(req, res, next) {
   db.mysql.query(update_sql, my_key, function(err, result) {
     if (err) {
       console.log(err);
-      res.json({'res':'0'});
+      res.json({'res':'-1'});
       return;
     }
     console.log('update success!');
     //res.json({'res':'1'});
-    next(res.redirect('/noti/?my_key=' + my_key));
+    next(res.redirect('/api/v3/noti/?my_key=' + my_key));
   });
 });
 

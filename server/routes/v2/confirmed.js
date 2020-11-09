@@ -30,9 +30,8 @@ router.post('/cancel', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   // console.log('call confirm!');
-  // console.log(req.body);
   var my_key = req.body.my_key;
-  var update_sql = 'update members set state = 2,degree=0 where my_key = ?';
+  var update_sql = 'update members set state = 2,degree = 0 where my_key = ?';
   db.mysql.query(update_sql, my_key, function(err, result) {
     if (err) {
       console.error(err);
