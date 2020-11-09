@@ -1,6 +1,7 @@
 package com.app.dahda_nice;
 
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Clinic extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -22,6 +34,7 @@ public class Clinic extends AppCompatActivity implements OnMapReadyCallback {
     static double latitude = 0;
     static double longitude = 0;
     private LatLng MyLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,26 +48,43 @@ public class Clinic extends AppCompatActivity implements OnMapReadyCallback {
                 finish();
             }
         });
+
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         supportMapFragment.getMapAsync(this);
+
 
     }
 
 
     @Override
-    public void onMapReady(final GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap) {
+
+
         mgoogleMap = googleMap;
 
         location(latitude, longitude);
 
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(MyLocation);
-        markerOptions.title("남궁 황");
-        googleMap.addMarker(markerOptions);
+        markerOptions.position(new LatLng(latitude, longitude));
+
+
+        mgoogleMap.addMarker(markerOptions);
+
+
+        for (int i = 0; i < GeneralUser.arrayList.size(); i++) {
+            MarkerOptions markerOption = new MarkerOptions();
+            markerOption.position(new LatLng(GeneralUser.arrayList.get(i).getY(), GeneralUser.arrayList.get(i).getX()))
+                    .title(GeneralUser.arrayList.get(i).getName())
+                    .snippet("전화번호: "+GeneralUser.arrayList.get(i).getPhone());
+
+            mgoogleMap.addMarker(markerOption);
+        }
+
 
         googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
+
                 mgoogleMap.moveCamera(CameraUpdateFactory.newLatLng(MyLocation));
                 mgoogleMap.animateCamera(CameraUpdateFactory.zoomTo(10));
             }

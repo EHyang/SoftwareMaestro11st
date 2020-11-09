@@ -92,30 +92,29 @@ public class LocalInfoFrag extends Fragment {
             public void onResponse(Call<LocalData> call, Response<LocalData> response) {
                 LocalData data = response.body();
 
-                DecimalFormat decimalFormat = new DecimalFormat("###,###");
-
-                Log.d("keykeykey!!", data.getBusan() + " ");
 
                 if (response.isSuccessful()) {
                     Log.d("Data 성공!!", "///" + 0);
 
-                    gyeonggi.setText("경기\n" + (decimalFormat.format(Integer.parseInt(data.gyeonggi))));
-                    incheon.setText("인천\n" + (decimalFormat.format(Integer.parseInt(data.incheon))));
-                    seoul.setText("서울\n" + (decimalFormat.format(Integer.parseInt(data.seoul))));
-                    gangwon.setText("강원\n" + (decimalFormat.format(Integer.parseInt(data.gangwon))));
-                    sejong.setText("세종\n" + (decimalFormat.format(Integer.parseInt(data.sejong))));
-                    chungbuk.setText("충북\n" + (decimalFormat.format(Integer.parseInt(data.chungbuk))));
-                    chungnam.setText("충남\n" + (decimalFormat.format(Integer.parseInt(data.chungnam))));
-                    daejeon.setText("대전\n" + (decimalFormat.format(Integer.parseInt(data.daejeon))));
-                    gyeongbuk.setText("경북\n" + (decimalFormat.format(Integer.parseInt(data.gyeongbuk))));
-                    jeonbuk.setText("전북\n" + (decimalFormat.format(Integer.parseInt(data.jeonbuk))));
-                    daegu.setText("대구\n" + (decimalFormat.format(Integer.parseInt(data.daegu))));
-                    jeonnam.setText("전남\n" + (decimalFormat.format(Integer.parseInt(data.jeonnam))));
-                    gwangju.setText("광주\n" + (decimalFormat.format(Integer.parseInt(data.gwangju))));
-                    gyeongnam.setText("경남\n" + (decimalFormat.format(Integer.parseInt(data.gyeongnam))));
-                    busan.setText("부산\n" + (decimalFormat.format(Integer.parseInt(data.busan))));
-                    ulsan.setText("울산\n" + (decimalFormat.format(Integer.parseInt(data.ulsan))));
-                    jeju.setText("제주\n" + (decimalFormat.format(Integer.parseInt(data.jeju))));
+
+                    gyeonggi.setText("경기\n" + data.gyeonggi);
+                    incheon.setText("인천\n" + data.incheon);
+                    seoul.setText("서울\n" + data.seoul);
+                    gangwon.setText("강원\n" + data.gangwon);
+                    sejong.setText("세종\n" + data.sejong);
+                    chungbuk.setText("충북\n" + data.chungbuk);
+                    chungnam.setText("충남\n" + data.chungnam);
+                    daejeon.setText("대전\n" + data.daejeon);
+                    gyeongbuk.setText("경북\n" + data.gyeongbuk);
+                    jeonbuk.setText("전북\n" + data.jeonbuk);
+                    daegu.setText("대구\n" + data.daegu);
+                    jeonnam.setText("전남\n" + data.jeonnam);
+                    gwangju.setText("광주\n" + data.gwangju);
+                    gyeongnam.setText("경남\n" + data.gyeongnam);
+                    busan.setText("부산\n" + data.busan);
+                    ulsan.setText("울산\n" + data.ulsan);
+                    jeju.setText("제주\n" + data.jeju);
+
                 }
 
             }

@@ -28,7 +28,7 @@ public class TotalInfoFrag extends Fragment {
     TextView examined;
     TextView normal_person;
     TextView dead_person;
-
+    TextView update_time;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class TotalInfoFrag extends Fragment {
         examined = view.findViewById(R.id.examined);
         normal_person = view.findViewById(R.id.normal_person);
         dead_person = view.findViewById(R.id.dead_person);
-
+        update_time = view.findViewById(R.id.update_time);
         retrofitgo();
 
         return view;
@@ -64,15 +64,13 @@ public class TotalInfoFrag extends Fragment {
                 MiddleData data = response.body();
 
 
-                Log.d("keykeykey!!", data.getConfirmed() + " ");
-
                 if (response.isSuccessful()) {
-                    Log.d("Data 성공!!", "///" + 0);
+                    Log.d("middleData 성공!!", "///" + 0);
                     confirmed_person.setText(data.getConfirmed());
                     examined.setText(data.getExamined());
                     normal_person.setText(data.normal);
                     dead_person.setText(data.dead);
-
+                    update_time.setText(data.time);
                 }
 
             }
