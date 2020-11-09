@@ -11,7 +11,6 @@ var router = express.Router();
 var axios = require('axios');
 var cheerio = require('cheerio');
 
-
 router.get('/', function (req, response) {
     const getHtml = async () => {
         try {
@@ -35,8 +34,8 @@ router.get('/', function (req, response) {
                 examined_up: $(this).find('li.info_02 em.info_variation').text(),
                 normal: $(this).find('li.info_03 p.info_num').text(),
                 normal_up: $(this).find('li.info_03 em.info_variation').text(),
-                dead: $(this).find('li.info_03 p.info_num').text(),
-                dead_up: $(this).find('li.info_03 em.info_variation').text(),
+                dead: $(this).find('li.info_04 p.info_num').text(),
+                dead_up: $(this).find('li.info_04 em.info_variation').text(),
                 time: $(this).find('div.csp_infoCheck_area span._update_time').text()
             };
           });
