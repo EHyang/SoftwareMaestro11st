@@ -9,6 +9,7 @@ const count = require('./count');
 const local = require('./local_count');
 const test = require('./test');
 const dev = require('./dev');
+const swaggerDocs = require('./api-docs');
 
 const router = new express.Router();
 router.use('/confirmed', confirmed);
@@ -21,6 +22,7 @@ router.use('/count', count);
 router.use('/local',local);
 router.use('/test',test);
 router.use('/dev', dev);
+router.use(swaggerDocs);
 module.exports = router;
 
 

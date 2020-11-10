@@ -3,6 +3,43 @@
 - 새로운 파일 생성
 - 확진자 수 파악
 */
+
+/** 
+*@swagger
+*paths:
+*  /count/:
+*    get:
+*      tags:
+*      - "pet"
+*      summary: "get your state using scan_key"
+*      description: ""
+*      responses:
+*        "200":
+*          content:
+*            application/json:
+*              properties:
+*                confirmed:
+*                  type: "string"
+*                confirmed_up:
+*                  type: "string"
+*                examined:
+*                  type: "string"
+*                examined_up:
+*                  type: "string"
+*                normal:
+*                  type: "string"
+*                normal_up:
+*                  type: "string"
+*                dead:
+*                  type: "string"
+*                dead_up:
+*                  type: "string"
+*                time:
+*                  type: "string"
+*          
+*/
+
+
 var request = require('request');
 var express = require('express');
 var xml2js = require('xml2js');
