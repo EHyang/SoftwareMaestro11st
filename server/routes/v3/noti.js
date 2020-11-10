@@ -283,6 +283,8 @@ router.get('/', async function(req, res) {
   contacts = [];
   visited = {};
   let tokens = [];
+
+  /* TODO : 내 차수 가져 오기 */
   
   await propagateContacts(my_key, 0);
 

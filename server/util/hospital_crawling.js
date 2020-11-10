@@ -36,7 +36,7 @@ var request = require('request');
 
 var axios = require('axios');
 var cheerio = require('cheerio');
-var db = require('../dbconfig-load');
+var db = require('@db');
 var cron = require('node-cron');
 const config = require('config');
 

@@ -59,7 +59,7 @@ router.post('/', function(req, res) {
         var param = [google_id, token, my_key, now_time];
         db.mysql.query(insert_sql, param, function(err, result) {
           if (err) {
-            console.log('150 err :' + err);
+            //console.log('150 err :' + err);
             res.json({
               'res': '-1',
               'state': '-1'
@@ -84,7 +84,7 @@ router.post('/', function(req, res) {
         my_key = rows[0]['my_key'];
         db.mysql.query(update_sql, param, function(err, result) {
           if (err) {
-            console.log('178 err : ' + err);
+            //console.log('178 err : ' + err);
             res.json({
               'res': '-1',
               'state': '-1'
