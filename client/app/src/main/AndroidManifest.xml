@@ -23,7 +23,10 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Clinic"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
         <activity
             android:name=".CoronaRull"
             android:screenOrientation="portrait" />

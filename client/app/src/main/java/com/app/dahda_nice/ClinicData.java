@@ -1,9 +1,12 @@
 package com.app.dahda_nice;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.maps.android.clustering.ClusterItem;
 
-public class ClinicData {
+
+public class ClinicData implements ClusterItem {
 
     @Expose
     @SerializedName("num")
@@ -63,6 +66,29 @@ public class ClinicData {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+
+    public String findIndex(String name) {
+        if (this.name.equals(name)) {
+            return name;
+        } else
+            return null;
+    }
+
+    @Override
+    public LatLng getPosition() {
+        return null;
+    }
+
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    public String getSnippet() {
+        return null;
     }
 }
 
