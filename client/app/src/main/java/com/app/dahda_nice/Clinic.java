@@ -112,9 +112,9 @@ public class Clinic extends AppCompatActivity implements OnMapReadyCallback {
 
 
 
-        for(int i=0; i<GeneralUser.arrayList.size(); i++) {
-            ClusterData clusterData = new ClusterData(GeneralUser.arrayList.get(i).getY(),
-                    GeneralUser.arrayList.get(i).getX(), GeneralUser.arrayList.get(i).getName());
+        for(int i=0; i<ClinicDataCon.arrayList.size(); i++) {
+            ClusterData clusterData = new ClusterData(ClinicDataCon.arrayList.get(i).getY(),
+                    ClinicDataCon.arrayList.get(i).getX(), ClinicDataCon.arrayList.get(i).getName());
             clusterManager.addItem(clusterData);
         }
 
@@ -124,9 +124,9 @@ public class Clinic extends AppCompatActivity implements OnMapReadyCallback {
                 String marker_number;
                 int check = 0;
 
-                for (int i = 0; i < GeneralUser.arrayList.size(); i++) {
-                    if (GeneralUser.arrayList.get(i).findIndex(marker.getTitle()) != null) {
-                        marker_number = GeneralUser.arrayList.get(i).findIndex(marker.getTitle());
+                for (int i = 0; i < ClinicDataCon.arrayList.size(); i++) {
+                    if (ClinicDataCon.arrayList.get(i).findIndex(marker.getTitle()) != null) {
+                        marker_number = ClinicDataCon.arrayList.get(i).findIndex(marker.getTitle());
                         check = i;
                         break;
                     }
@@ -135,8 +135,8 @@ public class Clinic extends AppCompatActivity implements OnMapReadyCallback {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("병원정보");
                 builder.setMessage(
-                        "이름 : " + GeneralUser.arrayList.get(check).getName() +
-                                "\n전화번호 : " + GeneralUser.arrayList.get(check).getPhone()
+                        "이름 : " + ClinicDataCon.arrayList.get(check).getName() +
+                                "\n전화번호 : " + ClinicDataCon.arrayList.get(check).getPhone()
                 );
 
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {

@@ -77,33 +77,30 @@ public class SampleScanCallback extends ScanCallback {
 
         Api api = retrofit.create(Api.class);
 
-
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         getTime = simpleDate.format(mDate);
-        Log.d("scanCheck!!33", getTime);
+        Log.d("scanCheck!!", getTime);
 
         String key = BackgroundService.mykey;
 
-        Log.d("scanCheck!!33", key);
+        Log.d("scanCheck!!", key);
 
         ArrayList<ScanData> scanData = new ArrayList<>();
 
-
         scanData.add(new ScanData(key, daTa, getTime));
-
 
         api.scanData(scanData).enqueue(new Callback<LoginDao>() {
             @Override
             public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
                 LoginDao data = response.body();
                 if (response.isSuccessful()) {
-                    Log.d("Scandata 성공!!!!!!!!!", data.getRes() + " //// ");
+                    Log.d("ScandataCheck", data.getRes() + " //// ");
 
 
-                    Log.d("보내줄거얌??", "맞앙??");
-                    SendTest.scanData(daTa, getTime);
+                    Log.d("SendCheck", " Check");
+                    SendTest.scanData(getTime);
                 }
 
             }

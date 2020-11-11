@@ -29,6 +29,8 @@ public class ConfirmAc extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm);
+
+
         button = findViewById(R.id.confirmedButton);
         button2 = findViewById(R.id.cancelbutton);
         button3 = findViewById(R.id.back_button);

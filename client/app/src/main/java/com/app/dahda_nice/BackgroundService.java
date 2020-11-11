@@ -220,7 +220,7 @@ public class BackgroundService extends Service implements LocationListener {
 
             n = new Notification.Builder(this, channelId)
                     .setContentTitle("Dahda Application")
-                    .setContentText("This device is discoverable to others nearby.")
+                    .setContentText("<남궁황, 김태양, 이현우>")
                     .setSmallIcon(R.drawable.number6)
                     .setContentIntent(pendingIntent)
                     .build();
@@ -251,7 +251,6 @@ public class BackgroundService extends Service implements LocationListener {
     private AdvertiseData buildAdvertiseData() {
 
 
-
         AdvertiseData.Builder dataBuilder = new AdvertiseData.Builder();
 
         String data = mykey;
@@ -272,7 +271,6 @@ public class BackgroundService extends Service implements LocationListener {
         settingsBuilder.setTimeout(0);
         return settingsBuilder.build();
     }
-
 
 
     private class SampleAdvertiseCallback extends AdvertiseCallback {

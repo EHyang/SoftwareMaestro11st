@@ -87,54 +87,20 @@ public class GeneralUser extends AppCompatActivity {
     FragmentTransaction fragmentTransaction;
 
 
-    public static ArrayList<ClinicData> arrayList = new ArrayList<>();
+    ClinicDataCon dataCon;
 
-
-    static void bringData() {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://3.34.117.4:3000")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        Api api = retrofit.create(Api.class);
-
-
-        api.clinicdata().enqueue(new Callback<List<ClinicData>>() {
-            @Override
-            public void onResponse(Call<List<ClinicData>> call, Response<List<ClinicData>> response) {
-                List<ClinicData> data = response.body();
-
-                if (response.isSuccessful()) {
-
-                    for(int i=0; i<data.size(); i++) {
-                        arrayList.add(data.get(i));
-                    }
-                    Log.d("마커성공? ", "" + data.get(23).getName());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ClinicData>> call, Throwable t) {
-                Log.d("TEST 실패 ? : ", " 실패 실패");
-                Log.d("why? ", t.toString());
-            }
-        });
-
-
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
 
-        bringData();
+        dataCon = new ClinicDataCon();
+        dataCon.bringData();
+
 
         database = new Database(this, "Dahda", null, 1);
         databaseControl = new DatabaseControl(database);
+
         databaseControl.delete();
 
 
@@ -184,7 +150,7 @@ public class GeneralUser extends AppCompatActivity {
                         startActivity(one);
                         break;
                     case R.id.two:
-                        Intent two = new Intent(getApplicationContext(),Clinic.class);
+                        Intent two = new Intent(getApplicationContext(), Clinic.class);
                         startActivity(two);
                         break;
                     case R.id.three:
@@ -208,9 +174,6 @@ public class GeneralUser extends AppCompatActivity {
 
         replaceFrag(state);
 
-//        fragmentTransaction.replace(R.id.framelayout_, myinfoFrag);
-//        fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
-//        fragmentTransaction.replace(R.id.framelayout_c, localInfoFrag).commit();
 
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.contentSwipeLayout);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -227,7 +190,7 @@ public class GeneralUser extends AppCompatActivity {
 
     private void replaceFrag(int state) {
 
-        fragmentManager= getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (state) {
@@ -383,11 +346,11 @@ public class GeneralUser extends AppCompatActivity {
         }
     }
 
-    public static void sendDatabase(String data, String getTime, String aLatitude, String aLongitude) {
+    public static void sendDatabase(String getTime, String aLatitude, String aLongitude) {
 
-        Log.d("null Check22", data + ", " + getTime + ", " + aLatitude + ", " + aLongitude);
+        Log.d("sendDatabase Null?! : ", getTime + ", " + aLatitude + ", " + aLongitude);
 
-//        databaseControl.select(data, getTime, aLatitude, aLongitude);
+        databaseControl.select(getTime, aLatitude, aLongitude);
 
     }
 

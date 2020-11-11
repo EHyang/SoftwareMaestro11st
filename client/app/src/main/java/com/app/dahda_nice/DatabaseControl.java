@@ -9,7 +9,6 @@ public class DatabaseControl {
 
     Database database;
     SQLiteDatabase sqLiteDatabase;
-    private final int PIVOT_TIME = 14;
 
 
     public DatabaseControl(Database database) {
@@ -18,10 +17,10 @@ public class DatabaseControl {
     }
 
 
-    public void insert(String id, String time, String latitude, String longitude) {
+    public void insert(String time, String latitude, String longitude) {
         sqLiteDatabase = database.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(database.ID, id);
+//        values.put(database.ID, id);
         values.put(database.COL_1, time);
         values.put(database.COL_2, latitude);
         values.put(database.COL_3, longitude);
@@ -30,15 +29,13 @@ public class DatabaseControl {
 
     }
 
-    public void select(String id, String time, String latitude, String longitude) {
+    public void select(String time, String latitude, String longitude) {
 
-        Log.d("databaseCheck", id +", "+ time +", "+ latitude+", "+longitude );
-
-
+        Log.d("databaseCheck", time +", "+ latitude+", "+longitude );
 
         sqLiteDatabase = database.getWritableDatabase();
 
-        String sqlSelect = "SELECT ID FROM dahda WHERE id=='" + id + "'";
+        String sqlSelect = "SELECT time FROM dahda WHERE time=='" + time + "'";
 
         Cursor cursor = sqLiteDatabase.rawQuery(sqlSelect, null);
 
@@ -47,20 +44,20 @@ public class DatabaseControl {
         }
 
         if (cursor.getCount() == 0) {
-            insert(id, time, latitude, longitude);
+            insert(time, latitude, longitude);
         } else {
-            update(id, time, latitude, longitude);
+            update(time, latitude, longitude);
         }
 
         cursor.close();
 
     }
 
-    public void update(String id, String time, String latitude, String longitude) {
+    public void update(String time, String latitude, String longitude) {
 
         sqLiteDatabase = database.getWritableDatabase();
         String sqlUpdate = "UPDATE dahda SET time='" + time + "', latitude='" + latitude + "', " +
-                "longitude='" + longitude +"' WHERE id =='"+id+"'";
+                "longitude='" + longitude +"' WHERE time =='"+time+"'";
         sqLiteDatabase.execSQL(sqlUpdate);
 
         Log.d("databaseUpdate","checkUpdate");
@@ -79,4 +76,7 @@ public class DatabaseControl {
         sqLiteDatabase.close();
         database.close();
     }
+
+
+
 }

@@ -118,19 +118,16 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d("로그인 성공!!!!", "구글 로그인 성공");
+                            Log.d("FirebaseloginSuc", "Login Suc");
                             token = task.getResult().getToken();
                             RetrofitLogin(token);
 
                         } else {
-                            Log.w("isSuccessful!!", "gogogo!!" + task.getException());
+                            Log.w("isSuccessful!!", " " + task.getException());
                             return;
                         }
-
-
                     }
                 });
-
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
@@ -139,11 +136,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-
                         } else {
-                            Log.d("실패에에에에????????? 왜안넘어가", "!?!?!?@?");
+                            Log.d("FirebaseLoginCheck", "fail?");
                             Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
-
                         }
                     }
                 });
@@ -174,11 +169,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginDao> call, Response<LoginDao> response) {
                 LoginDao data = response.body();
 
-                Log.d("keykeykey!!", data.getRes() + " ");
+                Log.d("LoginCheck!!", data.getRes() + " ");
 
                 if (response.isSuccessful()) {
-                    Log.d("Data 성공!!", "///" + data.getRes());
-                    Log.d("Data 성공!!", "///" + data.getState());
                     String mykey = data.getRes();
                     int state = data.getState();
 
