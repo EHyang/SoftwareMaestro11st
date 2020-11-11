@@ -5,32 +5,56 @@ image: node:latest
 # Pick zero or more services to be used on all builds.
 # Only needed when using a docker container to run your tests in.
 # Check out: http://docs.gitlab.com/ce/ci/docker/using_docker_images.html#what-is-a-service
-services:
-  - mysql:latest
-  - redis:latest
-  - postgres:latest
+# services:
+#   - mysql:latest
+#   - redis:latest
+#   - postgres:latest
   
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
+  key:
+    files:
+      - server/package.json
   paths:
     - node_modules/
     - server/node_modules/
     - client-web/node_modules
+    - .server-npm/
+    - .client-web-npm/
+    - server/.npm
+    - client-web/.npm
+
+# variables:
+#   NODE_ENV: development
 
 stages:
   - test
   - build
   - deploy
 
+# before_script:
+  # - cd server
+
 test:
   stage: test
   script: 
-    - cd server/
-    - echo "Running tests"
+    - cd server
+    # - npm ci --cache ../server-npm --prefer-offline
+    - echo "environment:"
+    - echo $NODE_ENV
+    - echo "Running install"
     - npm install
+    - echo "Running tests"
     - npm run test
+  artifacts:
+    paths:
+      - node_modules/
 #    - node scripts/index.js
+  environment:
+    name: development
+  except:
+  - deploy-test
 
 build:
   stage: build
@@ -39,6 +63,7 @@ build:
 deploy_staging:
   stage: deploy
   script:
+    - export NODE_ENV = production
     - echo "Deploy to staging server"
   environment:
     name: staging

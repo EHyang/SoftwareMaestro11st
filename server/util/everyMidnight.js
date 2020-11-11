@@ -7,7 +7,7 @@
 - dbconfig-load 사용
 */
 
-var db = require('../dbconfig-load');
+var db = require('@db');
 var cron = require('node-cron');
 
 cron.schedule('0 0 * * *', async () => {

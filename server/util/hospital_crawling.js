@@ -24,6 +24,9 @@ cron
 
 2020-11-03 현우
 - dbconfig-load 사용
+
+2020-11-09 태양
+- Kakao api 에서 phone까지 받아옴
 */
 
 var express = require('express');
@@ -33,8 +36,9 @@ var request = require('request');
 
 var axios = require('axios');
 var cheerio = require('cheerio');
-var db = require('../dbconfig-load');
+var db = require('@db');
 var cron = require('node-cron');
+const config = require('config');
 
 cron.schedule('0 * * * *', async () => {
   var time = new Date();
@@ -58,7 +62,7 @@ cron.schedule('0 * * * *', async () => {
   }); // delete db -- end
 
   const kakaoGet = async hospname => {
-    var insert_sql = "insert into hospital (num, name, x, y) values(?,?,?,?)";
+    var insert_sql = "insert into hospital (num, name, x, y, phone) values(?,?,?,?,?)";
     var url = 'https://dapi.kakao.com/v2/local/search/keyword.json';
     var queryParams = '?' + encodeURIComponent('page') + '=' + encodeURIComponent('1');
     queryParams += '&' + encodeURIComponent('size') + '=' + encodeURIComponent('1');
@@ -68,12 +72,12 @@ cron.schedule('0 * * * *', async () => {
       url: url + queryParams,
       method: 'GET',
       headers: {
-        'Authorization': 'KakaoAK fe7467539d84c3bb76f33d417a5399a4'
+        'Authorization': `KakaoAK ${config.get('KakaoAK')}`
       }
     }, async function(err, response, body) {
       var js = JSON.parse(body);
       var data = js['documents'];
-      var param = [id++, hospname, data[0]['x'], data[0]['y']];
+      var param = [id++, hospname, data[0]['x'], data[0]['y'], data[0]['phone']];
       //console.log(id + " " + data[0]['place_name'] + " " + data[0]['x'] + " " + data[0]['y']);
 
       await db.mysql.query(insert_sql, param, function(err, result) {

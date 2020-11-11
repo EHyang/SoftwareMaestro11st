@@ -14,6 +14,8 @@
 - dbconfig 로드 스크립트 사용
 - logger 함수 사용
 
+2020-11-05 현우
+- fcm key config로 옮김
 */
 
 var express = require('express');
@@ -21,8 +23,8 @@ var db = require('../dbconfig-load');
 var router = express.Router();
 
 var FCM = require('fcm-node');
-// TODO: remove server key from source code!
-var serverKey = 'AAAAAUxbBP0:APA91bGJXZcQPsAjo-CZjCNGuE7zWzN4SjF_2hfoMGefgwJmneM82GBa1SnTN87xwEBsF8Yv8tjKkTKtvgE-bn0w_0QNGS08faIA6r6ofR41nreQbIepS4mFXfLU_ETLOwpsbtbgT5Sr';
+var config = require('config');
+var serverKey = config.get('FCM_KEY');
 var fcm = new FCM(serverKey);
 
 var visited = {};

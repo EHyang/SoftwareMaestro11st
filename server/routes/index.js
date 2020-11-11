@@ -3,7 +3,8 @@ var router = express.Router();
 
 //var scanRouter = require('./routes/scan');
 var testRouter  = require('./test');
-var hospRouter  = require('./hospital_crawling');
+var hospRouter  = require('../util/hospital_crawling');
+var everyMidnight = require('../util/everyMidnight');
 var hospitalRouter = require('./hospital_check');
 var inputRouter = require('./input');
 var testlogin = require('./testlogin');
@@ -15,7 +16,7 @@ var testnoti = require('./noti');
 
 
 const v2 = require('./v2');
-// const v3 = require('./v3');
+const v3 = require('./v3');
 
 router.get('/', function(req, res){
   console.log('someone connect your page');
@@ -28,14 +29,14 @@ router.use('/test', testRouter);
 //router.use('/hospital_crawling', hospRouter);
 router.use('/hospital_check', hospitalRouter);
 
-router.use('/input', inputRouter);
-router.use('/testlogin', testlogin);
+router.use('/scan', inputRouter);
+router.use('/login', testlogin);
 router.use('/reload', reloadRouter);
 router.use('/state', stateRouter);
 router.use('/noti', testnoti);
 router.use('/confirmed', confirm);
 
 router.use('/v2', v2);
-// router.use('/v3', v3.routes());
+router.use('/v3', v3);
 
 module.exports = router;

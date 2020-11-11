@@ -13,13 +13,12 @@ hospital_crawling을 접근해줘야 node-cron 이 실행되기에
 var express    = require('express');
 var bodyParser = require('body-parser');
 //var session    = require('express-session');
-var db         = require('./dbconfig-load');
+var db         = require('@db');
 var path       = require('path');
 
 var app = express();
 
 //var loginRouter = require('./routes/login');
-var everyMidnight = require('./routes/everyMidnight');
 
 var routes = require('./routes');
 
@@ -35,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/node_modules', express.static(path.join(__dirname+'/node_modules')));
 
-app.set('port', 3001);
+app.set('port', 3000);
 
 app.use('/api', routes);
 
