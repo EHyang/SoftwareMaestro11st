@@ -4,14 +4,14 @@
 - 확진자 수 파악
 */
 
-/** 
+/**
 *@swagger
 *paths:
 *  /count/:
 *    get:
 *      tags:
-*      - "pet"
-*      summary: "get your state using scan_key"
+*      - "info"
+*      summary: "Retrieves counts and changes of COVID-19 patients. Updates on a daily basis."
 *      description: ""
 *      responses:
 *        "200":
@@ -36,7 +36,7 @@
 *                  type: "string"
 *                time:
 *                  type: "string"
-*          
+*
 */
 
 
@@ -56,13 +56,13 @@ router.get('/', function (req, response) {
           console.error(error);
         }
       };
-      
+
       getHtml()
         .then(html => {
           let ulList = [];
           const $ = cheerio.load(html.data);
           const $bodyList = $("div.api_subject_bx").children("div._content");
-      
+
           $bodyList.each(function(i, elem) {
             ulList[i] = {
                 confirmed: $(this).find('li.info_01 p.info_num').text(),
@@ -76,7 +76,7 @@ router.get('/', function (req, response) {
                 time: $(this).find('div.csp_infoCheck_area span._update_time').text()
             };
           });
-      
+
           const data = ulList.filter(n => n.confirmed);
           return data;
         })

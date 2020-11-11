@@ -9,11 +9,11 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const options = {
     swaggerDefinition: {
         info: {
-            title: 'Swagger API Docs',
+            title: '닿다 API Docs',
             version: '1.0.0',
-            description: ' Swagger test document ',
+            description: 'API Specification of Dahda service. See below api list for detailed use.',
         },
-        host: '3.34.117.4:3001',
+        host: '3.34.117.4:3000',
         basePath: '/api/v3'
     },
     apis: [path.resolve(__dirname, "./*.js")]

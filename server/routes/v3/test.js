@@ -5,13 +5,13 @@
 */
 
 
-/** 
-*@swagger
+/**
+*
 *paths:
 *  /test/:
 *    post:
 *      tags:
-*      - "pet"
+*      - "api"
 *      summary: "get your state using scan_key"
 *      description: ""
 *      parameters:
@@ -26,7 +26,7 @@
 *              properties:
 *                id:
 *                  type: "string"
-*          
+*
 */
 
 

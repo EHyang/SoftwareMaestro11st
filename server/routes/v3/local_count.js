@@ -12,6 +12,41 @@ var axios = require('axios');
 var cheerio = require('cheerio');
 
 
+/**
+*@swagger
+*paths:
+*  /local/:
+*    get:
+*      tags:
+*      - "info"
+*      summary: "Retrieves total count of COVID-19 patients according to regions."
+*      description: ""
+*      responses:
+*        "200":
+*          content:
+*            application/json:
+*              properties:
+*                confirmed:
+*                  type: "string"
+*                confirmed_up:
+*                  type: "string"
+*                examined:
+*                  type: "string"
+*                examined_up:
+*                  type: "string"
+*                normal:
+*                  type: "string"
+*                normal_up:
+*                  type: "string"
+*                dead:
+*                  type: "string"
+*                dead_up:
+*                  type: "string"
+*                time:
+*                  type: "string"
+*
+*/
+
 router.get('/', function (req, response) {
     const getHtml = async () => {
         try {
@@ -20,7 +55,7 @@ router.get('/', function (req, response) {
           console.error(error);
         }
       };
-      
+
       getHtml()
         .then(html => {
           let ulList = [];
@@ -49,7 +84,7 @@ router.get('/', function (req, response) {
                 quarantine: $(this).find('button[data-city=map_city18] span.num').text()
             };
           });
-      
+
           const data = ulList.filter(n => n.seoul);
           return data;
         })
@@ -57,5 +92,3 @@ router.get('/', function (req, response) {
 });
 
 module.exports = router;
-
-
