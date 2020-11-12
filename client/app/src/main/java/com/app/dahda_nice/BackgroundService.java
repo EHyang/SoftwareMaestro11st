@@ -202,12 +202,12 @@ public class BackgroundService extends Service implements LocationListener {
     }
 
     private void goForeground() {
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
+//        Intent notificationIntent = new Intent(this, GeneralUser.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+//                notificationIntent, 0);
 
         String channelId = "com.codechacha.sample1";
-        String channelName = "My service channel";
+        String channelName = "Dahda Application";
 
         Notification n;
         if (Build.VERSION.SDK_INT >= 26) {
@@ -222,14 +222,14 @@ public class BackgroundService extends Service implements LocationListener {
                     .setContentTitle("Dahda Application")
                     .setContentText("<남궁황, 김태양, 이현우>")
                     .setSmallIcon(R.drawable.number6)
-                    .setContentIntent(pendingIntent)
+//                    .setContentIntent(pendingIntent)
                     .build();
         } else {
             n = new Notification.Builder(this)
                     .setContentTitle("Advertising device via Bluetooth")
                     .setContentText("This device is discoverable to others nearby.")
                     .setSmallIcon(R.drawable.number6)
-                    .setContentIntent(pendingIntent)
+//                    .setContentIntent(pendingIntent)
                     .build();
         }
 

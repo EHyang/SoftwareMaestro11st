@@ -8,10 +8,11 @@
     tools:context=".TotalInfoFrag">
 
     <LinearLayout
+        android:background="@drawable/textedge"
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorService"
+
         android:orientation="horizontal">
 
         <TextView
@@ -30,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/nanumsquareeb"
             android:text="갱신 날"
             android:textColor="@color/colorToolbar"

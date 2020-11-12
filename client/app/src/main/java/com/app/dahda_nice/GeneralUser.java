@@ -89,6 +89,9 @@ public class GeneralUser extends AppCompatActivity {
 
     ClinicDataCon dataCon;
 
+    String google_id;
+    int state;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,8 +109,8 @@ public class GeneralUser extends AppCompatActivity {
 
         final Intent intent = getIntent();
         mykey = intent.getStringExtra("mykey");
-
-        final int state = intent.getIntExtra("state", -1);
+        google_id = intent.getStringExtra("google_id");
+        state = intent.getIntExtra("state", -1);
 
         requestPermission();
 
@@ -145,6 +148,14 @@ public class GeneralUser extends AppCompatActivity {
                 int id = menuItem.getItemId();
 
                 switch (id) {
+                    case R.id.myinfo_:
+                        Intent good = new Intent(getApplicationContext(), Myinfo_.class);
+                        good.putExtra("state", state);
+                        good.putExtra("key", mykey);
+                        good.putExtra("google_id", google_id);
+                        Log.d("googleCheck2",google_id);
+                        startActivity(good);
+                        break;
                     case R.id.one:
                         Intent one = new Intent(getApplicationContext(), CoronaRull.class);
                         startActivity(one);
@@ -263,8 +274,7 @@ public class GeneralUser extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     Log.d("Data 성공!!", "///" + data.getRes());
-
-                    int state = Integer.parseInt(data.getRes());
+                    state = Integer.parseInt(data.getRes());
                     replaceFrag(state);
 
                 }

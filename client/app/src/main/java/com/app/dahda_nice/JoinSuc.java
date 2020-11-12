@@ -24,6 +24,7 @@ public class JoinSuc extends AppCompatActivity {
         Intent intent = getIntent();
         final String mykey = intent.getStringExtra("mykey");
         final int state = intent.getIntExtra("state",-1);
+        final String google_id = intent.getStringExtra("google_id");
 
         Log.d("check!!"," " + state);
 
@@ -32,6 +33,7 @@ public class JoinSuc extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),GeneralUser.class);
                 intent.putExtra("mykey",mykey);
+                intent.putExtra("google_id",google_id);
                 intent.putExtra("state",state);
                 startActivity(intent);
 

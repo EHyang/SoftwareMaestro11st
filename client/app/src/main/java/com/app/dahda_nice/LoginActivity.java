@@ -4,11 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -52,6 +56,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public static String kk;
 
+    Button button;
+    Button button2;
+    SettingFrag settingFrag;
+    SettingFrag2 settingFrag2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +67,38 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Log.d("LoginActivityonCreate!!", " 뭘까아아아아?");
 
+
+
+
+        settingFrag = new SettingFrag();
+        button = findViewById(R.id.setting);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.framelayout_, settingFrag);
+                fragmentTransaction.commit();
+                Bundle bundle = new Bundle();
+                bundle.putInt("k",1);
+                settingFrag.setArguments(bundle);
+            }
+        });
+        settingFrag2 = new SettingFrag2();
+        button2 = findViewById(R.id.setting2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.framelayout_, settingFrag2);
+                fragmentTransaction.commit();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("k",1);
+                settingFrag2.setArguments(bundle);
+            }
+        });
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -179,6 +219,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
                     Intent mykey2 = new Intent(getApplicationContext(), JoinSuc.class);
+                    mykey2.putExtra("google_id",google_id);
+                    Log.d("googleid check!!",google_id+" ");
                     mykey2.putExtra("state",state);
                     mykey2.putExtra("mykey", mykey);
                     startActivity(mykey2);
