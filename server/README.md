@@ -1,4 +1,4 @@
-![android](https://img.shields.io/badge/android-%20-green)
+
 ![node](https://img.shields.io/badge/node-14.7.0-blue)
 ![npm](https://img.shields.io/badge/npm-%206.14.7-important)
 ![mysql](https://img.shields.io/badge/mysql-%205.7.30-blueviolet)
