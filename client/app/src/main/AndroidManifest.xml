@@ -1,28 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.dahda_nice"
+
     android:targetSandboxVersion="1">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:hardwareAccelerated="false"
+        android:icon="@drawable/number6"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".gogogo"></activity>
-        <activity android:name=".JoinSuc" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".GeneralUser" />
+
+        <activity android:name=".ContactLocation"></activity>
+        <activity
+            android:name=".Clinic"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".CoronaRull"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ConfirmAc"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".JoinSuc"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GeneralUser"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -32,8 +52,12 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoadingActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoadingActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,11 +66,7 @@
         </activity>
 
         <service
-            android:name=".AdvertiserService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name=".MyService"
+            android:name=".BackgroundService"
             android:enabled="true"
             android:exported="false" />
     </application>
