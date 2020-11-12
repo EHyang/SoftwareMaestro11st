@@ -13,6 +13,53 @@
 
 2020-11-09 태양
 - 화면으로 보여주는 것 대신 바로 JSON 으로 응답 전송
+
+2020-11-12 태양
+- Swagger 추가
+*/
+
+/**
+*@swagger
+*paths:
+*  /hospital_check/:
+*    get:
+*      tags:
+*      - "info"
+*      summary: "Retrieves a list of selective chlinics for COVID-19"
+*      description: ""
+*      responses:
+*        "200":
+*          description: "Success"
+*          schema:
+*            type: array
+*            items:
+*              $ref: '#/definitions/Hospitals'
+*
+*definitions:
+*  Hospitals:
+*    type: object
+*    required:
+*    - num
+*    - name
+*    - x
+*    - y
+*    - phone
+*    properties:
+*      num:
+*        type: "integer"
+*        example: 1
+*      name:
+*        type: "string"
+*        example: "강남구보건소"
+*      x:
+*        type: "double"
+*        example: 127.04241377611299
+*      y:
+*        type: "double"
+*        example: 37.51632112050374
+*      phone:
+*        type: "string"
+*        example: "02-3423-7200"
 */
 
 var express = require('express');

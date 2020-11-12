@@ -2,6 +2,9 @@
 2020-11-06 태양
 - 새로운 파일 생성
 - 확진자 수 파악
+
+2020-11-12 태양
+- Swagger 추가
 */
 
 /**
@@ -13,30 +16,56 @@
 *      - "info"
 *      summary: "Retrieves counts and changes of COVID-19 patients. Updates on a daily basis."
 *      description: ""
+*      produce:
+*      - application/json
 *      responses:
 *        "200":
-*          content:
-*            application/json:
-*              properties:
-*                confirmed:
-*                  type: "string"
-*                confirmed_up:
-*                  type: "string"
-*                examined:
-*                  type: "string"
-*                examined_up:
-*                  type: "string"
-*                normal:
-*                  type: "string"
-*                normal_up:
-*                  type: "string"
-*                dead:
-*                  type: "string"
-*                dead_up:
-*                  type: "string"
-*                time:
-*                  type: "string"
-*
+*          description: "Success"
+*          schema:
+*            type: array
+*            items:
+*              $ref: '#/definitions/Total'
+*definitions:
+*  Total:
+*    type: object
+*    required:
+*    - confirmed
+*    - confirmed_up
+*    - examined
+*    - examined_up
+*    - normal
+*    - normal_up
+*    - dead
+*    - dead_up
+*    - time
+*    properties:
+*      confirmed:
+*        type: "string"
+*        example: "27,942"
+*      confirmed_up:
+*        type: "string"
+*        example: "143"
+*      examined:
+*        type: "string"
+*        example: "29,284"
+*      examined_up:
+*        type: "string"
+*        example: "596"
+*      normal:
+*        type: "string"
+*        example: "25,404"
+*      normal_up:
+*        type: "string"
+*        example: "138"
+*      dead:
+*        type: "string"
+*        example: "487"
+*      dead_up:
+*        type: "string"
+*        example: "-"
+*      time:
+*        type: "string"
+*        example: "2020.11.12. 10:01"
 */
 
 

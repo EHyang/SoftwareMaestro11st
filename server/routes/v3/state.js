@@ -6,6 +6,61 @@
 - v2 api 추가 버전 병합
 - dbconfig 로드 스크립트 사용
 - members 테이블 사용
+
+2020-11-12 태양
+- Swagger 추가
+*/
+
+/**
+*@swagger
+*paths:
+*  /state/:
+*    post:
+*      tags:
+*      - "Api"
+*      summary: "Retrieves state of a user."
+*      description: ""
+*      parameters:
+*      - in: body
+*        name: Your Key
+*        description: "Your Key"
+*        schema:
+*          $ref: '#/definitions/My_key'
+*      responses:
+*        "200":
+*          description: "Success"
+*          schema:
+*            $ref: '#/definitions/Success'
+*        "400":
+*          description: "Failed"
+*          schema:
+*            $ref: '#/definitions/Fail'
+*
+*definitions:
+*  My_key:
+*    type: object
+*    required:
+*    - my_key
+*    properties:
+*      my_key:
+*        type: "string"
+*        example: "50324cce055f"
+*  Success:
+*    type: object
+*    required:
+*    - res
+*    properties:
+*      res:
+*        type: "string"
+*        example: "Your state ( 0, 1, 2 )"
+*  Fail:
+*    type: object
+*    required:
+*    - res
+*    properties:
+*      res:
+*        type: "string"
+*        example: "-1"
 */
 
 var express = require('express');

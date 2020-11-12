@@ -20,6 +20,81 @@ login.js을 대체하여 사용중임.
 
 2020-11-04 태양
 - v2와 병합
+
+2020-11-12 태양
+- Swagger 추가
+*/
+
+/**
+*@swagger
+*paths:
+*  /login/:
+*    post:
+*      tags:
+*      - "Api"
+*      summary: "Signs in a user. An FCM token and google id is required."
+*      description: ""
+*      parameters:
+*      - in: body
+*        name: LoginSet
+*        description: "Your Google ID & FCM token value"
+*        schema:
+*          $ref: '#/definitions/LoginSet'
+*      responses:
+*        "200":
+*          description: "Success"
+*          schema:
+*            $ref: '#/definitions/Success_login'
+*        "400":
+*          description: "Failed"
+*          schema:
+*            $ref: '#/definitions/Fail_login'
+*
+*definitions:
+*  LoginSet:
+*    type: object
+*    required:
+*    - google_id
+*    - token
+*    properties:
+*      google_id:
+*        type: "string"
+*        example: "test@test.com"
+*      token:
+*        type: "string"
+*        example: "eir6r6YhRZGXsjnoNCpdiA:APA91bFQInFHLqfEz8iWuaJYULdV-L66Ybv7fvNVlSpnwhkkv5JVYLXHxHoddFyuKnKcz2Ws3HKyHxrv6dotLu5Ok-xrgHizlNN81S3gSNqThSzy4oXnI0phiZ5yV19IF1afUkSMIqYR | 50324cce055f"
+*  Key:
+*    type: object
+*    required:
+*    - my_key
+*    properties:
+*      my_key:
+*        type: "uuid"
+*        example: "d05123c04cf2"
+*  Success_login:
+*    type: object
+*    required:
+*    - res
+*    - state
+*    properties:
+*      res:
+*        type: "string"
+*        example: "Return User's Random key"
+*      state:
+*        type: "string"
+*        example: "0(default) or Login user's now state(0,1,2)"
+*  Fail_login:
+*    type: object
+*    required:
+*    - res
+*    - state
+*    properties:
+*      res:
+*        type: "string"
+*        example: "-1"
+*      state:
+*        type: "string"
+*        example: "-1"
 */
 
 var express = require('express');

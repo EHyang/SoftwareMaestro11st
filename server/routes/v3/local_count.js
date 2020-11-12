@@ -2,6 +2,9 @@
 2020-11-06 태양
 - 새로운 파일 생성
 - 확진자 수 파악
+
+2020-11-12 태양
+- Swagger 추가
 */
 var request = require('request');
 var express = require('express');
@@ -23,28 +26,84 @@ var cheerio = require('cheerio');
 *      description: ""
 *      responses:
 *        "200":
-*          content:
-*            application/json:
-*              properties:
-*                confirmed:
-*                  type: "string"
-*                confirmed_up:
-*                  type: "string"
-*                examined:
-*                  type: "string"
-*                examined_up:
-*                  type: "string"
-*                normal:
-*                  type: "string"
-*                normal_up:
-*                  type: "string"
-*                dead:
-*                  type: "string"
-*                dead_up:
-*                  type: "string"
-*                time:
-*                  type: "string"
+*          description: "Success"
+*          schema:
+*            type: array
+*            items:
+*              $ref: '#/definitions/Regions'
 *
+*definitions:
+*  Regions:
+*    type: object
+*    required:
+*    - seoul
+*    - busan
+*    - daegu
+*    - incheon
+*    - gwangju
+*    - daejeon
+*    - ulsan
+*    - sejong
+*    - gyeonggi
+*    - chungbuk
+*    - jeonbuk
+*    - jeonnam
+*    - gyeongbuk
+*    - gyeongnam
+*    - jeju
+*    - quarantine
+*    properties:
+*      seoul:
+*        type: "string"
+*        example: "1"
+*      busan:
+*        type: "string"
+*        example: "2"
+*      daegu:
+*        type: "string"
+*        example: "3"
+*      incheon:
+*        type: "string"
+*        example: "1"
+*      gwangju:
+*        type: "string"
+*        example: "1"
+*      daejeon:
+*        type: "string"
+*        example: "1"
+*      ulsan:
+*        type: "string"
+*        example: "1"
+*      sejong:
+*        type: "string"
+*        example: "1"
+*      gyeonggi:
+*        type: "string"
+*        example: "1"
+*      gangwon:
+*        type: "string"
+*        example: "1"
+*      chungbuk:
+*        type: "string"
+*        example: "1"
+*      jeonbuk:
+*        type: "string"
+*        example: "1"
+*      jeonnam:
+*        type: "string"
+*        example: "1"
+*      gyeongbuk:
+*        type: "string"
+*        example: "1"
+*      gyeongnam:
+*        type: "string"
+*        example: "1"
+*      jeju:
+*        type: "string"
+*        example: "1"
+*      quarantine:
+*        type: "string"
+*        example: "1"
 */
 
 router.get('/', function (req, response) {

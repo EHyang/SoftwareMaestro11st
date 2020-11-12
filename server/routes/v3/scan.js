@@ -8,6 +8,71 @@ my_key는 현재 google_id 를 사용함.
 
 2020-11-03 현우
 - dbconfig-load 사용
+
+2020-11-12 태양
+- Swagger 추가
+*/
+
+/**
+*@swagger
+*paths:
+*  /scan/:
+*    post:
+*      tags:
+*      - "Api"
+*      summary: "Update or Create new scan record"
+*      description: ""
+*      parameters:
+*      - in: body
+*        name: ScanSet
+*        description: "Your Key, Scan key and Scan time"
+*        schema:
+*          type: array
+*          items:
+*            $ref: '#/definitions/ScanSet'
+*      responses:
+*        "200":
+*          description: "Success"
+*          schema:
+*            $ref: '#/definitions/Success'
+*        "400":
+*          description: "Failed"
+*          schema:
+*            $ref: '#/definitions/Fail'
+*
+*definitions:
+*  ScanSet:
+*    type: object
+*    required:
+*    - my_key
+*    - scan_key
+*    - scan_time
+*    properties:
+*      my_key:
+*        type: "string"
+*        example: "50324cce055f"
+*      scan_key:
+*        type: "string"
+*        example: "e94986d20a4a"
+*      scan_time:
+*        type: "string"
+*        example: "2020-11-12 22:38:55"
+*  Success:
+*    type: object
+*    required:
+*    - res
+*    properties:
+*      res:
+*        type: "string"
+*        example: "0"
+*  Fail:
+*    type: object
+*    required:
+*    - res
+*    properties:
+*      res:
+*        type: "string"
+*        example: "-1"
 */
 
 var express = require('express');
