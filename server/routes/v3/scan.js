@@ -1,14 +1,14 @@
-/*
-2020-10-07 태양
-scan.js을 사용하지 않기 위해 만듬.
-my_key는 현재 google_id 를 사용함.
-
-2020-10-23 태양
-코드 정리, log 삭제
-
-2020-11-03 현우
-- dbconfig-load 사용
-*/
+/**
+ * 2020-10-07 태양
+ * - scan.js을 사용하지 않기 위해 만듬.
+ * - my_key는 현재 google_id 를 사용함.
+ * 
+ * 2020-10-23 태양
+ * - 코드 정리, log 삭제
+ * 
+ * 2020-11-03 현우
+ * - dbconfig-load 사용
+ */
 
 var express = require('express');
 var db = require('@db');

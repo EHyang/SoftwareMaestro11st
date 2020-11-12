@@ -1,38 +1,35 @@
-/*
-2020-10-07 태양
-hospital_crawling.js 는 매일 특정 시간마다 동작하도록 설정해야함.
-동작이후에는 임시로 hospital_check 를 통해 데이터베이스에 저장된 값을 확인 할 수 있도록 설정해둠.
+/**
+ * 2020-10-07 태양
+ * - hospital_crawling.js 는 매일 특정 시간마다 동작하도록 설정해야함.
+ * - 동작이후에는 임시로 hospital_check 를 통해 데이터베이스에 저장된 값을 확인 할 수 있도록 설정해둠.
+ * 
+ * - xml2js 는 사용하지 않음
+ * 
+ * 2020-10-10 태양
+ * - hospital_crawling.js 는 node-cron 을 사용하여 특정 시간 마다 동작하도록 설정함.
+ * - 기존 res.redirect를 통해 hostial_check로 넘어갔던 방법대신, 크롤링을 통해 데이터 베이스에 직접 추가하도록 설정하였다.
+ * 
+ * cron
+ *  * * * * * * 매초
+ *  * * * * * 매분
+ *  * * * * 매시간
+ *  * * * 매일
+ *  * * 매달
+ * 
+ * 2020-10-23 태양
+ * - 코드 정리, log 삭제
+ * 
+ * 2020-10-30 태양
+ * - 접근하는 함수 횟수 증가
+ * 
+ * 2020-11-03 현우
+ * - dbconfig-load 사용
+ * 
+ * 2020-11-09 태양
+ * - Kakao api 에서 phone까지 받아옴
+ */
 
-- xml2js 는 사용하지 않음
-
-2020-10-10 태양
-hospital_crawling.js 는 node-cron 을 사용하여 특정 시간 마다 동작하도록 설정함.
-기존 res.redirect를 통해 hostial_check로 넘어갔던 방법대신, 크롤링을 통해 데이터 베이스에 직접 추가하도록 설정하였다.
-
-cron
-* * * * * * 매초
-* * * * * 매분
-* * * * 매시간
-* * * 매일
-* * 매달
-
-2020-10-23 태양
-코드 정리, log 삭제
-
-2020-10-30 태양
-접근하는 함수 횟수 증가
-
-2020-11-03 현우
-- dbconfig-load 사용
-
-2020-11-09 태양
-- Kakao api 에서 phone까지 받아옴
-*/
-
-var express = require('express');
 var request = require('request');
-//var xml2js = require('xml2js');
-//var parser = new xml2js.Parser();
 
 var axios = require('axios');
 var cheerio = require('cheerio');
@@ -78,7 +75,6 @@ cron.schedule('0 * * * *', async () => {
       var js = JSON.parse(body);
       var data = js['documents'];
       var param = [id++, hospname, data[0]['x'], data[0]['y'], data[0]['phone']];
-      //console.log(id + " " + data[0]['place_name'] + " " + data[0]['x'] + " " + data[0]['y']);
 
       await db.mysql.query(insert_sql, param, function(err, result) {
         if (err) {
@@ -110,9 +106,6 @@ cron.schedule('0 * * * *', async () => {
           console.log("crawling failed");
         }
       }); // each -- end
-      // if (number === 30) {
-      //   res.redirect('/hospital_check');
-      // }
     }); // then -- end
   }; // getHtml -- end
 
