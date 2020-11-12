@@ -4,13 +4,17 @@
 ![mysql](https://img.shields.io/badge/mysql-%205.7.30-blueviolet)
 
 
-<div style = "text-align:center;">
+<div align=center>
     <img src="./img/logo2.png" width = 400>
 </div>
 
+
 # Overview
 
-<img src="./img/loding.png" width = 150 style="margin-left: auto; margin-right: auto;">
+<div align=center>
+    <img src="./img/loding.png" width = 150>
+</div>
+
 
 
 
@@ -34,9 +38,8 @@
 | 접촉 알림      | 확진자 발생시 추적 알고리즘을 통해 접촉자 전원에게 즉시 접촉 알림 |
 | 접촉 위치 파악 | 확진자와의 접촉 시간을 통해 스마트폰에 저장되어있는 위치 정보와 매칭하여 접촉 위치를 제공 |
 
-<div style="text-align:center;">
+<div align=center>
     <img src="./img/noti.gif" width = 200>
-    
 </div>
 
 
@@ -58,19 +61,19 @@
 
 ## AWS Architecture
 ### System Structure
-<div style="text-align:center;">
+<div align=center>
     <img src="./img/system.png" width=400>
 </div>
 
 ### Network Structure
 
-<div style="text-align:center;">
+<div align=center>
     <img src="./img/network.png" width=400>
 </div>
 
 ### Database ER-diagram
 
-<div style="text-align:center;">
+<div align=center>
     <img src="./img/erd.png" width=400>
 </div>
 
