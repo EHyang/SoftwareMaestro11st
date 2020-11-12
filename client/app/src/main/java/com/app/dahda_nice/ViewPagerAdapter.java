@@ -1,5 +1,7 @@
 package com.app.dahda_nice;
 
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -23,10 +25,14 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return exfrg3.newInstance();
             case 3:
+
                 return exfrg4.newInstance();
             default:
                 return null;
         }
+
+
+
     }
 
     @Override

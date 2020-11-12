@@ -25,11 +25,4 @@ public class ScanData {
     }
 
 
-    public ScanData(String my_key) {
-        this.my_key = my_key;
-    }
-
-
-
-
 }

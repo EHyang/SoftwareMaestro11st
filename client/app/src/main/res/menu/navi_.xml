@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <group>
+        <item
+            android:id="@+id/one"
+            android:icon="@drawable/number9"
+            android:title="방역 수칙" />
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/two"
+            android:icon="@drawable/number10"
+            android:title="선별 진료소 안내" />
+    </group>
+
+    <group>
+        <item
+            android:id="@+id/three"
+            android:icon="@drawable/number11"
+            android:title="확진 증명" />
+
+
+    </group>
+</menu>
