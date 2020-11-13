@@ -17,13 +17,8 @@ cache:
     files:
       - server/package.json
   paths:
-    - node_modules/
     - server/node_modules/
     - client-web/node_modules
-    - .server-npm/
-    - .client-web-npm/
-    - server/.npm
-    - client-web/.npm
 
 # variables:
 #   NODE_ENV: development
@@ -33,14 +28,10 @@ stages:
   - build
   - deploy
 
-# before_script:
-  # - cd server
-
 test:
   stage: test
   script: 
     - cd server
-    # - npm ci --cache ../server-npm --prefer-offline
     - echo "environment:"
     - echo $NODE_ENV
     - echo "Running install"
