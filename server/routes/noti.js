@@ -48,13 +48,9 @@ async function propagateContacts(target, degree){
   visited[sourceID]=1;
 
   try {
-    // logger(`source token:::: ${sourceID}`);
-
-    var select_scan = 'select distinct scan_key from scan where my_key = ?';
-    var select_my = 'select distinct my_key from scan where scan_key = ?';
     var arr = [];
-
-    /////////// scan1 
+    
+    var select_scan = 'select distinct scan_key from scan where my_key = ?';
     const q1 = new Promise((resolve, reject) => {
       db.mysql.query(select_scan, my_key, (err, rows, fields) => {
         if(err){
@@ -72,6 +68,7 @@ async function propagateContacts(target, degree){
       });
     });
     
+    var select_my = 'select distinct my_key from scan where scan_key = ?';
     const q2 = new Promise((resolve, reject)=>{
       db.mysql.query(select_my, my_key, function(err, rows, fields){
         if(err){
@@ -88,30 +85,21 @@ async function propagateContacts(target, degree){
         resolve();
       })
     })
-
     await Promise.all([q1, q2]);
-  
     var uniq = arr.reduce(function(a, b) {
       logger(a,b);
       if (a.indexOf(b) < 0) a.push(b);
       logger(a,b);
       return a;
     }, []);
-
     if(uniq.length == 0){
       logger('contact list is empty. aborting');
       return;
     }
-
-    globalContacts = globalContacts.concat(uniq); // concat is NOT inplace
-    logger('global contacts:d');
-    logger(globalContacts);
-
+    // mark as contacted
     const q3 = new Promise((resolve, reject)=>{
       var update_states = `update members set state=1,degree=${degree},origin='${target}' where my_key in ( ? )`;
 
-      logger('debug');
-      logger(update_states);
       db.mysql.query(update_states, [uniq], function(err, rows, fields){
         if(err){
           return reject(err);
@@ -120,16 +108,12 @@ async function propagateContacts(target, degree){
         logger(rows);
         resolve();
       });
-
     })
-
     await q3;
-
+    // send FCM
     const q4 = new Promise((resolve, reject) => {
       var select_token = 'select token from members where my_key in ( ? )';
       db.mysql.query(select_token, [uniq], async function(err, rows, fields) {
-        logger("여기");
-        logger(rows);
         const tokens=[];
         const errors=[];
         if (err) {
@@ -137,24 +121,22 @@ async function propagateContacts(target, degree){
           return reject(err);
         } else {
           for (var i = 0; i < rows.length; ++i) {
-            logger(rows[i]['token']);
             tokens.push(rows[i]['token']);
             var message = {
               to: rows[i]['token'],
               collapse_key: 'dev',
 
               notification: {
-                title: 'hello',
-                body: 'Hi there~'
+                title: '접촉 경고',
+                body: '당신은 확진자와 접촉하셨습니다.'
               }
             };
             fcm.send(message, function(err, response) {
               if (err) {
                 logger(err);
-                logger("에러나써");
                 errors.push(err);
               } else {
-                logger("잘가써");
+                logger("sent fcm message");
               }
             });
             await propagateContacts(rows[i]['token'], degree)

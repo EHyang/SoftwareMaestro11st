@@ -1,19 +1,11 @@
-/*
-2020-11-06 태양
-- 새로운 파일 생성
-- 확진자 수 파악
-
-2020-11-12 태양
-- Swagger 추가
-*/
-var request = require('request');
-var express = require('express');
-var xml2js = require('xml2js');
-var db = require('@db');
-var router = express.Router();
-var axios = require('axios');
-var cheerio = require('cheerio');
-
+/**
+ * 2020-11-06 태양
+ * - 새로운 파일 생성
+ * - 확진자 수 파악
+ * 
+ * 2020-11-12 태양
+ * - Swagger 추가
+ */
 
 /**
 *@swagger
@@ -105,6 +97,11 @@ var cheerio = require('cheerio');
 *        type: "string"
 *        example: "1"
 */
+
+var express = require('express');
+var router = express.Router();
+var axios = require('axios');
+var cheerio = require('cheerio');
 
 router.get('/', function (req, response) {
     const getHtml = async () => {

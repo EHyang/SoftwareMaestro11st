@@ -1,18 +1,18 @@
-/*
-2020-10-23 태양
-코드 정리, log 삭제
-
-2020-11-03 현우
-- v2 api 추가 버전 병합
-- dbconfig 로드 스크립트 사용
-- members 테이블 사용
-
-2020-11-04 태양
-- v3 버전 생성 및 정리
-
-2020-11-12 태양
-- Swagger 추가
-*/
+/**
+ * 2020-10-23 태양
+ * - 코드 정리, log 삭제
+ * 
+ * 2020-11-03 현우
+ * - v2 api 추가 버전 병합
+ * - dbconfig 로드 스크립트 사용
+ * - members 테이블 사용
+ * 
+ * 2020-11-04 태양
+ * - v3 버전 생성 및 정리
+ * 
+ * 2020-11-12 태양
+ * - Swagger 추가
+ */
 
 /**
 *@swagger
@@ -66,7 +66,6 @@
 
 var express = require('express');
 var db = require('@db');
-var FCM = require('fcm-node');
 
 var router = express.Router();
 
@@ -95,7 +94,6 @@ router.post('/', function(req, res, next) {
       return;
     }
     console.log('update success!');
-    //res.json({'res':'1'});
     next(res.redirect('/api/v3/noti/?my_key=' + my_key));
   });
 });
