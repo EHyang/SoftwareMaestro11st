@@ -41,6 +41,7 @@ public class LocalInfoFrag extends Fragment {
     TextView busan;
     TextView ulsan;
     TextView jeju;
+    TextView quarantine;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +65,7 @@ public class LocalInfoFrag extends Fragment {
         busan = view.findViewById(R.id.busan);
         ulsan = view.findViewById(R.id.ulsan);
         jeju = view.findViewById(R.id.jeju);
-
+        quarantine = view.findViewById(R.id.quarantine);
 
         retrofitgo();
 
@@ -114,7 +115,7 @@ public class LocalInfoFrag extends Fragment {
                     busan.setText("부산\n" + data.busan);
                     ulsan.setText("울산\n" + data.ulsan);
                     jeju.setText("제주\n" + data.jeju);
-
+                    quarantine.setText("검역\n" + data.quarantine);
                 }
 
             }

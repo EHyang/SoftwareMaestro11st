@@ -26,17 +26,25 @@ public class ContactLocation extends AppCompatActivity implements OnMapReadyCall
 
     private GoogleMap mgoogleMap;
 
-    private LatLng MyLocation;
+    private static LatLng MyLocation;
 
 
     Context context;
 
+     public static void searchLocation(String time) {
 
+         MyLocation = DatabaseControl.select_location(time);
+
+
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_location);
+
 
         context = this;
 
@@ -58,11 +66,10 @@ public class ContactLocation extends AppCompatActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mgoogleMap = googleMap;
 
-        MyLocation = new LatLng(37.5428047, 127.0710675);
 
         MarkerOptions markerOptions = new MarkerOptions();
 
-        markerOptions.position(new LatLng(37.5428047, 127.0710675)).
+        markerOptions.position(MyLocation).
                 title("접촉 위치").snippet("2020년 11월 11일 이 위치에서 접촉");
         mgoogleMap.addMarker(markerOptions);
 
@@ -80,18 +87,6 @@ public class ContactLocation extends AppCompatActivity implements OnMapReadyCall
     }
 
 
-//    private void location(double latitude, double longitude) {
-//
-//        if (latitude != 0 && longitude != 0) {
-//            Log.d("여기로 들어갔나?", "여기맞아?");
-//            MyLocation = new LatLng(latitude, longitude);
-//        } else {
-//            MyLocation = new LatLng(37.5642135, 127.0016985);
-//            Log.d("여기로 들어갔나?", "여기맞아?222");
-//        }
-//
-//
-//    }
 
 
 }

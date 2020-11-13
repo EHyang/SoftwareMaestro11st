@@ -12,7 +12,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="600dp"
         android:layout_marginTop="20dp" />
 
 
@@ -20,10 +20,10 @@
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:ci_drawable="@drawable/radius"
-        app:ci_height="5dp"
+        app:ci_drawable="@drawable/radius3"
+        app:ci_height="8dp"
         app:ci_margin="11dp"
-        app:ci_width="5dp" />
+        app:ci_width="8dp" />
 
 
 </LinearLayout>

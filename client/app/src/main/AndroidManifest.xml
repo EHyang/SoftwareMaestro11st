@@ -44,6 +44,9 @@
 
 
         <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="dahda" />
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBuonmQHQ-hmfU4voYuTIokkvJbtQ8tv88" />
 
@@ -54,6 +57,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".LoadingActivity"
             android:screenOrientation="portrait">
@@ -74,7 +78,7 @@
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

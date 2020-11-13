@@ -29,6 +29,10 @@ public class TotalInfoFrag extends Fragment {
     TextView normal_person;
     TextView dead_person;
     TextView update_time;
+    TextView increase_confirmed_person;
+    TextView increase_examined;
+    TextView increase_normal_person;
+    TextView increase_dead_person;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,6 +43,13 @@ public class TotalInfoFrag extends Fragment {
         normal_person = view.findViewById(R.id.normal_person);
         dead_person = view.findViewById(R.id.dead_person);
         update_time = view.findViewById(R.id.update_time);
+        increase_confirmed_person = view.findViewById(R.id.increase_confirmed_person);
+        increase_examined = view.findViewById(R.id.increase_examined);
+        increase_normal_person = view.findViewById(R.id.increase_normal_person);
+        increase_dead_person = view.findViewById(R.id.increase_dead_person);
+
+
+
         retrofitgo();
 
         return view;
@@ -68,9 +79,13 @@ public class TotalInfoFrag extends Fragment {
                     Log.d("middleData 성공!!", "///" + 0);
                     confirmed_person.setText(data.getConfirmed());
                     examined.setText(data.getExamined());
-                    normal_person.setText(data.normal);
-                    dead_person.setText(data.dead);
-                    update_time.setText(data.time);
+                    normal_person.setText(data.getNormal());
+                    dead_person.setText(data.getDead());
+                    update_time.setText(data.getTime());
+                    increase_confirmed_person.setText(data.getConfirmed_up());
+                    increase_examined.setText(data.getExamined_up());
+                    increase_normal_person.setText(data.getNormal_up());
+                    increase_dead_person.setText(data.getDead_up());
                 }
 
             }

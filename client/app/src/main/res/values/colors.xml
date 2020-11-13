@@ -3,8 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorService">#0000CD</color>
-
+    <color name="colorService">#1a45d2</color>
+<!--    #0000CD-->
     <color name="colorToolbar">#ffffff</color>
     <color name="state_2">#DC143C</color>
     <color name="state_1">#ffffff</color>

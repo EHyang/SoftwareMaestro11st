@@ -2,10 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:background="#ffffff"
     android:id="@+id/framelayout_3"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorService"
     tools:context=".Myinfo_">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/nanumsquareeb"
             android:text="내 정보"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:textSize="40dp"
             android:textStyle="bold" />
 
@@ -34,13 +34,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:background="@color/colorService"
                 android:fontFamily="@font/nanumsquareeb"
                 android:text="나의상태: "
-                android:textColor="#000000"
+                android:textColor="#00FF7F"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
             <TextView
+                android:layout_marginLeft="5dp"
                 android:id="@+id/my_situation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,6 +51,27 @@
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorService"
+                android:fontFamily="@font/nanumsquareeb"
+                android:text="로그아웃"
+                android:textColor="#E2E2E2"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
 
         </LinearLayout>
 
@@ -63,10 +86,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/nanumsquareeb"
                 android:text="계정정보"
                 android:textColor="#000000"
@@ -101,6 +124,7 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,8 +152,7 @@
                     android:textStyle="bold" />
 
 
-
-        </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -140,11 +163,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="40dp"
-            android:background="#ffffff"
+            android:background="@color/colorService"
             android:fontFamily="@font/nanumsquareeb"
             android:text="개인정보 및 권한 >"
-            android:textColor="#000000"
+            android:textColor="#00FF7F"
             android:textSize="15dp"
+
             android:textStyle="bold" />
 
         <Button
@@ -152,27 +176,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:background="#ffffff"
+            android:background="@color/colorService"
             android:fontFamily="@font/nanumsquareeb"
             android:text="이용약관 >"
-            android:textColor="#000000"
+            android:textColor="#00FF7F"
             android:textSize="15dp"
             android:textStyle="bold" />
 
 
-
         <Button
-            android:layout_marginRight="15dp"
             android:id="@+id/myinbutton_"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:background="#ffffff"
             android:layout_marginTop="50dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/colorService"
             android:fontFamily="@font/nanumsquareeb"
             android:gravity="center"
             android:text="back"
-            android:textColor="#0000CD"
+            android:textColor="#ffffff"
             android:textSize="20dp"
             android:textStyle="bold" />
 

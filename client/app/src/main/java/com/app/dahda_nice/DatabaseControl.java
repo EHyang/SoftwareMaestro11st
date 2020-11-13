@@ -3,12 +3,15 @@ package com.app.dahda_nice;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.util.Log;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class DatabaseControl {
 
-    Database database;
-    SQLiteDatabase sqLiteDatabase;
+    static Database database;
+    static SQLiteDatabase sqLiteDatabase;
 
 
     public DatabaseControl(Database database) {
@@ -29,6 +32,26 @@ public class DatabaseControl {
 
     }
 
+    static public LatLng select_location(String time) {
+        Log.d("select_location",time);
+
+
+        sqLiteDatabase = database.getWritableDatabase();
+
+        String sqlSelect_location = "SELECT latittude, longitude FROM dahda WHERE time=='"+time +"'";
+
+        Cursor cursor =  sqLiteDatabase.rawQuery(sqlSelect_location, null);
+
+        Log.d("select_location!!",cursor.getColumnIndex("latittude") +" ");
+
+        double latittude = Double.valueOf(cursor.getColumnIndex("latittude"));
+        double longitude = Double.valueOf(cursor.getColumnIndex("longitude"));
+        LatLng latLng = new LatLng(latittude, longitude);
+
+        return latLng;
+
+
+    }
     public void select(String time, String latitude, String longitude) {
 
         Log.d("databaseCheck", time +", "+ latitude+", "+longitude );

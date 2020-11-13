@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 
@@ -29,15 +30,19 @@ public class FirebaseMessage extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+//        String title = remoteMessage.getNotification().getTitle();
         String title = remoteMessage.getData().get("title");
-        String message = remoteMessage.getData().get("message");
+        String message = remoteMessage.getData().get("body");
         String test = remoteMessage.getData().get("data");
 
+        ContactLocation.searchLocation(test);
+
         Log.d("FirebasePushMessage",title+", "+message+", "+test);
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ContactLocation.class);
         intent.putExtra("test", test);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 133, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -47,8 +52,10 @@ public class FirebaseMessage extends FirebaseMessagingService {
             NotificationManager notichannel = (android.app.NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationChannel channelMessage = new NotificationChannel(channel, channel_nm,
                     android.app.NotificationManager.IMPORTANCE_DEFAULT);
-            channelMessage.setDescription("채널에 대한 설명.");
+
+            channelMessage.setDescription("Dahda Application");
             channelMessage.enableLights(true);
+            channelMessage.setLightColor(Color.RED);
             channelMessage.enableVibration(true);
             channelMessage.setShowBadge(false);
             channelMessage.setVibrationPattern(new long[]{1000, 1000});
@@ -57,7 +64,8 @@ public class FirebaseMessage extends FirebaseMessagingService {
             //푸시알림을 Builder를 이용하여 만듭니다.
             NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(this, channel)
-                            .setSmallIcon(R.drawable.ic_launcher_background)
+                            .setSmallIcon(R.drawable.number6)
+                            .setColor(Color.RED)
                             .setContentTitle(title)//푸시알림의 제목
                             .setContentText(message)//푸시알림의 내용
                             .setChannelId(channel)
