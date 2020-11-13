@@ -63,7 +63,6 @@ build:
 deploy_staging:
   stage: deploy
   script:
-    - export NODE_ENV = production
     - echo "Deploy to staging server"
   environment:
     name: staging
