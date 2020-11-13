@@ -9,6 +9,21 @@ image: node:latest
 #   - mysql:latest
 #   - redis:latest
 #   - postgres:latest
+
+# Defines the Container environment variables
+variables:
+  BUNDLE_PATH: build    # defines the path for the generated ZIP file
+  BUNDLE_SRC: $BUNDLE_PATH/output.zip # defines the zipfile to upload to S3
+  #G: gradle-2.14.1/bin/gradle         # defines path for Gradle
+
+# Script executed before the various pipeline build stages are run - sets up the environment
+before_script:
+  - echo 'BeforeScript'
+  - pwd
+  - export app=dahda
+  - apt-get update --quiet --yes
+  - apt-get --quiet install --yes wget unzip zip
+  # - zip -r output.zip .
   
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
@@ -17,24 +32,13 @@ cache:
     files:
       - server/package.json
   paths:
-    - node_modules/
     - server/node_modules/
     - client-web/node_modules
-    - .server-npm/
-    - .client-web-npm/
-    - server/.npm
-    - client-web/.npm
-
-# variables:
-#   NODE_ENV: development
 
 stages:
   - test
   - build
   - deploy
-
-# before_script:
-  # - cd server
 
 test:
   stage: test
@@ -64,9 +68,19 @@ deploy_staging:
   stage: deploy
   script:
     - echo "Deploy to staging server"
+    - apt-get --quiet install --yes python-pip # AWS CLI requires python-pip, python is installed by default
+    - pip install -U pip  # pip update
+    - pip install awscli  # AWS CLI installation
+    - mkdir $BUNDLE_PATH
+    - echo "Deploy to WEB"
+    - echo "..." # do something
+    - echo "Deploy to WAS"
+    - zip -r $BUNDLE_SRC server
+    - aws s3 cp $BUNDLE_SRC $AWS_S3_LOCATION # Uploads the zipfile to S3 and expects the AWS Code Pipeline/Code Deploy to pick up
   environment:
     name: staging
     url: https://staging.example.com
+  when: on_success
   only:
   - deploy-test
   

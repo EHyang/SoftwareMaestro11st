@@ -12,6 +12,8 @@ APPLOG=$APP/$APPNAME.log
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Validate Service Hook Started **" >> $LOG
 
+source $APPPATH/scripts/bash_profile.sh
+
 # Check that the application directory exists
 if [ -d $APP ]
 then
