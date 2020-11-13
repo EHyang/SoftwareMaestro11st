@@ -1,3 +1,8 @@
+/**
+ * 2020-11-12 현우
+ * - db 유저 대신 db명 출력
+ */
+
 const mySql = require('mysql');
 const config = require('config');
 
@@ -15,7 +20,7 @@ const info = {
   database : config.get('db.database')
 };
 
-console.log(info.user);
+console.log(`using db : ${info.database}`);
 
 let mysql = mySql.createConnection(info);
 
