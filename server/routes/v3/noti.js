@@ -95,7 +95,9 @@ async function propagateContacts(target, degree) {
     logger(globalContacts);
 
     const q3 = new Promise((resolve, reject) => {
-      var update_states = `update members set state=1,degree=${degree},origin='${target}' where my_key in (?)`;
+      var now = new Date();
+      console.log(now);
+      var update_states = `update members set state=1,degree=${degree},origin='${target}',isolation='${now}' where my_key in (?)`;
 
       logger('debug');
       logger(update_states);
