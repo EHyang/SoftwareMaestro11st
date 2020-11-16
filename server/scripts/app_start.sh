@@ -2,26 +2,36 @@
 USER=ubuntu
 APPNAME=dahda
 HOME=/home/$USER
-CMD=$APP/$APPNAME.sh
+# CMD=$APP/$APPNAME.sh
 LOG=$HOME/deploy.log
-APP=$HOME/$APPNAME
+APPPATH=/home/ubuntu/server
 
 # This example assumes the sample 'my_app.sh' script has been added to the the directory 'my_app' and serves as the application launcher
 
-/bin/echo "$(date '+%Y-%m-%d %X'): ** Application Start Hook Started **" >> $LOG
-/bin/echo "$(date '+%Y-%m-%d %X'): Event: $LIFECYCLE_EVENT" >> $LOG
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-pwd >> $LOG
-cd $APP
+/bin/echo "$(date '+%Y-%m-%d %X'): ** Application Start Hook Started **" >> $LOG 2>&1
+/bin/echo "$(date '+%Y-%m-%d %X'): Event: $LIFECYCLE_EVENT" >> $LOG 2>&1
 
-if [ -f $CMD ]
-then
-    echo $APP >> $LOG
-    pwd >> $LOG
-    # $CMD start
-    npm start
-    /bin/echo "$(date '+%Y-%m-%d %X'): Starting $APPLICATION_NAME" >> $LOG
-else
-    /bin/echo "$(date '+%Y-%m-%d %X'): $CMD not found. Proceeding with deployment" >> $LOG
-fi
+cd $APPPATH
+pwd >> $LOG 2>&1
+
+id >> $LOG 2>&1
+
+forever start server.js >> $LOG 2>&1
+
+# sudo systemctl start $APPNAME
+
+# if [ -f $CMD ]
+# then
+#     echo $APP >> $LOG
+#     pwd >> $LOG
+#     # $CMD start
+#     # npm start
+#     /bin/echo "$(date '+%Y-%m-%d %X'): Starting $APPLICATION_NAME" >> $LOG
+# else
+#     /bin/echo "$(date '+%Y-%m-%d %X'): $CMD not found. Proceeding with deployment" >> $LOG
+# fi
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Application Start Hook Completed **" >> $LOG
