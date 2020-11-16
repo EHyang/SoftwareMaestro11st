@@ -7,7 +7,7 @@ CMD=$APP/$APPNAME.sh
 LOG=$HOME/deploy.log
 APP=$HOME/$APPNAME
 PIDF=$APP/$APPNAME.pid
-ENV=$HOME/.env
+ENV=$HOME/env
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Started **" >> $LOG 2>&1
 /bin/echo "home: $HOME" >> $LOG 2>&1
