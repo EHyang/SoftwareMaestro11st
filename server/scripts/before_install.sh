@@ -7,6 +7,7 @@ CMD=$APP/$APPNAME.sh
 LOG=$HOME/deploy.log
 APP=$HOME/$APPNAME
 PIDF=$APP/$APPNAME.pid
+ENV=$HOME/.env
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Started **" >> $LOG 2>&1
 /bin/echo "home: $HOME" >> $LOG 2>&1
@@ -14,7 +15,8 @@ PIDF=$APP/$APPNAME.pid
 
 # Do some actions before the installation
 
-sudo apt install awscli -y
-aws ssm get-parameters --region ap-northeast-2 --names Dahda-Environment-Variables --with-decryption --query Parameters[0].Value >> $LOG 2>&1
+/bin/apt install awscli -y $LOG 2>&1
+aws ssm get-parameters --region ap-northeast-2 --names Dahda-Environment-Variables --with-decryption --query Parameters[0].Value >> $ENV 2>&1
+source $ENV >> $LOG 2>&1
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Completed **" >> $LOG 2>&1
