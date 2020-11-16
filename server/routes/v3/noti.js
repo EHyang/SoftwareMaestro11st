@@ -22,6 +22,7 @@ var express = require('express');
 var db = require('@db');
 var router = express.Router();
 var config = require('config');
+var moment = require('moment');
 
 var FCM = require('fcm-node');
 var serverKey = config.get('FCM_KEY');
@@ -67,7 +68,7 @@ async function propagateContacts(target, degree) {
           logger(rows[i]["my_key"]);
           logger(rows[i]["scan_time"]);
           arr.push(rows[i]["my_key"]);
-          time.push(rows[i]["scan_time"])
+          time.push(moment(rows[i]["scan_time"]).format('YYYY-MM-DD HH:mm:ss'))
         }
         logger('q1 done');
         resolve();
