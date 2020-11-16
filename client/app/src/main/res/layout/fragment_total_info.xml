@@ -177,14 +177,14 @@
                     android:layout_height="15dp"
                     android:layout_gravity="right"
                     android:layout_marginLeft="25dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/number6" />
+                    android:layout_weight="0.6"
+                    android:src="@drawable/number14" />
 
                 <TextView
                     android:id="@+id/increase_confirmed_person"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:fontFamily="@font/nanumsquareeb"
                     android:text="20"
                     android:textColor="#50dcdf"
@@ -204,14 +204,14 @@
                     android:layout_height="15dp"
                     android:layout_gravity="right"
                     android:layout_marginLeft="25dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/number6" />
+                    android:layout_weight="0.6"
+                    android:src="@drawable/number14" />
 
                 <TextView
                     android:id="@+id/increase_examined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:fontFamily="@font/nanumsquareeb"
                     android:text="20"
                     android:textColor="#50dcdf"
@@ -230,16 +230,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="15dp"
                     android:layout_gravity="end"
-                    android:layout_weight="1"
+                    android:layout_weight="0.6"
                     android:layout_marginLeft="25dp"
-                    android:src="@drawable/number6" />
+                    android:src="@drawable/number14" />
 
                 <TextView
 
                     android:id="@+id/increase_normal_person"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:fontFamily="@font/nanumsquareeb"
 
                     android:text="20"
@@ -257,16 +257,16 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="15dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.6"
                     android:gravity="end"
                     android:layout_marginLeft="25dp"
-                    android:src="@drawable/number6" />
+                    android:src="@drawable/number14" />
 
                 <TextView
                     android:id="@+id/increase_dead_person"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.4"
                     android:fontFamily="@font/nanumsquareeb"
 
                     android:text="20"

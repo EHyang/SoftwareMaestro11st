@@ -95,6 +95,12 @@ public class DatabaseControl {
         sqLiteDatabase.execSQL(sqlDelete);
     }
 
+    public void drop() {
+        sqLiteDatabase = database.getWritableDatabase();
+
+        String sqlDrop= "DROP TABLE dahda";
+        sqLiteDatabase.execSQL(sqlDrop);
+    }
     public void dbclose() {
         sqLiteDatabase.close();
         database.close();

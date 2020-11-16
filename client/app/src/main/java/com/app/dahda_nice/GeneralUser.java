@@ -91,11 +91,16 @@ public class GeneralUser extends AppCompatActivity {
 
     String google_id;
     int state;
+    String first;
+    String second;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
+
+        bundle = new Bundle();
 
         dataCon = new ClinicDataCon();
         dataCon.bringData();
@@ -104,7 +109,7 @@ public class GeneralUser extends AppCompatActivity {
         database = new Database(this, "Dahda", null, 1);
         databaseControl = new DatabaseControl(database);
 
-        databaseControl.delete();
+
 
 
         final Intent intent = getIntent();
@@ -206,18 +211,24 @@ public class GeneralUser extends AppCompatActivity {
 
         switch (state) {
             case 0:
+                bundle.putString("key",mykey);
+                myinfoFrag.setArguments(bundle);
                 mDrawerLayout.setBackgroundColor(getResources().getColor(R.color.colorService));
                 fragmentTransaction.replace(R.id.framelayout_, myinfoFrag);
                 fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
                 fragmentTransaction.replace(R.id.framelayout_c, localInfoFrag).commit();
                 break;
             case 1:
+                bundle.putString("key",mykey);
+                contactFrag.setArguments(bundle);
                 mDrawerLayout.setBackgroundColor(Color.parseColor("#FFD700"));
                 fragmentTransaction.replace(R.id.framelayout_, contactFrag);
                 fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
                 fragmentTransaction.replace(R.id.framelayout_c, localInfoFrag).commit();
                 break;
             case 2:
+                bundle.putString("key",mykey);
+                confirmFrag.setArguments(bundle);
                 mDrawerLayout.setBackgroundColor(Color.parseColor("#DC143C"));
                 fragmentTransaction.replace(R.id.framelayout_, confirmFrag);
                 fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
@@ -275,6 +286,8 @@ public class GeneralUser extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d("Data 성공!!", "///" + data.getRes());
                     state = Integer.parseInt(data.getRes());
+
+
                     replaceFrag(state);
 
                 }
@@ -360,7 +373,7 @@ public class GeneralUser extends AppCompatActivity {
 
         Log.d("sendDatabase Null?! : ", getTime + ", " + aLatitude + ", " + aLongitude);
 
-        databaseControl.select(getTime, aLatitude, aLongitude);
+//        databaseControl.select(getTime, aLatitude, aLongitude);
 
     }
 

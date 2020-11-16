@@ -31,14 +31,14 @@ public class ContactLocation extends AppCompatActivity implements OnMapReadyCall
 
     Context context;
 
-     public static void searchLocation(String time) {
-
-         MyLocation = DatabaseControl.select_location(time);
-
-
-
-
-    }
+//     public static void searchLocation(String time) {
+//
+//         MyLocation = DatabaseControl.select_location(time);
+//
+//
+//
+//
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +65,12 @@ public class ContactLocation extends AppCompatActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mgoogleMap = googleMap;
-
+        MyLocation = new LatLng(37.5437776, 127.0613566);
 
         MarkerOptions markerOptions = new MarkerOptions();
 
         markerOptions.position(MyLocation).
-                title("접촉 위치").snippet("2020년 11월 11일 이 위치에서 접촉");
+                title("접촉 위치").snippet("2020년 11월 16일 이 위치에서 접촉");
         mgoogleMap.addMarker(markerOptions);
 
 
@@ -79,12 +79,13 @@ public class ContactLocation extends AppCompatActivity implements OnMapReadyCall
             public void onMapLoaded() {
 
                 mgoogleMap.moveCamera(CameraUpdateFactory.newLatLng(MyLocation));
-                mgoogleMap.animateCamera(CameraUpdateFactory.zoomTo((float) 10));
+                mgoogleMap.animateCamera(CameraUpdateFactory.zoomTo(10));
 
             }
         });
 
     }
+
 
 
 

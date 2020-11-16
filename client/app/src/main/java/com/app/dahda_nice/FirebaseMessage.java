@@ -33,13 +33,13 @@ public class FirebaseMessage extends FirebaseMessagingService {
 //        String title = remoteMessage.getNotification().getTitle();
         String title = remoteMessage.getData().get("title");
         String message = remoteMessage.getData().get("body");
-        String test = remoteMessage.getData().get("data");
+        String contacted_time = remoteMessage.getData().get("contacted_time");
 
-        ContactLocation.searchLocation(test);
+//        ContactLocation.searchLocation(test);
 
-        Log.d("FirebasePushMessage",title+", "+message+", "+test);
+        Log.d("FirebasePushMessage",title+", "+message+", "+contacted_time);
         Intent intent = new Intent(this, ContactLocation.class);
-        intent.putExtra("test", test);
+        intent.putExtra("test", contacted_time);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 133, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

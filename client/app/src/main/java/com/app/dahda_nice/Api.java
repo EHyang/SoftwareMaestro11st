@@ -1,5 +1,7 @@
 package com.app.dahda_nice;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,5 +37,7 @@ public interface Api {
     @GET("api/v3/hospital_check")
     Call<List<ClinicData>> clinicdata();
 
+    @POST("api/v3/info")
+    Call<LoginDao> info(@Body ConfirmData confirmData);
 
 }

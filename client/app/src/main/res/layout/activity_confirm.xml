@@ -13,25 +13,57 @@
         android:orientation="vertical">
         <!-- TODO: Update blank fragment layout -->
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="70dp"
+            android:fontFamily="@font/nanumsquareeb"
+            android:text="감사합니다."
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/nanumsquareeb"
+            android:text="코로나 추적을 위해"
+            android:textColor="#000000"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/nanumsquareeb"
+            android:text="더욱 노력하겠습니다"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
         <ImageView
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="50dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_foreground" />
+            android:src="@drawable/number15" />
 
         <Button
             android:id="@+id/confirmedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:background="@color/colorService"
             android:fontFamily="@font/nanumsquareeb"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="Confirmed"
+            android:text="확진"
             android:textColor="#ffffff"
             android:textSize="30dp"
             android:textStyle="bold" />
@@ -41,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/radius4"
             android:fontFamily="@font/nanumsquareeb"
@@ -49,7 +81,7 @@
             android:paddingTop="5dp"
             android:paddingRight="5dp"
             android:paddingBottom="5dp"
-            android:text="확진 해제하기"
+            android:text="완치"
             android:textColor="#000000"
             android:textSize="20dp"
             android:textStyle="bold" />

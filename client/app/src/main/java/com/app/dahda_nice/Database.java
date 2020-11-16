@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 public class Database extends SQLiteOpenHelper {
 
     public static final String TABLE_NAME = "dahda";
-//    public static final String ID = "id";
     public static final String COL_1 = "time";
     public static final String COL_2 = "latitude";
     public static final String COL_3 = "longitude";
@@ -28,10 +27,9 @@ public class Database extends SQLiteOpenHelper {
         Log.d("Database in?", "in Check");
 
         String query = "create table if not exists " + TABLE_NAME + "(" +
-//                ID + " varchar(50) not null , " +
-                COL_1 + " datetime not null , " +
-                COL_2 + " varchar(50) not null , " +
-                COL_3 + " varchar(50) not null);";
+                COL_1 + " datetime, " +
+                COL_2 + " varchar(50), " +
+                COL_3 + " varchar(50));";
 
         db.execSQL(query);
     }
