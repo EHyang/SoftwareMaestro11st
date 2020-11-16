@@ -22,11 +22,11 @@ hooks:
   # All hook scripts are assumed to be in the /install/aws_cd directory located at the root of the deployment zip archive
   ApplicationStop:
     - location: scripts/app_stop.sh
-      timeout: 180
+      timeout: 120
       runas: ubuntu
   BeforeInstall:
     - location: scripts/before_install.sh
-      timeout: 180
+      timeout: 300
       runas: ubuntu
   AfterInstall:
     - location: scripts/after_install.sh
