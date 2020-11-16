@@ -14,4 +14,7 @@ PIDF=$APP/$APPNAME.pid
 
 # Do some actions before the installation
 
+sudo apt install awscli -y
+aws ssm get-parameters --region ap-northeast-2 --names Dahda-Environment-Variables --with-decryption --query Parameters[0].Value >> $LOG 2>&1
+
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Completed **" >> $LOG 2>&1
