@@ -30,7 +30,8 @@ npm install >> $LOG 2>&1
 
 echo -e "NPM Install Done" >> $LOG 2>&1
 
-sudo cp $CONFIG $APPPATH/config/development.json >> $LOG 2>&1
 
+
+sudo cp $CONFIG $APPPATH/config/development.json >> $LOG 2>&1
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** After Install Hook Completed **" >> $LOG
