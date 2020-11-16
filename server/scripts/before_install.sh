@@ -11,11 +11,11 @@ ENV=$HOME/.env
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Started **" >> $LOG 2>&1
 /bin/echo "home: $HOME" >> $LOG 2>&1
-/bin/echo "VERSION 0.8-test" >> $LOG 2>&1
+/bin/echo "VERSION 0.85-test" >> $LOG 2>&1
 
 # Do some actions before the installation
 
-/bin/apt install awscli -y $LOG 2>&1
+apt install awscli -y $LOG 2>&1
 aws ssm get-parameters --region ap-northeast-2 --names Dahda-Environment-Variables --with-decryption --query Parameters[0].Value >> $ENV 2>&1
 source $ENV >> $LOG 2>&1
 
