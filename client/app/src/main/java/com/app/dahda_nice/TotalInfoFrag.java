@@ -1,7 +1,9 @@
 package com.app.dahda_nice;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -33,10 +36,14 @@ public class TotalInfoFrag extends Fragment {
     TextView increase_examined;
     TextView increase_normal_person;
     TextView increase_dead_person;
+    ImageView imageView;
+    Drawable drawable;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = (View) inflater.inflate(R.layout.fragment_total_info, container, false);
+
+        imageView = view.findViewById(R.id.image_);
 
         confirmed_person = view.findViewById(R.id.confirmed_person);
         examined = view.findViewById(R.id.examined);
@@ -48,7 +55,7 @@ public class TotalInfoFrag extends Fragment {
         increase_normal_person = view.findViewById(R.id.increase_normal_person);
         increase_dead_person = view.findViewById(R.id.increase_dead_person);
 
-
+        drawable = getActivity().getResources().getDrawable(R.drawable.number18);
 
         retrofitgo();
 
@@ -86,6 +93,10 @@ public class TotalInfoFrag extends Fragment {
                     increase_examined.setText(data.getExamined_up());
                     increase_normal_person.setText(data.getNormal_up());
                     increase_dead_person.setText(data.getDead_up());
+                    Log.d("checkcheck",data.getDead_up()+ " ");
+                    if (data.getDead_up().equals("-")) {
+                        imageView.setImageDrawable(drawable);
+                    }
                 }
 
             }

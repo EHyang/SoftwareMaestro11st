@@ -6,13 +6,13 @@
     android:background="@color/colorService"
     tools:context=".MyinfoFrag">
 
+
     <LinearLayout
-
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/radius"
         android:orientation="vertical">
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -120,7 +120,6 @@
                 android:textSize="20dp"
                 android:textStyle="bold" />
         </LinearLayout>
-
     </LinearLayout>
 
 

@@ -26,10 +26,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ContactFrag extends Fragment {
 
 
-    Button contactLocation_;
-    TextView first;
-    TextView second;
-    String key;
+    static Button contactLocation_;
+    static TextView first;
+
+    static TextView second;
+
+    static String key;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +42,7 @@ public class ContactFrag extends Fragment {
 
         first = view.findViewById(R.id.first);
         second = view.findViewById(R.id.second);
+
         connect();
 
         contactLocation_ = view.findViewById(R.id.contactLocation_);
@@ -57,7 +60,15 @@ public class ContactFrag extends Fragment {
 
     }
 
-    private void connect() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        connect();
+        Log.d("ContactOnResume! ", key);
+
+    }
+
+    static void connect() {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -78,8 +89,9 @@ public class ContactFrag extends Fragment {
 
 
                 if (response.isSuccessful()) {
-                    Log.d("Data 성공!!", "///" + data.getFirst());
+                    Log.d("ContactData 성공!!", "///" + data.getFirst());
                     Log.d("Data 성공!!", "///" + data.getSecond());
+
                     first.setText(data.getFirst());
                     second.setText(data.getSecond());
 

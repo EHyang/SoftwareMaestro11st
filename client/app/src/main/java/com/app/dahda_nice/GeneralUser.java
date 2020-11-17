@@ -195,6 +195,8 @@ public class GeneralUser extends AppCompatActivity {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Log.d("refresh!!","refresh!!!");
+
                 stateCheck(); // your code
                 pullToRefresh.setRefreshing(false);
             }
@@ -213,6 +215,8 @@ public class GeneralUser extends AppCompatActivity {
             case 0:
                 bundle.putString("key",mykey);
                 myinfoFrag.setArguments(bundle);
+                Log.d("fragment1!?!?!?","fragment1??!");
+                myinfoFrag.connect();
                 mDrawerLayout.setBackgroundColor(getResources().getColor(R.color.colorService));
                 fragmentTransaction.replace(R.id.framelayout_, myinfoFrag);
                 fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
@@ -221,6 +225,7 @@ public class GeneralUser extends AppCompatActivity {
             case 1:
                 bundle.putString("key",mykey);
                 contactFrag.setArguments(bundle);
+                contactFrag.connect();
                 mDrawerLayout.setBackgroundColor(Color.parseColor("#FFD700"));
                 fragmentTransaction.replace(R.id.framelayout_, contactFrag);
                 fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
@@ -229,6 +234,7 @@ public class GeneralUser extends AppCompatActivity {
             case 2:
                 bundle.putString("key",mykey);
                 confirmFrag.setArguments(bundle);
+                confirmFrag.connect();
                 mDrawerLayout.setBackgroundColor(Color.parseColor("#DC143C"));
                 fragmentTransaction.replace(R.id.framelayout_, confirmFrag);
                 fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,9 +24,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MyinfoFrag extends Fragment {
 
 
-    TextView first;
-    TextView second;
-    String key;
+    static TextView first;
+    static TextView second;
+    static String key;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,8 +38,9 @@ public class MyinfoFrag extends Fragment {
 
         key = bundle.getString("key");
 
-
+        Log.d("fragKeyCheck /// ",key);
         connect();
+
 
         first = view.findViewById(R.id.first);
         second = view.findViewById(R.id.second);
@@ -49,8 +51,15 @@ public class MyinfoFrag extends Fragment {
 
     }
 
-    private void connect() {
-        Log.d("fragKeyCheck /// ",key);
+    @Override
+    public void onResume() {
+        super.onResume();
+        connect();
+        Log.d("OnResumeFragment!!/// ",key);
+
+    }
+
+    static void connect() {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();

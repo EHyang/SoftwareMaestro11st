@@ -22,8 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ConfirmFrag extends Fragment {
 
 
-    TextView first;
-    String key;
+    static TextView first;
+    static String key;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +39,14 @@ public class ConfirmFrag extends Fragment {
 
         return view;
     }
-    private void connect() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        connect();
+        Log.d("Confirm onresume ","fff");
+
+    }
+    static  void connect() {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -60,8 +67,8 @@ public class ConfirmFrag extends Fragment {
 
 
                 if (response.isSuccessful()) {
-                    Log.d("Data 성공!!", "///" + data.getFirst());
-                    first.setText(data.getFirst());
+                    Log.d("ConfirmData 성공!!", "///" + data.getFirst());
+                    first.setText(data.getFirst()+" 차");
 
                 }
 
