@@ -35,6 +35,9 @@ cache:
     - server/node_modules/
     - client-web/node_modules
 
+# variables:
+#   NODE_ENV: development
+
 stages:
   - test
   - build
@@ -44,7 +47,6 @@ test:
   stage: test
   script: 
     - cd server
-    # - npm ci --cache ../server-npm --prefer-offline
     - echo "environment:"
     - echo $NODE_ENV
     - echo "Running install"
