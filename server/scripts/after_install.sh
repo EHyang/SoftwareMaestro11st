@@ -35,6 +35,8 @@ sudo apt install jq -y >> $LOG 2>&1
 
 sudo apt install awscli -y >> $LOG 2>&1
 
+sudo chown ubuntu:ubuntu server/
+
 aws ssm get-parameters --region ap-northeast-2 --names Dahda-Environment-Variables --with-decryption --query Parameters[0].Value | jq -rc . >> $APPPATH/config/development.json 2>&1
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** After Install Hook Completed **" >> $LOG
