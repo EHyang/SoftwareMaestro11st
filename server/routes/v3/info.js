@@ -105,72 +105,77 @@ var db = require('@db');
 
 var router = express.Router();
 
-router.post('/', function (req, res) {
+router.post('/', async function (req, res) {
     var my_key = req.body.my_key;
     var my_state, my_degree;
+    console.log(my_key);
     var state_sql = 'select state,degree from members where my_key = ?';
-
-    db.mysql.query(state_sql, my_key, async function (err, row) {
-
-        if (err) {
-            console.log(err);
-
-            res.json({
-                "first": "-1",
-                "second": "-1"
-            })
-        } else {
-            my_state = row[0]['state'];
-            my_degree = row[0]['degree'] + 1;
-
-            if (my_state === 0) {
-                var today_sql = "select count(*) as today from scan where my_key = ? and DATE(scan_time) = DATE(now())";
-                var all_sql = "select count(*) as day from scan where my_key = ?";
-
-                const a = new Promise((resolve, reject) => {
-                    db.mysql.query(today_sql, my_key, function (err, rows) {
-                        resolve(rows[0]['today']);
-                    });
-                });
-
-                const b = new Promise((resolve, reject) => {
-                    db.mysql.query(all_sql, my_key, function (err, rows) {
-                        resolve(rows[0]['day']);
-                    });
-                });
-
-
-                var first = await a;
-                var second = await b;
-
+    const info = new Promise((resolve,reject)=>{
+        db.mysql.query(state_sql, my_key, async function (err, row) {
+            if (err) {
+                console.log(err);
+    
                 res.json({
-                    "first": first,
-                    "second": second
-                });
-            } else if (my_state === 1) {
-                var isolate_sql = " select datediff(date_add(isolation, interval 14 day), isolation) as remain, datediff(now(), isolation) as total from members_dev where my_key = ?";
-
-                const c = new Promise((resolve,reject)=>{
-                    db.mysql.query(isolate_sql,my_key,function(err,rows){
-                        resolve(rows[0]);
+                    "first": "-1",
+                    "second": "-1"
+                })
+            } else {
+                my_state = row[0]['state'];
+                my_degree = row[0]['degree'] + 1;
+    
+                if (my_state === 0) {
+                    var today_sql = "select count(*) as today from scan where my_key = ? and DATE(scan_time) = DATE(now())";
+                    var all_sql = "select count(*) as day from scan where my_key = ?";
+    
+                    const a = new Promise((resolve, reject) => {
+                        db.mysql.query(today_sql, my_key, function (err, rows) {
+                            resolve(rows[0]['today']);
+                        });
                     });
-                });
-
-                var date = await c;
-
-                res.status(201).json({
-                    "first": date['remain'],
-                    "second": date['total']
-                });
-
-            } else if (my_state === 2) {
-                res.status(202).json({
-                    "first": my_degree,
-                    "second": 0
-                });
+    
+                    const b = new Promise((resolve, reject) => {
+                        db.mysql.query(all_sql, my_key, function (err, rows) {
+                            resolve(rows[0]['day']);
+                        });
+                    });
+    
+    
+                    var first = await a;
+                    var second = await b;
+    
+                    res.json({
+                        "first": first,
+                        "second": second
+                    });
+                } else if (my_state === 1) {
+                    var isolate_sql = "select datediff(date_add(isolation, interval 14 day), isolation) as remain, datediff(now(), isolation) as total from members where my_key = ?";
+    
+                    const c = new Promise((resolve,reject)=>{
+                        db.mysql.query(isolate_sql,my_key,function(err,rows){
+                            resolve(rows[0]);
+                        });
+                    });
+    
+                    var date = await c;
+    
+                    res.status(201).json({
+                        "first": date['remain'],
+                        "second": date['total']
+                    });
+    
+                } else if (my_state === 2) {
+                    res.status(202).json({
+                        "first": my_degree,
+                        "second": 0
+                    });
+                }
             }
-        }
+            resolve();
+        });
     });
+
+    await info;
+    
 });
 
 module.exports = router;
