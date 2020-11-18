@@ -20,7 +20,7 @@ pwd >> $LOG 2>&1
 
 id >> $LOG 2>&1
 
-forever start server.js >> $LOG 2>&1
+forever start index.js >> $LOG 2>&1
 
 # sudo systemctl start $APPNAME
 
