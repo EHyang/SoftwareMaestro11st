@@ -96,12 +96,11 @@ async function propagateContacts(target, degree) {
 
     const q3 = new Promise((resolve, reject) => {
       var now = new Date();
-      console.log(now);
-      var update_states = `update members set state=1,degree=${degree},origin='${target}',isolation='${now}' where my_key in (?)`;
+      var update_states = `update members set state=1,degree=${degree},origin='${target}',isolation=? where my_key in ?`;
 
       logger('debug');
       logger(update_states);
-      db.mysql.query(update_states, [arr], function (err, rows, fields) {
+      db.mysql.query(update_states, [now,[arr]], function (err, rows, fields) {
         if (err) {
           return reject(err);
         }
