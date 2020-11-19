@@ -12,7 +12,7 @@ CONFIG=$HOME/development.json
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** Before Install Hook Started **" >> $LOG 2>&1
 /bin/echo "home: $HOME" >> $LOG 2>&1
-/bin/echo "VERSION 0.85-test" >> $LOG 2>&1
+/bin/echo "VERSION 0.86-test" >> $LOG 2>&1
 
 # Do some actions before the installation
 
