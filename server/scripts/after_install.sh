@@ -6,6 +6,7 @@ CMD=$APP/$APPNAME.sh
 LOG=$HOME/deploy.log
 APP=$HOME/$APPNAME
 APPPATH=/home/ubuntu/server
+CONFIG=$HOME/development.json
 
 /bin/echo "$(date '+%Y-%m-%d'): ** After Install Hook Started **" >> $LOG
 /bin/echo "$(date '+%Y-%m-%d'): Changing owner and group of application... " >> $LOG
@@ -28,5 +29,14 @@ npm install forever -g >> $LOG 2>&1
 npm install >> $LOG 2>&1
 
 echo -e "NPM Install Done" >> $LOG 2>&1
+
+
+sudo apt install jq -y >> $LOG 2>&1
+
+sudo apt install awscli -y >> $LOG 2>&1
+
+sudo chown -R ubuntu:ubuntu $APPPATH >> $LOG 2>&1
+
+aws ssm get-parameters --region ap-northeast-2 --names Dahda-Environment-Variables --with-decryption --query Parameters[0].Value | jq -rc . >> $APPPATH/config/development.json 2>&1
 
 /bin/echo "$(date '+%Y-%m-%d %X'): ** After Install Hook Completed **" >> $LOG

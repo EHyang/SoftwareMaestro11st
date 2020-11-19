@@ -39,10 +39,20 @@ var router = express.Router();
 var axios = require('axios');
 var cheerio = require('cheerio');
 
-router.post('/', function (req, res) {
-  var id = req.body.id;
+router.get('/', async function (req, res) {
+  //var id = req.body.id;
+var stat;
+    db.mysql.query('select state from members where my_key = "304eeda3c173"', function(err,rows){
+      stat = rows[0]['state'];
+      //console.log(stat);
+          
+  if(stat === 0) res.send("000");
+  else if(stat === 1) res.send("1111");
+  else if(stat === 2) res.send("2222");
+    });
 
-  res.json({'id':id});
+
+ // res.json({'id':id});
 
 
 });
