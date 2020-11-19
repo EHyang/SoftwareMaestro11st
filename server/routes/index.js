@@ -19,8 +19,7 @@ const v2 = require('./v2');
 const v3 = require('./v3');
 
 router.get('/', function(req, res){
-  console.log('someone connect your page');
-  res.render('index');
+  res.sendStatus(200);
 });
 
 //router.use('/login', loginRouter);
