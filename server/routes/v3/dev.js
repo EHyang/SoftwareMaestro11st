@@ -108,5 +108,34 @@ router.get('/state/all', function(req, res, next) {
   
 });
 
+
+router.get('/send-fcm', function (req, res) { 
+  
+  var message = {
+    to: 'eya8PsfBT-OoOaWLUjLo8u:APA91bGtgaWqU_dPpihZg6wSBO6mvU45cZCj6T5NeroZDHPuphqvATM6rT6S5hV8vZCkQN3H7UtneCuKAUkKNdWikX8YVQ7-QYR5Tepv7yujNk9trC5UTxvEAJU_lq8cm7YoicCm8HRj',
+    collapse_key: 'dev',
+    delay_while_idle: true,
+    // notification: {
+    //   title: 'noti-title',
+    //   body: 'Hi thereadsfsdsdf~'
+    // },
+
+    data: {
+      title: '당신은 확진자와 접촉하였습니다.',
+      body: '접촉 위치를 확인하세요',
+      time:'123123',
+    }
+  };
+  fcm.send(message, function(err, response) {
+    if (err) {
+      logger(err);
+      logger("에러나써");
+    } else {
+      logger("잘가써");
+    }
+  });
+  res.json({res:0})
+})
+
 module.exports = router;
 

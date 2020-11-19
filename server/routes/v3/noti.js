@@ -16,12 +16,20 @@
  * 
  * 2020-11-05 현우
  * - fcm key config로 옮김
+ * 
+ * 2020-11-16
+ * 태양
+ * - 알림에 데이터 추가 및 수정
+ * 
+ * 현우
+ * - 시간 데이터 포멧 설정
  */
 
 var express = require('express');
 var db = require('@db');
 var router = express.Router();
 var config = require('config');
+var moment = require('moment');
 
 var FCM = require('fcm-node');
 var serverKey = config.get('FCM_KEY');
@@ -30,116 +38,87 @@ var fcm = new FCM(serverKey);
 var visited = {};
 let globalContacts = new Set();
 
-function logger(msg){
-  // console.log(msg);
+function logger(msg) {
+   console.log(msg);
 }
 
-async function propagateContacts(target, degree){
+async function propagateContacts(target, degree) {
   // const sourceID = target.my_key;
   const my_key = target;
   const sourceID = target;
-  degree = degree+1;
+  degree = degree + 1;
 
-  if(visited[sourceID]){
+  if (visited[sourceID]) {
     console.info('already visited: ');
     return;
   }
   logger(`propagating contacts from ${sourceID}`);
-  visited[sourceID]=1;
+  visited[sourceID] = 1;
 
   try {
     // logger(`source token:::: ${sourceID}`);
 
-    var select_scan = 'select distinct scan_key from scan where my_key = ?';
-    var select_my = 'select distinct my_key from scan where scan_key = ?';
+    var select_sql = 'select distinct my_key, scan_time from scan where scan_key = ?';
     var arr = [];
+    var time = [];
 
     /////////// scan1 
     const q1 = new Promise((resolve, reject) => {
-      db.mysql.query(select_scan, my_key, (err, rows, fields) => {
-        if(err){
+      db.mysql.query(select_sql, my_key, (err, rows, fields) => {
+        if (err) {
           return reject("db", `${err.message}`);
         }
         logger(rows);
-           
+
         for (var i = 0; i < rows.length; ++i) {
           logger('appending arr with scan_key');
-          logger(rows[i]["scan_key"]);
-          arr.push(rows[i]["scan_key"]);
+          logger(rows[i]["my_key"]);
+          logger(rows[i]["scan_time"]);
+          arr.push(rows[i]["my_key"]);
+          time.push(moment(rows[i]["scan_time"]).format('YYYY-MM-DD HH:mm:ss'))
         }
         logger('q1 done');
         resolve();
       });
     });
-    
-    const q2 = new Promise((resolve, reject)=>{
-      db.mysql.query(select_my, my_key, function(err, rows, fields){
-        if(err){
-          return reject(err);
-        }
 
-        for (var i = 0; i < rows.length; ++i) {
-          logger('appending arr with my_key');
-          logger(rows[i]["my_key"]);
-          arr.push(rows[i]["my_key"]);
-        }
-        
-        logger('q2 done');
-        resolve();
-      })
-    })
+    await q1;
 
-    await Promise.all([q1, q2]);
-  
-    logger('start reduce');
-    var uniq = arr.reduce(function(a, b) {
-      logger(a,b);
-      if (a.indexOf(b) < 0 && !visited[b]) a.push(b);
-      logger(a,b);
-      return a;
-    }, []);
-
-    if(uniq.length == 0){
-      logger('contact list is empty. aborting');
-      return;
-    }
-    
-    uniq.forEach(element => {
-      if(!visited[element]){
+    arr.forEach(element => {
+      if (!visited[element]) {
         globalContacts.add(element);
       }
     });
-    logger('end reduce');
-    logger(uniq);
+
     // globalContacts = globalContacts.add(...uniq); // concat is NOT inplace
     logger('global contacts:d');
     logger(globalContacts);
 
-    const q3 = new Promise((resolve, reject)=>{
-      var update_states = `update members set state=1,degree=${degree},origin='${target}' where my_key in ( ? )`;
+    const q3 = new Promise((resolve, reject) => {
+      var now = new Date();
+      var update_states = `update members set state=1,degree=${degree},origin='${target}',isolation=? where my_key in ?`;
 
       logger('debug');
       logger(update_states);
-      db.mysql.query(update_states, [uniq], function(err, rows, fields){
-        if(err){
+      db.mysql.query(update_states, [now,[arr]], function (err, rows, fields) {
+        if (err) {
           return reject(err);
         }
         logger('UPDATE DONE!');
         logger(rows);
         resolve();
       });
-
     })
 
     await q3;
 
     const q4 = new Promise((resolve, reject) => {
       var select_token = 'select token from members where my_key in ( ? )';
-      db.mysql.query(select_token, [uniq], async function(err, rows, fields) {
+      db.mysql.query(select_token, [arr], async function (err, rows, fields) {
         logger("여기");
         logger(rows);
-        const tokens=[];
-        const errors=[];
+        const tokens = [];
+        const errors = [];
         if (err) {
           logger(err);
           return reject(err);
@@ -151,12 +130,17 @@ async function propagateContacts(target, degree){
               to: rows[i]['token'],
               collapse_key: 'dev',
 
-              notification: {
-                title: 'hello',
-                body: 'Hi there~'
+              // notification: {
+              //     title: 'Noti Test',
+              //     body: 'zbzb'
+              // }
+              data: {
+                title: 'Push Test',
+                body: 'You had contacted with infected person',
+                contacted_time: time[i]
               }
             };
-            fcm.send(message, function(err, response) {
+            fcm.send(message, function (err, response) {
               if (err) {
                 logger(err);
                 logger("에러나써");
@@ -165,136 +149,58 @@ async function propagateContacts(target, degree){
                 logger("잘가써");
               }
             });
-            await propagateContacts(rows[i]['token'], degree)
+            //await propagateContacts(rows[i]['token'], degree)
           }
         }
-
         resolve();
       });
     })
 
     await q4;
-    
+
   } catch (error) {
     console.error(error);
     throw error;
   }
-  
+
 }
 
-router.get('/bak', function(req, res) {
-  console.log(req.query.my_key + " send noti");
-  var infect = req.query.my_key;
-
-  var select_scan = 'select distinct scan_key from scan where my_key = ?';
-  var select_my = 'select distinct my_key from scan where scan_key = ?';
-  var arr = [];
-  db.mysql.query(select_scan, infect, function(err, rows, fields) {
-    if (err) {
-      logger(err);
-    } else {
-      for (var i = 0; i < rows.length; ++i) {
-        arr.push(rows[i]["scan_key"]);
-      }
-    }
-  });
-  db.mysql.query(select_my, infect, function(err, rows, fields) {
-    if (err) {
-      logger(err);
-    } else {
-      for (var i = 0; i < rows.length; ++i) {
-        arr.push(rows[i]["my_key"]);
-      }
-    }
-    //console.log(arr);
-
-    var uniq = arr.reduce(function(a, b) {
-      if (a.indexOf(b) < 0) a.push(b);
-      return a;
-    }, []);
-    
-    if(uniq[0]=='undefined'){
-      uniq=uniq.splice(1);
-    }
-    
-    logger(uniq);
-    logger(uniq);
-    var select_token = 'select token from members where my_key = ?';
-    select_token = 'select * from members';
-
-    //console.log(uniq);
-
-    var select_token = 'select token from testmembers where my_key = ?';
-
-    var update_state = 'update testmembers set state = 1 where my_key = ?';
-
-    var select_time = "select scan_time from scan where (my_key = ? and scan_key = ?) or (my_key = ? and scan_key = ?) order by scan_time desc limit 1";
-    
-    db.mysql.query(update_state, uniq, function(err, rows, fields) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("update state success");
-      }
-    });
-
-    db.mysql.query(select_token, uniq, function(err, rows, fields) {
-    //  console.log("여기");
-      if (err) {
-        logger(err);
-      } else {
-        for (var i = 0; i < rows.length; ++i) {
-          logger(rows[i]['token']);
-          tokens.push(rows[i]['token']);
-          var message = {
-            to: rows[i]['token'],
-            collapse_key: 'dev',
-
-            notification: {
-              title: 'test',
-              body: 'FCM noti test'
-            }//,
-            //data: {
-
-            //}
-          };
-          fcm.send(message, function(err, res) {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("send message success");
-            }
-          });
-        }
-      }
-      if(errors){
-        console.error('error');
-        res.json({res:-1, errors, tokens});
-      }else {
-        res.json({res:0, tokens});
-      }
-    });
-  });
-});
-
-router.get('/', async function(req, res) {
+router.get('/', async function (req, res) {
   logger(req.query.my_key + " noti");
   var my_key = req.query.my_key;
+  var degree_sql = "select degree from members where my_key = ?";
   contacts = [];
   visited = {};
   let tokens = [];
+  var my_degree;
 
   /* TODO : 내 차수 가져 오기 */
-  
-  await propagateContacts(my_key, 0);
+  const query = new Promise((resolve, reject) => {
+    db.mysql.query(degree_sql, my_key, function (err, rows) {
+      if (err)
+        logger(err);
+      else {
+        logger(rows[0]);
+        my_degree = rows[0]['degree'];
+        resolve();
+      }
+    });
+  });
+
+  await query;
+
+  logger(my_degree)
+  await propagateContacts(my_key, my_degree);
 
   logger('propagation DONE');
 
-  tokens=globalContacts;
+  tokens = globalContacts;
 
   logger(tokens);
 
-  res.json({res: 0});
+  res.json({
+    res: 0
+  });
 });
 
 
