@@ -10,7 +10,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private static int NUM_ITEMS = 4;
 
 
-
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -30,7 +29,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }
-
 
 
     }

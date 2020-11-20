@@ -89,10 +89,18 @@ public class GeneralUser extends AppCompatActivity {
 
     ClinicDataCon dataCon;
 
+    String google_id;
+    int state;
+    String first;
+    String second;
+    Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_user);
+
+        bundle = new Bundle();
 
         dataCon = new ClinicDataCon();
         dataCon.bringData();
@@ -101,13 +109,13 @@ public class GeneralUser extends AppCompatActivity {
         database = new Database(this, "Dahda", null, 1);
         databaseControl = new DatabaseControl(database);
 
-        databaseControl.delete();
+
 
 
         final Intent intent = getIntent();
         mykey = intent.getStringExtra("mykey");
-
-        final int state = intent.getIntExtra("state", -1);
+        google_id = intent.getStringExtra("google_id");
+        state = intent.getIntExtra("state", -1);
 
         requestPermission();
 
@@ -145,6 +153,14 @@ public class GeneralUser extends AppCompatActivity {
                 int id = menuItem.getItemId();
 
                 switch (id) {
+                    case R.id.myinfo_:
+                        Intent good = new Intent(getApplicationContext(), Myinfo_.class);
+                        good.putExtra("state", state);
+                        good.putExtra("key", mykey);
+                        good.putExtra("google_id", google_id);
+                        Log.d("googleCheck2",google_id);
+                        startActivity(good);
+                        break;
                     case R.id.one:
                         Intent one = new Intent(getApplicationContext(), CoronaRull.class);
                         startActivity(one);
@@ -179,6 +195,8 @@ public class GeneralUser extends AppCompatActivity {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Log.d("refresh!!","refresh!!!");
+
                 stateCheck(); // your code
                 pullToRefresh.setRefreshing(false);
             }
@@ -195,18 +213,28 @@ public class GeneralUser extends AppCompatActivity {
 
         switch (state) {
             case 0:
+                bundle.putString("key",mykey);
+                myinfoFrag.setArguments(bundle);
+                Log.d("fragment1!?!?!?","fragment1??!");
+                myinfoFrag.connect();
                 mDrawerLayout.setBackgroundColor(getResources().getColor(R.color.colorService));
                 fragmentTransaction.replace(R.id.framelayout_, myinfoFrag);
                 fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
                 fragmentTransaction.replace(R.id.framelayout_c, localInfoFrag).commit();
                 break;
             case 1:
+                bundle.putString("key",mykey);
+                contactFrag.setArguments(bundle);
+                contactFrag.connect();
                 mDrawerLayout.setBackgroundColor(Color.parseColor("#FFD700"));
                 fragmentTransaction.replace(R.id.framelayout_, contactFrag);
                 fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
                 fragmentTransaction.replace(R.id.framelayout_c, localInfoFrag).commit();
                 break;
             case 2:
+                bundle.putString("key",mykey);
+                confirmFrag.setArguments(bundle);
+                confirmFrag.connect();
                 mDrawerLayout.setBackgroundColor(Color.parseColor("#DC143C"));
                 fragmentTransaction.replace(R.id.framelayout_, confirmFrag);
                 fragmentTransaction.replace(R.id.framelayout_b, totalInfoFrag);
@@ -263,8 +291,9 @@ public class GeneralUser extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     Log.d("Data 성공!!", "///" + data.getRes());
+                    state = Integer.parseInt(data.getRes());
 
-                    int state = Integer.parseInt(data.getRes());
+
                     replaceFrag(state);
 
                 }
@@ -350,7 +379,7 @@ public class GeneralUser extends AppCompatActivity {
 
         Log.d("sendDatabase Null?! : ", getTime + ", " + aLatitude + ", " + aLongitude);
 
-        databaseControl.select(getTime, aLatitude, aLongitude);
+//        databaseControl.select(getTime, aLatitude, aLongitude);
 
     }
 

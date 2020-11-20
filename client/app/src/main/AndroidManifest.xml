@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.dahda_nice"
-
     android:targetSandboxVersion="1">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -14,7 +13,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@drawable/number6"
@@ -23,11 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".ContactLocation"></activity>
+        <activity android:name=".Myinfo_"></activity>
+        <activity android:name=".ContactLocation" />
         <activity
             android:name=".Clinic"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CoronaRull"
             android:screenOrientation="portrait" />
@@ -44,6 +42,10 @@
             android:name=".GeneralUser"
             android:screenOrientation="portrait" />
 
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="dahda" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBuonmQHQ-hmfU4voYuTIokkvJbtQ8tv88" />
@@ -55,6 +57,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".LoadingActivity"
             android:screenOrientation="portrait">
@@ -69,6 +72,16 @@
             android:name=".BackgroundService"
             android:enabled="true"
             android:exported="false" />
+
+        <service
+            android:name=".FirebaseMessage"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

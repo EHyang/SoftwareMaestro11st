@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -20,10 +21,15 @@ public class MainActivity extends AppCompatActivity {
     FragmentPagerAdapter fragmentPagerAdapter;
     TextView textView;
     ViewPager viewPager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("main","checkcheck");
+
 
         viewPager = findViewById(R.id.viewpager);
 
@@ -32,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(fragmentPagerAdapter);
 
 
-
         CircleIndicator circleIndicator = findViewById(R.id.indicator);
         circleIndicator.setViewPager(viewPager);
+
     }
 
 
@@ -42,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
-
-
 
 
 }

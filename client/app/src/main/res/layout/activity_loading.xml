@@ -9,14 +9,12 @@
     tools:context=".LoadingActivity">
 
 
-
-
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/hwang3"
-        android:layout_marginTop="150dp"
         android:layout_width="180dp"
         android:layout_height="180dp"
         android:layout_gravity="center"
+        android:layout_marginTop="190dp"
         android:scaleType="centerCrop"
         android:src="@drawable/number6" />
 
@@ -58,4 +56,5 @@
             android:textColor="#000000"
             android:textSize="12dp" />
     </LinearLayout>
+
 </LinearLayout>

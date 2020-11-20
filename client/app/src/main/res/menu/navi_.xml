@@ -2,11 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <group>
+        <item
+            android:id="@+id/myinfo_"
+            android:icon="@drawable/number9"
+            android:title="내 정보" />
+    </group>
 
+    
     <group>
         <item
             android:id="@+id/one"
             android:icon="@drawable/number9"
+
             android:title="방역 수칙" />
     </group>
 

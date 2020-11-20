@@ -80,6 +80,7 @@ public class SampleScanCallback extends ScanCallback {
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
         SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Log.d("checkDate: ",simpleDate.format(mDate));
         getTime = simpleDate.format(mDate);
         Log.d("scanCheck!!", getTime);
 
